@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#07101e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Minik Uyku</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07101e;--bg2:#0d1829;--bg3:#142035;
+  --card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.07);--borderHi:rgba(255,255,255,0.14);
+  --text:#e8f0ff;--text2:#7a90b8;--text3:#3a4d6a;
+  --gold:#f0c060;--goldD:#c8962a;
+  --rose:#e8829a;--lav:#9d8cef;--mint:#5dd8a8;--sky:#6ab8e8;--peach:#f0a870;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:'Nunito',sans-serif;color:var(--text);display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 50% at 10% 5%,rgba(157,140,239,.10) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 80%,rgba(93,216,168,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 30% at 50% 110%,rgba(240,192,96,.06) 0%,transparent 60%)}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(1px 1px at 8% 12%,rgba(255,255,255,.7) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 48% 6%,rgba(255,255,255,.8) 0%,transparent 100%),
+    radial-gradient(1px 1px at 68% 20%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(2px 2px at 42% 28%,rgba(240,192,96,.5) 0%,transparent 100%),
+    radial-gradient(2px 2px at 78% 44%,rgba(157,140,239,.4) 0%,transparent 100%)}
+
+.header{position:relative;z-index:10;padding:48px 22px 0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.brand{display:flex;align-items:center;gap:9px}
+.brand-moon{font-size:1.5rem;animation:sway 5s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.brand-name{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-style:italic;letter-spacing:-.01em;
+  background:linear-gradient(120deg,var(--text) 0%,var(--lav) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.premium-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:50px;
+  background:rgba(240,192,96,.10);border:1px solid rgba(240,192,96,.28);color:var(--gold);
+  font-size:.71rem;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:all .2s}
+.premium-btn.owned{background:linear-gradient(135deg,rgba(240,192,96,.22),rgba(200,150,42,.12));border-color:var(--gold)}
+
+.tabs{position:relative;z-index:10;display:flex;gap:5px;padding:14px 22px 0;flex-shrink:0}
+.tab{flex:1;padding:9px 4px;border-radius:12px;background:var(--card);border:1px solid var(--border);
+  color:var(--text2);font-family:'Nunito',sans-serif;font-size:.71rem;font-weight:600;
+  cursor:pointer;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:3px}
+.tab .ti{font-size:1.1rem}
+.tab.active{background:rgba(157,140,239,.14);border-color:rgba(157,140,239,.38);color:var(--lav)}
+
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:15px 18px 108px;position:relative;z-index:5;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+
+.page{display:none;animation:fadeUp .28s ease}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+
+.stitle{font-family:'Cormorant Garamond',serif;font-size:1.08rem;font-style:italic;color:var(--text);
+  margin-bottom:12px;margin-top:4px;display:flex;align-items:center;gap:8px}
+.stitle::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border) 0%,transparent 100%)}
+
+/* NOW PLAYING */
+.np{background:linear-gradient(135deg,rgba(157,140,239,.18),rgba(93,216,168,.07));
+  border:1px solid rgba(157,140,239,.26);border-radius:17px;padding:13px 15px;
+  margin-bottom:14px;display:none;backdrop-filter:blur(18px)}
+.np.show{display:block}
+.np-row{display:flex;align-items:center;gap:11px;margin-bottom:9px}
+.np-ico{font-size:1.45rem;animation:bob 3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.np-info{flex:1;min-width:0}
+.np-name{font-weight:700;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.np-sub{font-size:.69rem;color:var(--lav);margin-top:1px}
+.np-right{display:flex;gap:6px;align-items:center}
+.np-tag{font-size:.62rem;color:var(--gold);font-weight:700;background:rgba(240,192,96,.10);
+  padding:2px 7px;border-radius:50px;border:1px solid rgba(240,192,96,.22);white-space:nowrap}
+.np-stop{width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(232,130,154,.18);color:var(--rose);font-size:.85rem;
+  display:flex;align-items:center;justify-content:center}
+.prog{height:3px;background:rgba(255,255,255,.07);border-radius:10px;overflow:hidden}
+.prog-fill{height:100%;border-radius:10px;width:0%;transition:width .5s linear;
+  background:linear-gradient(90deg,var(--lav),var(--mint))}
+.prog-inf .prog-fill{width:40%!important;animation:slide 2.2s linear infinite}
+@keyframes slide{0%{transform:translateX(-250%)}100%{transform:translateX(400%)}}
+
+/* LOOP BADGE */
+.loop-badge{font-size:.62rem;color:var(--mint);font-weight:700;background:rgba(93,216,168,.08);
+  padding:2px 7px;border-radius:50px;border:1px solid rgba(93,216,168,.18)}
+
+/* TIMER */
+.timer-row{display:flex;gap:8px;margin-bottom:14px}
+.timer-trig{flex:1;padding:9px;border-radius:11px;background:var(--card);border:1px solid var(--border);
+  color:var(--text2);font-family:'Nunito',sans-serif;font-size:.74rem;font-weight:600;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px}
+.tpicker{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:13px;margin-bottom:13px;display:none}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:9px}
+.dbtn{padding:9px 5px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  color:var(--text2);font-family:'Nunito',sans-serif;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+.dbtn.sel{background:rgba(157,140,239,.17);border-color:var(--lav);color:var(--lav)}
+
+/* LULLABY CARDS */
+.lcard{background:var(--card);border:1px solid var(--border);border-radius:15px;
+  padding:13px 15px;display:flex;align-items:center;gap:12px;margin-bottom:8px;
+  cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.lcard::before{content:'';position:absolute;inset:0;border-radius:15px;
+  background:linear-gradient(135deg,var(--ca,transparent),var(--cb,transparent));opacity:0;transition:opacity .3s}
+.lcard:hover::before,.lcard.playing::before{opacity:1}
+.lcard.playing{border-color:rgba(157,140,239,.42)}
+.lc-em{font-size:1.75rem;position:relative;z-index:1;flex-shrink:0}
+.lc-inf{flex:1;min-width:0;position:relative;z-index:1}
+.lc-nm{font-weight:700;font-size:.88rem;margin-bottom:2px}
+.lc-ds{font-size:.7rem;color:var(--text2);line-height:1.4}
+.lc-bt{display:flex;align-items:center;gap:5px;margin-top:5px;flex-wrap:wrap}
+.lc-badge{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:50px;background:rgba(255,255,255,.05);color:var(--text3)}
+.free-30{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:50px;
+  background:rgba(240,192,96,.09);color:var(--gold);border:1px solid rgba(240,192,96,.18)}
+.pbtn{width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;
+  position:relative;z-index:1;background:rgba(255,255,255,.07);color:var(--text);transition:all .2s}
+.pbtn.active{background:var(--lav);color:#fff;box-shadow:0 0 18px rgba(157,140,239,.5);animation:glow 2s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 18px rgba(157,140,239,.5)}50%{box-shadow:0 0 30px rgba(157,140,239,.8)}}
+
+/* STORY CARDS */
+.scard{background:var(--card);border:1px solid var(--border);border-radius:17px;overflow:hidden;margin-bottom:10px;cursor:pointer;transition:all .3s}
+.scard:hover{transform:translateY(-2px);border-color:var(--borderHi)}
+.sc-top{padding:15px 17px;display:flex;align-items:flex-start;gap:12px}
+.sc-em{font-size:2.3rem;line-height:1;flex-shrink:0}
+.sc-meta{flex:1}
+.sc-tt{font-family:'Cormorant Garamond',serif;font-size:1.03rem;margin-bottom:3px}
+.sc-ds{font-size:.72rem;color:var(--text2);line-height:1.5}
+.sc-ft{padding:7px 17px 13px;display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.pill{font-size:.63rem;font-weight:700;padding:3px 8px;border-radius:50px;letter-spacing:.03em}
+.p-age{background:rgba(93,216,168,.09);color:var(--mint);border:1px solid rgba(93,216,168,.18)}
+.p-dur{background:rgba(106,184,232,.09);color:var(--sky);border:1px solid rgba(106,184,232,.18)}
+.p-type{background:rgba(157,140,239,.09);color:var(--lav);border:1px solid rgba(157,140,239,.18)}
+.p-free{background:rgba(240,192,96,.09);color:var(--gold);border:1px solid rgba(240,192,96,.2)}
+
+/* KOLIK */
+.ksec{margin-bottom:24px}
+.khead{display:flex;align-items:center;gap:9px;margin-bottom:10px;padding:0 2px}
+.kicon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.khtitle{font-weight:700;font-size:.86rem}
+.khsub{font-size:.68rem;color:var(--text2);margin-top:1px;line-height:1.4}
+.kitem{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:11px 14px;display:flex;align-items:center;gap:10px;margin-bottom:6px;cursor:pointer;transition:all .2s}
+.kitem:hover{border-color:var(--borderHi)}
+.kitem.playing{border-color:rgba(93,216,168,.38);background:rgba(93,216,168,.04)}
+.ki-em{font-size:1.35rem;flex-shrink:0}
+.ki-inf{flex:1;min-width:0}
+.ki-nm{font-weight:700;font-size:.83rem}
+.ki-ds{font-size:.68rem;color:var(--text2);margin-top:1px}
+.ftag{font-size:.58rem;font-weight:700;color:var(--mint);background:rgba(93,216,168,.08);
+  padding:2px 6px;border-radius:50px;border:1px solid rgba(93,216,168,.18);flex-shrink:0}
+.kplay{width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:.82rem;
+  background:rgba(255,255,255,.06);color:var(--text);transition:all .2s;flex-shrink:0}
+.kplay.active{background:var(--mint);color:#07101e;box-shadow:0 0 14px rgba(93,216,168,.45)}
+
+/* SESIM */
+.free-banner{background:linear-gradient(135deg,rgba(93,216,168,.10),rgba(93,216,168,.04));
+  border:1px solid rgba(93,216,168,.25);border-radius:13px;padding:12px 15px;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px}
+.fb-icon{font-size:1.4rem;flex-shrink:0}
+.fb-text{font-size:.78rem;color:var(--text2);line-height:1.5}
+.fb-text strong{color:var(--mint);display:block;font-size:.82rem}
+.flabel{display:block;font-size:.72rem;color:var(--text2);font-weight:700;letter-spacing:.04em;margin-bottom:5px}
+.finp{width:100%;padding:10px 13px;border-radius:10px;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.09);color:var(--text);font-family:'Nunito',sans-serif;
+  font-size:.82rem;outline:none;transition:border-color .2s}
+.finp:focus{border-color:rgba(240,192,96,.38)}
+.finp::placeholder{color:var(--text3)}
+
+.rec-area{text-align:center;padding:18px 0 8px}
+.rec-btn{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--rose),#c0303a);
+  border:none;cursor:pointer;font-size:1.7rem;margin:0 auto 10px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 22px rgba(232,130,154,.38);transition:all .3s;position:relative}
+.rec-btn.recording{animation:recpulse 1s ease-in-out infinite}
+@keyframes recpulse{0%,100%{box-shadow:0 6px 22px rgba(255,60,60,.5)}50%{box-shadow:0 6px 44px rgba(255,60,60,.85),0 0 0 14px rgba(255,60,60,.07)}}
+.rec-time{font-size:1.5rem;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;margin:3px 0}
+.rec-stat{font-size:.76rem;color:var(--text2);margin-bottom:8px}
+.waveform{display:flex;align-items:center;justify-content:center;gap:2px;height:40px;margin:6px 0}
+.wbar{width:3px;border-radius:3px;background:var(--lav);min-height:3px;transition:height .08s ease}
+.phrase-list{margin-top:2px}
+.phrase{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:9px;
+  padding:9px 13px;margin-bottom:6px;font-size:.78rem;color:var(--text2);font-style:italic;line-height:1.5;display:flex;align-items:flex-start;gap:7px}
+.phrase::before{content:'✦';color:var(--gold);font-size:.54rem;flex-shrink:0;margin-top:3px}
+.ri{background:rgba(93,216,168,.04);border:1px solid rgba(93,216,168,.13);border-radius:11px;
+  padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;gap:9px}
+.ri-inf{flex:1}
+.ri-nm{font-weight:700;font-size:.84rem}
+.ri-mt{font-size:.68rem;color:var(--text2);margin-top:1px}
+.ri-acts{display:flex;gap:4px}
+.ri-btn{width:30px;height:30px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:.76rem;transition:all .2s}
+.ri-play{background:rgba(93,216,168,.13);color:var(--mint)}
+.ri-del{background:rgba(232,130,154,.13);color:var(--rose)}
+.clone-box{background:rgba(157,140,239,.05);border:1px solid rgba(157,140,239,.18);border-radius:13px;padding:15px}
+.clone-title{font-weight:700;font-size:.85rem;color:var(--lav);margin-bottom:11px;display:flex;align-items:center;gap:5px}
+.frow{margin-bottom:10px}
+.abtn{width:100%;padding:12px;border-radius:11px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.86rem;font-weight:700;transition:all .3s;letter-spacing:.03em;margin-top:9px}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--goldD));color:#07101e}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(240,192,96,.32)}
+.btn-gold:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-lav{background:linear-gradient(135deg,var(--lav),#7a6ac0);color:#fff}
+.btn-lav:disabled{opacity:.45;cursor:not-allowed}
+.smsg{text-align:center;padding:9px 13px;border-radius:9px;font-size:.75rem;margin-top:9px;display:none}
+.smsg.ok{background:rgba(93,216,168,.09);border:1px solid rgba(93,216,168,.22);color:var(--mint);display:block}
+.smsg.err{background:rgba(232,130,154,.09);border:1px solid rgba(232,130,154,.22);color:var(--rose);display:block}
+.smsg.load{background:rgba(157,140,239,.09);border:1px solid rgba(157,140,239,.22);color:var(--lav);display:block}
+.spin{width:14px;height:14px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:5px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* MODALS */
+.modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.82);backdrop-filter:blur(13px);
+  opacity:0;pointer-events:none;transition:opacity .28s;display:flex;align-items:flex-end;justify-content:center}
+.modal.open{opacity:1;pointer-events:all}
+.msheet{background:var(--bg2);border-radius:24px 24px 0 0;width:100%;max-width:480px;max-height:88vh;
+  overflow-y:auto;padding:20px 20px 46px;transform:translateY(100%);
+  transition:transform .38s cubic-bezier(.34,1.2,.64,1);scrollbar-width:none}
+.msheet::-webkit-scrollbar{display:none}
+.modal.open .msheet{transform:translateY(0)}
+.mhandle{width:32px;height:4px;background:rgba(255,255,255,.11);border-radius:10px;margin:0 auto 18px}
+.mclose{float:right;margin-top:-3px;width:30px;height:30px;border-radius:50%;border:none;
+  background:rgba(255,255,255,.07);color:var(--text);cursor:pointer;font-size:.82rem;
+  display:flex;align-items:center;justify-content:center}
+.pm-hero{text-align:center;padding:8px 0 18px}
+.pm-crown{font-size:2.8rem;display:block;margin-bottom:7px;animation:bob 3s ease-in-out infinite}
+.pm-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-style:italic;
+  background:linear-gradient(135deg,var(--gold),var(--peach));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pm-sub{font-size:.8rem;color:var(--text2);margin-top:5px;line-height:1.6}
+.pf-list{margin:17px 0}
+.pf{display:flex;align-items:center;gap:9px;padding:10px 13px;background:rgba(255,255,255,.03);
+  border:1px solid var(--border);border-radius:11px;margin-bottom:7px}
+.pf-ic{font-size:1.15rem;flex-shrink:0}
+.pf-tx{font-size:.8rem;color:var(--text2);flex:1;line-height:1.4}
+.pf-tx strong{color:var(--text);display:block;font-size:.84rem}
+.price-box{background:linear-gradient(135deg,rgba(240,192,96,.11),rgba(200,150,42,.05));
+  border:1px solid rgba(240,192,96,.28);border-radius:15px;padding:16px;text-align:center;margin:14px 0}
+.price-main{font-family:'Cormorant Garamond',serif;font-size:2.3rem;color:var(--gold);font-weight:600}
+.price-per{font-size:.78rem;color:var(--text2);margin-top:1px}
+.pay-form{margin-top:6px}
+.pay-row{margin-bottom:11px}
+.pay-row2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.secure{display:flex;align-items:center;gap:5px;font-size:.68rem;color:var(--text3);text-align:center;justify-content:center;margin-top:9px}
+.sm-em{font-size:2.7rem;display:block;margin-bottom:9px}
+.sm-tt{font-family:'Cormorant Garamond',serif;font-size:1.35rem;margin-bottom:13px}
+.sm-body{font-size:.86rem;line-height:2;color:var(--text2)}
+.sm-body p{margin-bottom:12px}
+.sm-body .hl{color:var(--text);font-weight:600}
+
+/* TIMER MINI */
+.tmini{position:fixed;bottom:66px;left:50%;transform:translateX(-50%);
+  width:calc(100% - 34px);max-width:446px;background:rgba(7,16,30,.95);backdrop-filter:blur(18px);
+  border:1px solid var(--border);border-radius:13px;padding:10px 15px;
+  display:none;z-index:50;align-items:center;gap:11px}
+.tmini.show{display:flex}
+.tm-t{font-size:1.1rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--gold)}
+.tm-l{font-size:.7rem;color:var(--text2);flex:1}
+.tm-c{font-size:.7rem;color:var(--rose);cursor:pointer;font-weight:700}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
+  background:rgba(7,16,30,.97);backdrop-filter:blur(18px);border-top:1px solid var(--border);
+  display:flex;justify-content:space-around;padding:8px 0 18px;z-index:100}
+.bb{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;
+  background:none;border:none;padding:4px 14px;border-radius:10px;transition:all .2s}
+.bb-ic{font-size:1.18rem;line-height:1}
+.bb-lb{font-size:.59rem;color:var(--text3);font-family:'Nunito',sans-serif;font-weight:600;transition:color .2s;letter-spacing:.03em}
+.bb.active .bb-lb{color:var(--lav)}
+.bb.active .bb-ic{filter:drop-shadow(0 0 5px rgba(157,140,239,.8))}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand"><span class="brand-moon">🌙</span><span class="brand-name">Minik Uyku</span></div>
+  <button class="premium-btn" id="pm-btn" onclick="openModal('modal-premium')">
+    <span>👑</span><span id="pm-txt">Premium</span>
+  </button>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="goPage('ninniler',this)"><span class="ti">🎵</span>Ninniler</button>
+  <button class="tab" onclick="goPage('hikayeler',this)"><span class="ti">📖</span>Hikayeler</button>
+  <button class="tab" onclick="goPage('kolik',this)"><span class="ti">🌿</span>Kolik</button>
+  <button class="tab" onclick="goPage('sesim',this)"><span class="ti">🎙️</span>Sesim</button>
+</div>
+
+<div class="scroll">
+
+<!-- NİNNİLER -->
+<div class="page active" id="page-ninniler">
+  <div class="np" id="np-nin">
+    <div class="np-row">
+      <span class="np-ico" id="npn-em">🎵</span>
+      <div class="np-info"><div class="np-name" id="npn-nm">—</div><div class="np-sub" id="npn-sb">Şimdi çalıyor</div></div>
+      <div class="np-right">
+        <span class="loop-badge">🔁 Döngü</span>
+        <span class="np-tag" id="npn-tag" style="display:none">⏳ 30sn</span>
+        <button class="np-stop" onclick="stopAll()">⏹</button>
+      </div>
+    </div>
+    <div class="prog"><div class="prog-fill" id="npn-prog"></div></div>
+  </div>
+  <div class="timer-row">
+    <button class="timer-trig" onclick="toggleTimerPicker()">⏱ Uyku Zamanlayıcısı</button>
+  </div>
+  <div class="tpicker" id="tpicker">
+    <div style="font-size:.76rem;color:var(--text2);font-weight:600">Ne kadar sonra kapansın?</div>
+    <div class="dgrid">
+      <button class="dbtn" onclick="setTimer(15,this)">15 dk</button>
+      <button class="dbtn" onclick="setTimer(30,this)">30 dk</button>
+      <button class="dbtn" onclick="setTimer(45,this)">45 dk</button>
+      <button class="dbtn" onclick="setTimer(60,this)">1 saat</button>
+      <button class="dbtn" onclick="setTimer(90,this)">1.5 saat</button>
+      <button class="dbtn" onclick="setTimer(120,this)">2 saat</button>
+    </div>
+  </div>
+  <div class="stitle">Türk Ninnileri</div>
+  <div id="list-nin"></div>
+  <div class="stitle" style="margin-top:18px">Anne Sesli Ninniler</div>
+  <div id="list-voi-nin"></div>
+</div>
+
+<!-- HİKAYELER -->
+<div class="page" id="page-hikayeler">
+  <div class="np" id="np-hik">
+    <div class="np-row">
+      <span class="np-ico" id="nph-em">📖</span>
+      <div class="np-info"><div class="np-name" id="nph-nm">—</div><div class="np-sub" id="nph-sb">Okunuyor</div></div>
+      <div class="np-right">
+        <span class="loop-badge">🔁 Döngü</span>
+        <span class="np-tag" id="nph-tag" style="display:none">⏳ 30sn</span>
+        <button class="np-stop" onclick="stopAll()">⏹</button>
+      </div>
+    </div>
+    <div class="prog"><div class="prog-fill" id="nph-prog"></div></div>
+  </div>
+  <div class="stitle">Uyku Masalları</div>
+  <div id="list-hik"></div>
+</div>
+
+<!-- KOLİK -->
+<div class="page" id="page-kolik">
+  <div class="np prog-inf" id="np-kol">
+    <div class="np-row">
+      <span class="np-ico" id="npk-em">🌿</span>
+      <div class="np-info"><div class="np-name" id="npk-nm">—</div><div class="np-sub">Sınırsız · Ücretsiz · 🔁 Döngü</div></div>
+      <button class="np-stop" onclick="stopAll()">⏹</button>
+    </div>
+    <div class="prog"><div class="prog-fill" id="npk-prog"></div></div>
+  </div>
+  <div class="ksec"><div class="khead"><div class="kicon" style="background:rgba(240,192,96,.10)">📻</div><div><div class="khtitle">Beyaz Gürültü</div><div class="khsub">Monoton sesler bebeği anne karnı konforuna taşır</div></div></div><div id="k-beyaz"></div></div>
+  <div class="ksec"><div class="khead"><div class="kicon" style="background:rgba(93,216,168,.10)">🌿</div><div><div class="khtitle">Doğa Sesleri</div><div class="khsub">Sakinleştirici doğa sesleri ile derin uyku</div></div></div><div id="k-doga"></div></div>
+  <div class="ksec"><div class="khead"><div class="kicon" style="background:rgba(232,130,154,.10)">❤️</div><div><div class="khtitle">Kalp Atışı</div><div class="khsub">Anne karnında öğrenilen güven veren ritim</div></div></div><div id="k-kalp"></div></div>
+  <div class="ksec"><div class="khead"><div class="kicon" style="background:rgba(157,140,239,.10)">🔊</div><div><div class="khtitle">"Piş Piş" Sesi</div><div class="khsub">Ağlama krizinde mucize gibi çalışır</div></div></div><div id="k-pis"></div></div>
+  <div class="ksec"><div class="khead"><div class="kicon" style="background:rgba(106,184,232,.10)">🎶</div><div><div class="khtitle">Ritmik Müzik & Frekanslar</div><div class="khsub">432 Hz düşük frekanslı sakinleştirici tonlar</div></div></div><div id="k-muzik"></div></div>
+</div>
+
+<!-- SESİM -->
+<div class="page" id="page-sesim">
+  <div class="free-banner">
+    <span class="fb-icon">🎁</span>
+    <div class="fb-text">
+      <strong>Bu özellik tamamen ücretsiz!</strong>
+      Sesinizi kaydedin, ElevenLabs ile klonlayın ve bebeğinize kendi sesinizle ninni söyleyin.
+    </div>
+  </div>
+  <div class="stitle">Ses Kaydı</div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:13px;padding:15px;margin-bottom:14px">
+    <div class="rec-area">
+      <button class="rec-btn" id="rec-btn" onclick="toggleRec()">🎙️</button>
+      <div class="rec-time" id="rec-timer">0:00</div>
+      <div class="rec-stat" id="rec-stat">Kayıt başlatmak için basın</div>
+      <div class="waveform" id="waveform"></div>
+    </div>
+    <div style="font-size:.73rem;color:var(--text2);font-weight:700;margin-bottom:7px">Bu cümleleri okuyun (en az 1 dk):</div>
+    <div class="phrase-list">
+      <div class="phrase">Ninni derler ninni, ninni yavrum ninni... uyu tatlım uyu, uyu da büyü.</div>
+      <div class="phrase">Ay doğdu güneş battı, minik bebek uyumaya yattı, ninni ninni be.</div>
+      <div class="phrase">Uyu yavrucuğum, sen benim her şeyimsin, gözlerini kapat, ninni.</div>
+      <div class="phrase">Hünnap hünnap hünnaptır, bebeğim oynaştır, al yanaklım uyusun.</div>
+      <div class="phrase">Bir varmış bir yokmuş, çok tatlı küçük bir bebek varmış, ninni ninni.</div>
+    </div>
+  </div>
+  <div class="stitle">Kayıtlarım</div>
+  <div id="rec-list"><div style="text-align:center;color:var(--text3);font-size:.8rem;padding:14px">Henüz kayıt yok.</div></div>
+  <div class="stitle" style="margin-top:4px">Ses Klonlama</div>
+  <div id="clone-area"><div style="text-align:center;color:var(--text3);font-size:.8rem;padding:14px">Önce ses kaydedin.</div></div>
+  <div id="voi-speak-sec" style="display:none">
+    <div class="stitle" style="margin-top:4px">Sesimle Ninni / Hikaye</div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:13px;padding:15px">
+      <div style="font-size:.76rem;color:var(--text2);margin-bottom:11px;line-height:1.6">
+        Klonlanmış sesinizle istediğiniz ninni veya hikayeyi üretin.
+      </div>
+      <div class="frow">
+        <label class="flabel">İÇERİK SEÇ</label>
+        <select id="voi-content" class="finp">
+          <option value="">— Seçin —</option>
+          <optgroup label="🎵 Ninniler">
+            <option value="Ninni derler ninni, ninni ninni be. Uyu da büyü yavrum, ninni ninni be. Ay doğdu mu uyusun, güneş battı mı uyusun. Annenin kuzusu uyusun, ninni.">Ninni</option>
+            <option value="Dandini dandini danalı bebek, elleri kolları kınalı bebek. Bu bebeğin babası, oğlanların ağası, sallasam da uyusun.">Dandini Dandini</option>
+            <option value="Hünnap hünnap hünnaptır, bebeğim oynaştır. Al al kırmızı al, yanaklarım allıdır. Uyu tatlım uyu.">Hünnap</option>
+          </optgroup>
+          <optgroup label="📖 Hikayeler">
+            <option value="Bir varmış bir yokmuş. Gökyüzünün en küçük yıldızı varmış, adı Işık'mış. Her gece diğer yıldızların yanında parıldarmış. Ay dede ona dedi ki: Sen kalplerin içindesin küçük Işık. Ve o geceden sonra her bebek uyurken onu rüyasında görürmüş. Uyu tatlım.">Küçük Yıldız</option>
+            <option value="Büyük ormanda gece olmuş. Tilki yavrusu yuvaya girmiş, anne tilki ninni söylemiş. Hepsi birer birer gözlerini yummuş. Yapraklar fısıldamış: iyi geceler. Sen de uyu tatlım.">Ormandaki Uyku</option>
+          </optgroup>
+        </select>
+      </div>
+      <button class="abtn btn-lav" id="voi-speak-btn" onclick="speakWithVoice()">🎵 Sesimle Oluştur ve Çal</button>
+      <div class="smsg" id="voi-speak-stat"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /scroll -->
+
+<div class="tmini" id="tmini">
+  <span style="font-size:1.1rem">⏱</span>
+  <div><div class="tm-t" id="tm-t">—:——</div><div class="tm-l">Otomatik kapanacak</div></div>
+  <span class="tm-c" onclick="cancelTimer()">İptal</span>
+</div>
+
+<nav class="bnav">
+  <button class="bb active" onclick="goPage('ninniler',this,1)"><span class="bb-ic">🎵</span><span class="bb-lb">Ninniler</span></button>
+  <button class="bb" onclick="goPage('hikayeler',this,1)"><span class="bb-ic">📖</span><span class="bb-lb">Hikayeler</span></button>
+  <button class="bb" onclick="goPage('kolik',this,1)"><span class="bb-ic">🌿</span><span class="bb-lb">Kolik</span></button>
+  <button class="bb" onclick="goPage('sesim',this,1)"><span class="bb-ic">🎙️</span><span class="bb-lb">Sesim</span></button>
+</nav>
+
+<!-- STORY MODAL -->
+<div class="modal" id="modal-story" onclick="closeOutside(event,'modal-story')">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <button class="mclose" onclick="closeModal('modal-story')">✕</button>
+    <span class="sm-em" id="sm-em"></span>
+    <div class="sm-tt" id="sm-tt"></div>
+    <div style="display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap" id="sm-pills"></div>
+    <div class="sm-body" id="sm-body"></div>
+  </div>
+</div>
+
+<!-- PREMIUM MODAL -->
+<div class="modal" id="modal-premium" onclick="closeOutside(event,'modal-premium')">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <button class="mclose" onclick="closeModal('modal-premium')">✕</button>
+    <div class="pm-hero">
+      <span class="pm-crown">👑</span>
+      <div class="pm-title">Minik Uyku Premium</div>
+      <div class="pm-sub">Sınırsız ninni, sınırsız hikaye — bebeğiniz için her gece mükemmel</div>
+    </div>
+    <div class="pf-list">
+      <div class="pf"><span class="pf-ic">🎵</span><div class="pf-tx"><strong>Sınırsız Ninni</strong>Tüm Türk ninnileri tam süre, kesintisiz döngüde</div></div>
+      <div class="pf"><span class="pf-ic">📖</span><div class="pf-tx"><strong>Sınırsız Hikaye</strong>Tüm uyku masalları tam metin ve sesli anlatım</div></div>
+      <div class="pf"><span class="pf-ic">🎙️</span><div class="pf-tx"><strong>Anne Sesi — Zaten Ücretsiz!</strong>Kayıt ve klonlama tüm kullanıcılara açık</div></div>
+      <div class="pf"><span class="pf-ic">🌿</span><div class="pf-tx"><strong>Kolik Sesleri — Zaten Ücretsiz!</strong>Her zaman sınırsız erişim</div></div>
+      <div class="pf"><span class="pf-ic">⏱</span><div class="pf-tx"><strong>Uyku Zamanlayıcısı</strong>2 saate kadar otomatik kapanma</div></div>
+    </div>
+    <div class="price-box">
+      <div class="price-main">100 ₺</div>
+      <div class="price-per">aylık abonelik · istediğiniz zaman iptal</div>
+    </div>
+    <button class="abtn btn-gold" onclick="openPayment()">💳 Hemen Abone Ol</button>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal" id="modal-pay" onclick="closeOutside(event,'modal-pay')">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <button class="mclose" onclick="closeModal('modal-pay')">✕</button>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;margin-bottom:3px">Ödeme Bilgileri</div>
+    <div style="font-size:.73rem;color:var(--text2);margin-bottom:16px">iyzico altyapısıyla güvenli ödeme</div>
+    <div class="pay-form">
+      <div class="pay-row"><label class="flabel">AD SOYAD</label><input class="finp" id="p-name" placeholder="Ayşe Kaya"></div>
+      <div class="pay-row"><label class="flabel">E-POSTA</label><input class="finp" id="p-email" placeholder="ayse@ornek.com" type="email"></div>
+      <div class="pay-row"><label class="flabel">KART NUMARASI</label><input class="finp" id="p-card" placeholder="•••• •••• •••• ••••" maxlength="19" oninput="fmtCard(this)"></div>
+      <div class="pay-row2">
+        <div><label class="flabel">SON KULLANMA</label><input class="finp" id="p-exp" placeholder="AA/YY" maxlength="5" oninput="fmtExp(this)"></div>
+        <div><label class="flabel">CVV</label><input class="finp" id="p-cvv" placeholder="•••" maxlength="3" type="password"></div>
+      </div>
+      <div class="price-box" style="margin:12px 0 3px">
+        <div class="price-main" style="font-size:1.7rem">100 ₺</div>
+        <div class="price-per">aylık · istediğiniz zaman iptal</div>
+      </div>
+      <button class="abtn btn-gold" id="pay-btn" onclick="doPayment()">🔒 Ödemeyi Tamamla</button>
+      <div class="smsg" id="pay-stat"></div>
+      <div class="secure">🔒 256-bit SSL şifreleme · iyzico / PayTR</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal" id="modal-success">
+  <div class="msheet" style="text-align:center">
+    <div class="mhandle"></div>
+    <div style="font-size:3.5rem;margin-bottom:10px;animation:bob 2s ease-in-out infinite">🌟</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-style:italic;color:var(--gold);margin-bottom:7px">Hoş Geldiniz!</div>
+    <div style="font-size:.83rem;color:var(--text2);line-height:1.7;margin-bottom:18px">Premium üyeliğiniz aktif oldu.<br>Tüm ninniler ve hikayeler artık sınırsız!</div>
+    <button class="abtn btn-gold" onclick="closeModal('modal-success');refreshUI()">✨ Hadi Başlayalım!</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// CONFIG — API KEY VE VOICE ID
+// ═══════════════════════════════════════
+const EL_API_KEY = 'sk_78595b9b17bc541a814f7febbfb1ea7089ee54c558ed0748';
+const DERYA_VOICE_ID = 'oPC5I9GKjMReiaM29gjY';
+const FREE_SEC = 30;
+
+// ═══════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════
+const LULLABIES = [
+  {id:'l1',name:'Ninni',origin:'Geleneksel',emoji:'🌙',ca:'rgba(157,140,239,.13)',cb:'rgba(157,140,239,.03)',
+   desc:'Yüzyıllardır söylenen en sevilen Türk ninnisi',
+   text:'Ninni derler ninni, ninni ninni be. Uyu da büyü yavrum, ninni ninni be. Ay doğdu mu uyusun, güneş battı mı uyusun. Annenin kuzusu uyusun, ninni.'},
+  {id:'l2',name:'Dandini Dandini',origin:'Anadolu',emoji:'⭐',ca:'rgba(240,192,96,.11)',cb:'rgba(240,192,96,.03)',
+   desc:'Nesilden nesile aktarılan sevimli Anadolu ninnisi',
+   text:'Dandini dandini danalı bebek, elleri kolları kınalı bebek. Bu bebeğin babası, oğlanların ağası, sallasam da uyusun.'},
+  {id:'l3',name:'Hünnap',origin:'Ege',emoji:'🌸',ca:'rgba(232,130,154,.13)',cb:'rgba(232,130,154,.03)',
+   desc:'Ege bölgesine özgü tatlı dilli bir ninni',
+   text:'Hünnap hünnap hünnaptır, bebeğim oynaştır. Al al kırmızı al, yanaklarım allıdır. Uyu tatlım uyu.'},
+  {id:'l4',name:'Ay Dede',origin:'Halk',emoji:'🌕',ca:'rgba(240,168,112,.13)',cb:'rgba(240,168,112,.03)',
+   desc:'Ay ışığında uyuyan bebekler için romantik ninni',
+   text:'Ay dede ay dede, çık kapıya gel bana. Bebeğimi al yükle, ninniler söyle.'},
+  {id:'l5',name:'Karadeniz Ninnisi',origin:'Karadeniz',emoji:'🌊',ca:'rgba(106,184,232,.13)',cb:'rgba(106,184,232,.03)',
+   desc:'Karadeniz yöresine özgü melodili ninni',
+   text:'Uyusun da büyüsün, al yeşil giysin. Al yanaklar pembe olsun, gözler kapansın. Rüyalarda uçsun bebek, melekler beklesin.'},
+  {id:'l6',name:'Minnoş Ninni',origin:'Modern',emoji:'💫',ca:'rgba(93,216,168,.13)',cb:'rgba(93,216,168,.03)',
+   desc:'Çağdaş annelerin söylediği sevgi dolu ninni',
+   text:'Minik minik eller, minik minik ayaklar. Minnoş bebek uyusun, rüyalar bekliyor. Annen yanında, hiçbir şey yok korkacak.'},
+];
+
+const STORIES = [
+  {id:'s1',title:'Küçük Yıldız',emoji:'⭐',age:'0–3 yaş',dur:'5 dk',type:'Masal',
+   desc:'Gökyüzüne çıkan küçük yıldızın tatlı uyku macerası.',
+   tts:'Bir varmış bir yokmuş. Gökyüzünün en küçük yıldızı varmış, adı Işık\'mış. Her gece diğer yıldızların yanında parıldarmış. Ay dede ona dedi ki, sen kalplerin içindesin küçük Işık. Ve o geceden sonra her bebek uyurken onu rüyasında görürmüş. Uyu tatlım.',
+   body:`<p>Bir varmış bir yokmuş, gökyüzünün en küçük yıldızı varmış. Adı <span class="hl">Işık</span>'mış.</p><p>Ay dede gülümseyerek seslenmiş: <span class="hl">"Sen kalplerin içindesin küçük Işık."</span></p><p>O geceden sonra her bebek gülerek uyumuş... ✨</p>`},
+  {id:'s2',title:'Ormandaki Uyku',emoji:'🌿',age:'1–4 yaş',dur:'7 dk',type:'Doğa Masalı',
+   desc:'Ormanın derinliklerinde hayvanlar birlikte uyumaya hazırlanıyor.',
+   tts:'Büyük ormanda gece olmuş. Tilki yavrusu yuvaya girmiş, anne tilki ninni söylemiş. Hepsi birer birer gözlerini yummuş. Yapraklar fısıldamış, iyi geceler, iyi geceler. Sen de uyu tatlım.',
+   body:`<p>Büyük ormanda gece olmuş. <span class="hl">Tilki yavrusu</span> yuvaya girmiş.</p><p>Yapraklar fısıldamış: <span class="hl">"İyi geceler, iyi geceler..."</span></p><p>Sen de uyu tatlım. 🌿</p>`},
+  {id:'s3',title:'Bulut Bebeği',emoji:'☁️',age:'0–3 yaş',dur:'5 dk',type:'Fantezi',
+   desc:'Pamuk bulutların arasında yaşayan minik bebek masalı.',
+   tts:'Bir bulut bebek varmış, pofuduk, beyaz, yumuşacık. Adı Pamuk\'muş. Anası her akşam onu sararmış. Yağmur damlaları senin ninnindir, demiş. Pamuk gülümseyerek uyumuş.',
+   body:`<p>Bir <span class="hl">bulut bebek</span> varmış. Pofuduk, beyaz, yumuşacık. Adı Pamuk'muş.</p><p>Anası: <span class="hl">"Yağmur damlaları senin ninnindir."</span></p><p>Pamuk gülümseyerek uyumuş. ☁️</p>`},
+  {id:'s4',title:'Deniz Kabuğu',emoji:'🐚',age:'2–5 yaş',dur:'8 dk',type:'Masal',
+   desc:'Sahilde bulunan deniz kabuğu içindeki sırları fısıldıyor.',
+   tts:'Küçük Deniz sahilde bir kabuk bulmuş. Kulağına götürmüş. İçinden, uyu, demiş kabuk. Dalgalar seni sallasın, yunuslar dans etsin. Ve tatlı tatlı uyumuş.',
+   body:`<p>Küçük Deniz bir kabuk bulmuş. <span class="hl">"Uyu,"</span> demiş kabuk. "Dalgalar seni sallasın."</p><p>Deniz tatlı tatlı uyumuş... 🐚</p>`},
+  {id:'s5',title:'Ay ile Bebek',emoji:'🌙',age:'0–2 yaş',dur:'4 dk',type:'Kısa Masal',
+   desc:'Her gece bebeğini izleyen nazik ayın hikayesi.',
+   tts:'Her gece ay pencereden içeri bakarmış. Sen en parlak yıldızsın, demiş ay. Gözlerini kapat, seninle rüyanda konuşurum. Bebek gözlerini yummuş ve rüyasında ayın yanında uçmuş.',
+   body:`<p><span class="hl">Ay</span> her gece pencereden bakarmış. <span class="hl">"Gözlerini kapat, seninle rüyanda konuşurum."</span></p><p>Bebek rüyasında Ay'ın yanında uçmuş. 🌙</p>`},
+  {id:'s6',title:'Kelebek Rüyası',emoji:'🦋',age:'2–6 yaş',dur:'9 dk',type:'Macera',
+   desc:'Minik kelebeğin renkli rüya yolculuğu.',
+   tts:'Küçük Peri uyumadan önce bir kelebek görmüş. Uyu, demiş kelebek, ben seni güzel yerlere götüreyim. Rüyasında binlerce çiçekten oluşan bir bahçeye geldiler. Sabah Peri gülerek uyandı.',
+   body:`<p>Küçük Peri bir kelebek görmüş. <span class="hl">"Uyu. Ben seni güzel yerlere götüreyim."</span></p><p>Sabah Peri gülerek uyandı. 🦋</p>`},
+];
+
+// Kolik — ses dosyası eşleştirme
+const KOLIK = {
+  beyaz:[
+    {id:'b1',name:'Saç Kurutma Makinesi',emoji:'💨',desc:'Güçlü hava akışı — kolik ağlamalarını keser',file:'hairdryer.mp3'},
+    {id:'b2',name:'Elektrik Süpürgesi',emoji:'🌀',desc:'Derin motorlu tını — anında sakinleştirici',file:'vacuum.mp3'},
+    {id:'b3',name:'Beyaz Gürültü',emoji:'📻',desc:'Saf beyaz gürültü — uyku ortamı yaratır',file:'whitenoise.mp3'},
+    {id:'b4',name:'Klima Uğultusu',emoji:'❄️',desc:'Sabit monoton fısıltı — gece boyunca çalışır',file:'ac.mp3'},
+  ],
+  doga:[
+    {id:'d1',name:'Yağmur Sesi',emoji:'🌧️',desc:'Hafif çiseleme — uyku getirir',file:'rain.mp3'},
+    {id:'d2',name:'Dalga Çırpıntısı',emoji:'🌊',desc:'Ritmik okyanus dalgaları',file:'waves.mp3'},
+    {id:'d3',name:'Orman Sesleri',emoji:'🌲',desc:'Yaprak ve kuş sesi karışımı',file:'forest.mp3'},
+    {id:'d4',name:'Şelale',emoji:'💧',desc:'Sürekli akan su sesi',file:'stream.mp3'},
+  ],
+  kalp:[
+    {id:'k1',name:'Kalp Atışı',emoji:'❤️',desc:'Anne karnındaki güven veren ritim',file:'heart.mp3'},
+  ],
+  pis:[
+    {id:'p1',name:'"Piş Piş" Sesi',emoji:'🤫',desc:'Ağlama krizinde mucize gibi çalışır',file:'shush.mp3'},
+  ],
+  muzik:[
+    {id:'m1',name:'432 Hz Saf Ton',emoji:'🎵',desc:'Doğal frekans — en sakinleştirici',type:'tone',freq:432},
+    {id:'m2',name:'528 Hz Sevgi Frekansı',emoji:'💛',desc:'Derin huzur ve iyileşme',type:'tone',freq:528},
+    {id:'m3',name:'174 Hz Ağrı Kesici',emoji:'🔵',desc:'Kolik ağrıları için en düşük frekans',type:'tone',freq:174},
+    {id:'m4',name:'Binaural 40 Hz',emoji:'🎶',desc:'Gama dalgaları — beyin gelişimi destekler',type:'binaural',freq:40},
+  ],
+};
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let isPremium = JSON.parse(localStorage.getItem('mu_premium')||'false');
+let clonedVoiceId = localStorage.getItem('mu_voice_id')||null;
+let recordings = JSON.parse(localStorage.getItem('mu_recs')||'[]');
+let activeItemId = null;
+let activeAudio = null; // HTML Audio for kolik loops
+let activeCtx = null, activeNodes = [];
+let loopTO = null, freeTO = null;
+let timerInterv = null, timerSec = 0;
+let isRecording = false, mediaRec = null, recTimerInterv = null, recSec = 0;
+let waveCtx = null, waveAnalyser = null;
+
+// ═══════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════
+window.addEventListener('load',()=>{
+  renderAll(); refreshUI(); initWaveform();
+});
+
+function renderAll(){
+  renderLullabies(); renderVoiceNinniler(); renderStories(); renderKolik(); renderRecs();
+}
+
+function refreshUI(){
+  document.getElementById('pm-txt').textContent = isPremium ? 'Premium ✓' : 'Premium';
+  document.getElementById('pm-btn').classList.toggle('owned', isPremium);
+  renderLullabies(); renderVoiceNinniler(); renderStories();
+  if(clonedVoiceId) document.getElementById('voi-speak-sec').style.display='block';
+}
+
+// ═══════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════
+function goPage(name, btn, fromBN){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.bb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  btn.classList.add('active');
+  const pages=['ninniler','hikayeler','kolik','sesim'], idx=pages.indexOf(name);
+  if(fromBN) document.querySelectorAll('.tab')[idx]?.classList.add('active');
+  else document.querySelectorAll('.bb')[idx]?.classList.add('active');
+}
+
+// ═══════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════
+function renderLullabies(){
+  document.getElementById('list-nin').innerHTML = LULLABIES.map(l=>`
+    <div class="lcard" id="lc-${l.id}" style="--ca:${l.ca};--cb:${l.cb}">
+      <span class="lc-em">${l.emoji}</span>
+      <div class="lc-inf">
+        <div class="lc-nm">${l.name}</div>
+        <div class="lc-ds">${l.desc}</div>
+        <div class="lc-bt">
+          <span class="lc-badge">${l.origin}</span>
+          ${!isPremium?'<span class="free-30">👑 30sn ücretsiz</span>':''}
+        </div>
+      </div>
+      <button class="pbtn" id="pb-${l.id}" onclick="playLullaby('${l.id}')">▶</button>
+    </div>`).join('');
+}
+
+function renderVoiceNinniler(){
+  const c=document.getElementById('list-voi-nin');
+  if(!clonedVoiceId){
+    c.innerHTML=`<div style="background:rgba(240,192,96,.04);border:1px dashed rgba(240,192,96,.2);border-radius:15px;padding:18px;text-align:center">
+      <div style="font-size:1.4rem;margin-bottom:6px">🎙️</div>
+      <div style="font-size:.78rem;color:var(--text2);line-height:1.6">"Sesim" sekmesinden sesinizi klonlayın.</div>
+    </div>`;
+    return;
+  }
+  c.innerHTML = LULLABIES.slice(0,4).map(l=>`
+    <div class="lcard" id="vlc-${l.id}" style="--ca:rgba(240,192,96,.10);--cb:rgba(240,192,96,.02)">
+      <span class="lc-em">🎙️</span>
+      <div class="lc-inf">
+        <div class="lc-nm">${l.name} <span style="font-size:.62rem;color:var(--gold)">Anne Sesli</span></div>
+        <div class="lc-ds">Sizin klonlanmış sesinizle</div>
+      </div>
+      <button class="pbtn" id="vpb-${l.id}" onclick="playVoiceNinni('${l.id}')">▶</button>
+    </div>`).join('');
+}
+
+function renderStories(){
+  document.getElementById('list-hik').innerHTML = STORIES.map(s=>`
+    <div class="scard" onclick="openStory('${s.id}')">
+      <div class="sc-top">
+        <span class="sc-em">${s.emoji}</span>
+        <div class="sc-meta"><div class="sc-tt">${s.title}</div><div class="sc-ds">${s.desc}</div></div>
+      </div>
+      <div class="sc-ft">
+        <span class="pill p-age">👶 ${s.age}</span>
+        <span class="pill p-dur">⏱ ${s.dur}</span>
+        <span class="pill p-type">${s.type}</span>
+        ${!isPremium?'<span class="pill p-free">👑 30sn ücretsiz</span>':''}
+      </div>
+    </div>`).join('');
+}
+
+function renderKolik(){
+  Object.keys(KOLIK).forEach(key=>{
+    document.getElementById('k-'+key).innerHTML = KOLIK[key].map(item=>`
+      <div class="kitem" id="ki-${item.id}">
+        <span class="ki-em">${item.emoji}</span>
+        <div class="ki-inf"><div class="ki-nm">${item.name}</div><div class="ki-ds">${item.desc}</div></div>
+        <span class="ftag">ÜCRETSİZ</span>
+        <button class="kplay" id="kp-${item.id}" onclick="playKolik('${item.id}')">▶</button>
+      </div>`).join('');
+  });
+}
+
+// ═══════════════════════════════════════
+// PLAY LULLABY (ElevenLabs + loop)
+// ═══════════════════════════════════════
+async function playLullaby(id){
+  const l=LULLABIES.find(x=>x.id===id); if(!l) return;
+  if(activeItemId===id){stopAll();return;}
+  stopAll(); activeItemId=id;
+  document.getElementById('pb-'+id).innerHTML='⏸';
+  document.getElementById('pb-'+id).classList.add('active');
+  document.getElementById('lc-'+id).classList.add('playing');
+  setNP('np-nin',l.emoji,l.name,'Derya sesiyle çalıyor',!isPremium);
+  await playEL(l.text, id, 'nin', !isPremium);
+}
+
+async function playEL(text, itemId, barType, isFree){
+  const voiceId = clonedVoiceId || DERYA_VOICE_ID;
+  try{
+    const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,{
+      method:'POST',
+      headers:{'xi-api-key': EL_API_KEY,'Content-Type':'application/json'},
+      body: JSON.stringify({
+        text, model_id:'eleven_multilingual_v2',
+        voice_settings:{stability:.72,similarity_boost:.80,style:.35,use_speaker_boost:true}
+      })
+    });
+    if(!r.ok) throw new Error('ElevenLabs hata: '+r.status);
+    const blob = await r.blob();
+    const url = URL.createObjectURL(blob);
+    playAudioLoop(url, itemId, barType, isFree, text);
+  }catch(e){
+    console.error(e);
+    // Fallback: tarayıcı TTS
+    fallbackSpeak(text, barType, isFree);
+  }
+}
+
+function playAudioLoop(url, itemId, barType, isFree, text){
+  if(activeItemId !== itemId) return; // Durdurulduysa
+  const audio = new Audio(url);
+  activeAudio = audio;
+  audio.onended = ()=>{
+    if(activeItemId === itemId){
+      // Döngü: tekrar baştan çal
+      playAudioLoop(url, itemId, barType, isFree, text);
+    }
+  };
+  audio.play();
+  animProgDuration(barType==='nin'?'npn-prog':'nph-prog', audio);
+  if(isFree) startFreeTimer();
+}
+
+function fallbackSpeak(text, barType, isFree){
+  if(!('speechSynthesis'in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='tr-TR'; u.rate=.74; u.pitch=1.04;
+  const voices = speechSynthesis.getVoices();
+  const tr = voices.find(v=>v.lang.startsWith('tr')); if(tr) u.voice=tr;
+  u.onend = ()=>{
+    // Döngü
+    if(activeItemId) fallbackSpeak(text, barType, isFree);
+  };
+  speechSynthesis.speak(u);
+  if(isFree) startFreeTimer();
+}
+
+// ═══════════════════════════════════════
+// PLAY VOICE NINNI
+// ═══════════════════════════════════════
+async function playVoiceNinni(id){
+  const l=LULLABIES.find(x=>x.id===id);
+  if(!clonedVoiceId){alert('Önce "Sesim" sekmesinden sesinizi klonlayın.');return;}
+  if(activeItemId==='v'+id){stopAll();return;}
+  stopAll(); activeItemId='v'+id;
+  document.getElementById('vpb-'+id).innerHTML='⏸';
+  document.getElementById('vpb-'+id).classList.add('active');
+  setNP('np-nin','🎙️',l.name+' — Anne Sesli','Oluşturuluyor...',false);
+  await playEL(l.text, 'v'+id, 'nin', false);
+}
+
+// ═══════════════════════════════════════
+// OPEN STORY
+// ═══════════════════════════════════════
+function openStory(id){
+  const s=STORIES.find(x=>x.id===id); if(!s) return;
+  document.getElementById('sm-em').textContent=s.emoji;
+  document.getElementById('sm-tt').textContent=s.title;
+  document.getElementById('sm-pills').innerHTML=`
+    <span class="pill p-age">👶 ${s.age}</span>
+    <span class="pill p-dur">⏱ ${s.dur}</span>
+    <span class="pill p-type">${s.type}</span>`;
+  document.getElementById('sm-body').innerHTML=s.body;
+  openModal('modal-story');
+  setTimeout(async()=>{
+    if(activeItemId==='s'+id){stopAll();return;}
+    stopAll(); activeItemId='s'+id;
+    setNP('np-hik',s.emoji,s.title,'Sesli hikaye',!isPremium);
+    document.getElementById('np-hik').classList.add('show');
+    await playEL(s.tts, 's'+id, 'hik', !isPremium);
+  },350);
+}
+
+// ═══════════════════════════════════════
+// PLAY KOLIK — gerçek ses dosyası + döngü
+// ═══════════════════════════════════════
+function playKolik(id){
+  const all=Object.values(KOLIK).flat(), item=all.find(x=>x.id===id); if(!item) return;
+  if(activeItemId===id){stopAll();return;}
+  stopAll(); activeItemId=id;
+  document.getElementById('ki-'+id).classList.add('playing');
+  document.getElementById('kp-'+id).innerHTML='⏸';
+  document.getElementById('kp-'+id).classList.add('active');
+  setNP('np-kol',item.emoji,item.name,'Sınırsız · Ücretsiz · Döngüde',false);
+  document.getElementById('np-kol').classList.add('show');
+
+  if(item.file){
+    // Gerçek ses dosyası — döngü
+    const audio = new Audio(item.file);
+    audio.loop = true; // Sonsuz döngü
+    activeAudio = audio;
+    audio.play().catch(e=>{
+      console.error('Ses dosyası yüklenemedi:',item.file,e);
+      // Fallback: Web Audio
+      genAudioFallback(item);
+    });
+  } else {
+    // Frekans tonları (432Hz vs) — Web Audio
+    genAudioFallback(item);
+  }
+}
+
+// ═══════════════════════════════════════
+// WEB AUDIO FALLBACK (frekanslar)
+// ═══════════════════════════════════════
+function genAudioFallback(item){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    activeCtx=ctx;
+    const master=ctx.createGain();
+    master.gain.setValueAtTime(0,ctx.currentTime);
+    master.gain.linearRampToValueAtTime(.45,ctx.currentTime+1.4);
+    master.connect(ctx.destination); activeNodes=[master];
+    if(item.type==='tone') buildTone(ctx,master,item.freq);
+    else if(item.type==='binaural') buildBinaural(ctx,master,item.freq);
+  }catch(e){console.error(e);}
+}
+
+function buildTone(ctx,dest,freq){
+  const o=ctx.createOscillator();o.type='sine';o.frequency.value=freq;
+  const g=ctx.createGain();g.gain.value=.28;o.connect(g);g.connect(dest);o.start();activeNodes.push(o,g);
+}
+function buildBinaural(ctx,dest,diff){
+  const m=ctx.createChannelMerger(2);m.connect(dest);
+  const ol=ctx.createOscillator(),or_=ctx.createOscillator();
+  ol.frequency.value=200;or_.frequency.value=200+diff;ol.type=or_.type='sine';
+  const gl=ctx.createGain(),gr=ctx.createGain();gl.gain.value=gr.gain.value=.26;
+  ol.connect(gl);gl.connect(m,0,0);or_.connect(gr);gr.connect(m,0,1);
+  ol.start();or_.start();activeNodes.push(ol,or_,gl,gr,m);
+}
+
+// ═══════════════════════════════════════
+// STOP ALL
+// ═══════════════════════════════════════
+function stopAll(){
+  if('speechSynthesis'in window) speechSynthesis.cancel();
+  clearTimeout(freeTO); clearTimeout(loopTO);
+  if(activeAudio){try{activeAudio.pause();activeAudio.src='';}catch(e){} activeAudio=null;}
+  activeNodes.forEach(n=>{try{n.stop?.();n.disconnect?.();}catch(e){}});
+  activeNodes=[];
+  if(activeCtx){try{activeCtx.close();}catch(e){} activeCtx=null;}
+  activeItemId=null;
+  ['np-nin','np-hik','np-kol'].forEach(id=>{
+    const e=document.getElementById(id); if(e) e.classList.remove('show');
+  });
+  document.querySelectorAll('.prog-fill').forEach(e=>e.style.width='0%');
+  document.querySelectorAll('.pbtn').forEach(b=>{b.innerHTML='▶';b.classList.remove('active');});
+  document.querySelectorAll('.lcard').forEach(c=>c.classList.remove('playing'));
+  document.querySelectorAll('.kitem').forEach(c=>c.classList.remove('playing'));
+  document.querySelectorAll('.kplay').forEach(b=>{b.innerHTML='▶';b.classList.remove('active');});
+}
+
+// ═══════════════════════════════════════
+// FREE TIMER
+// ═══════════════════════════════════════
+function startFreeTimer(){
+  clearTimeout(freeTO);
+  freeTO=setTimeout(()=>{stopAll();openModal('modal-premium');},FREE_SEC*1000);
+}
+
+// ═══════════════════════════════════════
+// NOW PLAYING
+// ═══════════════════════════════════════
+function setNP(barId,emoji,name,sub,showFree){
+  const bar=document.getElementById(barId); if(!bar) return;
+  bar.classList.add('show');
+  const em=bar.querySelector('.np-ico'),nm=bar.querySelector('.np-name'),
+        sb=bar.querySelector('.np-sub'),tg=bar.querySelector('.np-tag');
+  if(em) em.textContent=emoji;
+  if(nm) nm.textContent=name;
+  if(sb) sb.textContent=sub;
+  if(tg) tg.style.display=showFree?'inline-flex':'none';
+}
+
+function animProgDuration(fillId, audio){
+  const interv = setInterval(()=>{
+    if(!audio.duration) return;
+    const pct = (audio.currentTime/audio.duration)*100;
+    const e=document.getElementById(fillId); if(e) e.style.width=pct+'%';
+    if(audio.ended||!activeItemId) clearInterval(interv);
+  },300);
+}
+
+// ═══════════════════════════════════════
+// SLEEP TIMER
+// ═══════════════════════════════════════
+function toggleTimerPicker(){
+  const p=document.getElementById('tpicker');
+  p.style.display=p.style.display==='block'?'none':'block';
+}
+function setTimer(min,btn){
+  document.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel');
+  document.getElementById('tpicker').style.display='none';
+  clearInterval(timerInterv); timerSec=min*60; updTimer();
+  document.getElementById('tmini').classList.add('show');
+  timerInterv=setInterval(()=>{
+    timerSec--; updTimer();
+    if(timerSec<=30&&activeAudio) activeAudio.volume=Math.max(0,timerSec/30);
+    if(timerSec<=0){clearInterval(timerInterv);stopAll();document.getElementById('tmini').classList.remove('show');}
+  },1000);
+}
+function updTimer(){
+  const m=Math.floor(timerSec/60),s=timerSec%60;
+  document.getElementById('tm-t').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+}
+function cancelTimer(){clearInterval(timerInterv);document.getElementById('tmini').classList.remove('show');}
+
+// ═══════════════════════════════════════
+// RECORDING
+// ═══════════════════════════════════════
+function initWaveform(){
+  const wf=document.getElementById('waveform'); if(!wf) return; wf.innerHTML='';
+  for(let i=0;i<20;i++){const b=document.createElement('div');b.className='wbar';b.style.height='3px';wf.appendChild(b);}
+}
+
+async function toggleRec(){
+  if(!isRecording) await startRec(); else stopRec();
+}
+
+async function startRec(){
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    mediaRec=new MediaRecorder(stream,{mimeType:'audio/webm'});
+    const chunks=[];
+    mediaRec.ondataavailable=e=>chunks.push(e.data);
+    mediaRec.onstop=()=>{
+      saveRec(new Blob(chunks,{type:'audio/webm'}));
+      stream.getTracks().forEach(t=>t.stop());
+      resetWave(); if(waveCtx){waveCtx.close();waveCtx=null;}
+    };
+    mediaRec.start(); isRecording=true;
+    document.getElementById('rec-btn').classList.add('recording');
+    document.getElementById('rec-stat').textContent='Kayıt devam ediyor...';
+    recSec=0; clearInterval(recTimerInterv);
+    recTimerInterv=setInterval(()=>{recSec++;const m=Math.floor(recSec/60),s=recSec%60;document.getElementById('rec-timer').textContent=`${m}:${s.toString().padStart(2,'0')}`;},1000);
+    waveCtx=new(window.AudioContext||window.webkitAudioContext)();
+    waveAnalyser=waveCtx.createAnalyser(); waveAnalyser.fftSize=64;
+    waveCtx.createMediaStreamSource(stream).connect(waveAnalyser);
+    drawWave();
+  }catch(e){alert('Mikrofon erişimi gerekli: '+e.message);}
+}
+
+function stopRec(){
+  if(mediaRec&&mediaRec.state!=='inactive') mediaRec.stop();
+  isRecording=false; clearInterval(recTimerInterv);
+  document.getElementById('rec-btn').classList.remove('recording');
+  document.getElementById('rec-stat').textContent='✓ Kayıt kaydedildi!';
+}
+
+function drawWave(){
+  if(!waveAnalyser||!isRecording) return;
+  const data=new Uint8Array(waveAnalyser.frequencyBinCount);
+  const bars=document.querySelectorAll('.wbar');
+  (function frame(){if(!isRecording)return;waveAnalyser.getByteFrequencyData(data);bars.forEach((b,i)=>{b.style.height=Math.max(3,(data[i]||0)/5)+'px';});requestAnimationFrame(frame);})();
+}
+function resetWave(){document.querySelectorAll('.wbar').forEach(b=>b.style.height='3px');}
+
+function saveRec(blob){
+  const r=new FileReader();
+  r.onload=()=>{
+    const rec={id:'r'+Date.now(),name:'Kayıt '+(recordings.length+1),dur:recSec,data:r.result,date:new Date().toLocaleDateString('tr-TR')};
+    recordings.push(rec); localStorage.setItem('mu_recs',JSON.stringify(recordings));
+    renderRecs(); updCloneArea();
+  };
+  r.readAsDataURL(blob);
+}
+
+function renderRecs(){
+  const el=document.getElementById('rec-list'); if(!el) return;
+  if(!recordings.length){el.innerHTML='<div style="text-align:center;color:var(--text3);font-size:.8rem;padding:14px">Henüz kayıt yok.</div>';updCloneArea();return;}
+  el.innerHTML=recordings.map(rec=>`
+    <div class="ri">
+      <span style="font-size:1.3rem">🎙️</span>
+      <div class="ri-inf"><div class="ri-nm">${rec.name}</div><div class="ri-mt">${Math.floor(rec.dur/60)}:${(rec.dur%60).toString().padStart(2,'0')} · ${rec.date}</div></div>
+      <div class="ri-acts">
+        <button class="ri-btn ri-play" onclick="playRec('${rec.id}')">▶</button>
+        <button class="ri-btn ri-del" onclick="delRec('${rec.id}')">🗑</button>
+      </div>
+    </div>`).join('');
+  updCloneArea();
+}
+
+function playRec(id){const r=recordings.find(x=>x.id===id);if(r)new Audio(r.data).play();}
+function delRec(id){recordings=recordings.filter(x=>x.id!==id);localStorage.setItem('mu_recs',JSON.stringify(recordings));renderRecs();}
+
+function updCloneArea(){
+  const el=document.getElementById('clone-area'); if(!el) return;
+  if(!recordings.length){el.innerHTML='<div style="text-align:center;color:var(--text3);font-size:.8rem;padding:14px">Önce ses kaydedin.</div>';return;}
+  el.innerHTML=`
+    <div class="clone-box">
+      <div class="clone-title">✨ ElevenLabs ile Ses Klonla</div>
+      <div style="font-size:.76rem;color:var(--text2);line-height:1.6;margin-bottom:11px">Kaydınız ElevenLabs'a gönderilir ve sesinizin dijital kopyası oluşturulur.</div>
+      <div class="frow"><label class="flabel">KAYIT SEÇ</label><select id="clone-sel" class="finp"></select></div>
+      <div class="frow"><label class="flabel">SES ADI</label><input type="text" class="finp" id="clone-nm" placeholder="Annenin Sesi"></div>
+      <button class="abtn btn-gold" id="clone-btn" onclick="cloneVoice()">🌟 Sesi Klonla — Ücretsiz</button>
+      <div class="smsg" id="clone-stat"></div>
+    </div>`;
+  const sel=document.getElementById('clone-sel');
+  sel.innerHTML='<option value="">— Kayıt seçin —</option>'+recordings.map(r=>`<option value="${r.id}">${r.name} (${Math.floor(r.dur/60)}:${(r.dur%60).toString().padStart(2,'0')})</option>`).join('');
+}
+
+// ═══════════════════════════════════════
+// CLONE VOICE
+// ═══════════════════════════════════════
+async function cloneVoice(){
+  const recId=document.getElementById('clone-sel').value;
+  const voiceName=document.getElementById('clone-nm').value.trim()||'Annenin Sesi';
+  const stat=document.getElementById('clone-stat');
+  const btn=document.getElementById('clone-btn');
+  if(!recId){showStat(stat,'err','Lütfen bir kayıt seçin.');return;}
+  const rec=recordings.find(x=>x.id===recId); if(!rec) return;
+  showStat(stat,'load','<span class="spin"></span> ElevenLabs\'a bağlanılıyor...');
+  btn.disabled=true;
+  try{
+    const res=await fetch(rec.data);
+    const blob=await res.blob();
+    const form=new FormData();
+    form.append('name',voiceName);
+    form.append('files',new File([blob],'voice.webm',{type:'audio/webm'}));
+    form.append('description','Anne sesi — Minik Uyku');
+    const r=await fetch('https://api.elevenlabs.io/v1/voices/add',{
+      method:'POST',headers:{'xi-api-key':EL_API_KEY},body:form
+    });
+    if(!r.ok){const e=await r.json();throw new Error(e.detail?.message||'API hatası '+r.status);}
+    const data=await r.json();
+    clonedVoiceId=data.voice_id;
+    localStorage.setItem('mu_voice_id',clonedVoiceId);
+    showStat(stat,'ok',`✨ "${voiceName}" klonlandı! Ninniler sekmesinde kullanabilirsiniz.`);
+    document.getElementById('voi-speak-sec').style.display='block';
+    renderVoiceNinniler();
+  }catch(e){showStat(stat,'err','❌ '+e.message);}
+  finally{btn.disabled=false;}
+}
+
+// ═══════════════════════════════════════
+// SPEAK WITH VOICE
+// ═══════════════════════════════════════
+async function speakWithVoice(){
+  const text=document.getElementById('voi-content').value;
+  const stat=document.getElementById('voi-speak-stat');
+  const btn=document.getElementById('voi-speak-btn');
+  if(!clonedVoiceId){showStat(stat,'err','Önce sesinizi klonlayın.');return;}
+  if(!text){showStat(stat,'err','Lütfen bir içerik seçin.');return;}
+  showStat(stat,'load','<span class="spin"></span> Ses oluşturuluyor...');
+  btn.disabled=true;
+  try{
+    const r=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${clonedVoiceId}`,{
+      method:'POST',headers:{'xi-api-key':EL_API_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({text,model_id:'eleven_multilingual_v2',voice_settings:{stability:.75,similarity_boost:.85,style:.3}})
+    });
+    if(!r.ok) throw new Error('Ses üretimi başarısız: '+r.status);
+    const blob=await r.blob(), audio=new Audio(URL.createObjectURL(blob));
+    audio.play();
+    showStat(stat,'ok','🎵 Sizin sesinizle çalıyor!');
+  }catch(e){showStat(stat,'err','❌ '+e.message);}
+  finally{btn.disabled=false;}
+}
+
+// ═══════════════════════════════════════
+// PAYMENT
+// ═══════════════════════════════════════
+function fmtCard(i){let v=i.value.replace(/\D/g,'').substring(0,16);i.value=v.replace(/(.{4})/g,'$1 ').trim();}
+function fmtExp(i){let v=i.value.replace(/\D/g,'');if(v.length>=2)v=v.substring(0,2)+'/'+v.substring(2,4);i.value=v;}
+function openPayment(){closeModal('modal-premium');openModal('modal-pay');}
+
+async function doPayment(){
+  const name=document.getElementById('p-name').value.trim();
+  const email=document.getElementById('p-email').value.trim();
+  const card=document.getElementById('p-card').value.replace(/\s/g,'');
+  const exp=document.getElementById('p-exp').value;
+  const cvv=document.getElementById('p-cvv').value;
+  const stat=document.getElementById('pay-stat');
+  const btn=document.getElementById('pay-btn');
+  if(!name||!email||card.length<16||!exp||cvv.length<3){showStat(stat,'err','Tüm alanları doldurun.');return;}
+  showStat(stat,'load','<span class="spin"></span> İşleniyor...');
+  btn.disabled=true;
+  await new Promise(r=>setTimeout(r,2000));
+  isPremium=true; localStorage.setItem('mu_premium','true');
+  btn.disabled=false;
+  closeModal('modal-pay'); openModal('modal-success');
+}
+
+// ═══════════════════════════════════════
+// MODALS & UTILS
+// ═══════════════════════════════════════
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeOutside(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+function showStat(el,type,msg){el.className='smsg '+type;el.innerHTML=msg;}
+
+try{if('wakeLock'in navigator)navigator.wakeLock.request('screen');}catch(e){}
+</script>
+</body>
+</html>
