@@ -506,8 +506,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 // ═══════════════════════════════════════
 // CONFIG — API KEY VE VOICE ID
 // ═══════════════════════════════════════
-const EL_API_KEY = 'sk_78595b9b17bc541a814f7febbfb1ea7089ee54c558ed0748';
-const DERYA_VOICE_ID = 'oPC5I9GKjMReiaM29gjY';
+const EL_API_KEY = 'API_KEY_BURAYA';
+const DERYA_VOICE_ID = 'NNn9dv8zq2kUo7d3JSGG';
 const FREE_SEC = 30;
 
 // ═══════════════════════════════════════
@@ -519,6 +519,7 @@ const LULLABIES = [
    text:'Ninni derler ninni, ninni ninni be. Uyu da büyü yavrum, ninni ninni be. Ay doğdu mu uyusun, güneş battı mı uyusun. Annenin kuzusu uyusun, ninni.'},
   {id:'l2',name:'Dandini Dandini',origin:'Anadolu',emoji:'⭐',ca:'rgba(240,192,96,.11)',cb:'rgba(240,192,96,.03)',
    desc:'Nesilden nesile aktarılan sevimli Anadolu ninnisi',
+   bgMusic:'dandini-muzik.mp3',
    text:'Dandini dandini danalı bebek, elleri kolları kınalı bebek. Bu bebeğin babası, oğlanların ağası, sallasam da uyusun.'},
   {id:'l3',name:'Hünnap',origin:'Ege',emoji:'🌸',ca:'rgba(232,130,154,.13)',cb:'rgba(232,130,154,.03)',
    desc:'Ege bölgesine özgü tatlı dilli bir ninni',
@@ -579,7 +580,7 @@ const KOLIK = {
     {id:'k1',name:'Kalp Atışı',emoji:'❤️',desc:'Anne karnındaki güven veren ritim',file:'heart.mp3'},
   ],
   pis:[
-    {id:'p1',name:'"Piş Piş" Sesi',emoji:'🤫',desc:'Ağlama krizinde mucize gibi çalışır',file:'shush.mp3'},
+    {id:'p1',name:'"Piş Piş" Sesi',emoji:'🤫',desc:'Ağlama krizinde mucize gibi çalışır',type:'pispis'},
   ],
   muzik:[
     {id:'m1',name:'432 Hz Saf Ton',emoji:'🎵',desc:'Doğal frekans — en sakinleştirici',type:'tone',freq:432},
@@ -713,6 +714,13 @@ async function playLullaby(id){
   document.getElementById('pb-'+id).classList.add('active');
   document.getElementById('lc-'+id).classList.add('playing');
   setNP('np-nin',l.emoji,l.name,'Derya sesiyle çalıyor',!isPremium);
+  // Arka plan müziği varsa çal
+  if(l.bgMusic){
+    const bgAudio=new Audio(l.bgMusic);
+    bgAudio.loop=true; bgAudio.volume=0.28;
+    bgAudio.play().catch(e=>console.log('Müzik yüklenemedi:',e));
+    activeAudio=bgAudio;
+  }
   await playEL(l.text, id, 'nin', !isPremium);
 }
 
@@ -817,7 +825,17 @@ function playKolik(id){
   setNP('np-kol',item.emoji,item.name,'Sınırsız · Ücretsiz · Döngüde',false);
   document.getElementById('np-kol').classList.add('show');
 
-  if(item.file){
+  if(item.type==='pispis'){
+    try{
+      const ctx=new(window.AudioContext||window.webkitAudioContext)();
+      activeCtx=ctx; activeNodes=[];
+      const master=ctx.createGain();
+      master.gain.setValueAtTime(0,ctx.currentTime);
+      master.gain.linearRampToValueAtTime(1,ctx.currentTime+0.5);
+      master.connect(ctx.destination); activeNodes.push(master);
+      buildPisPis(ctx,master);
+    }catch(e){console.error(e);}
+  } else if(item.file){
     // Gerçek ses dosyası — döngü
     const audio = new Audio(item.file);
     audio.loop = true; // Sonsuz döngü
@@ -847,6 +865,32 @@ function genAudioFallback(item){
     if(item.type==='tone') buildTone(ctx,master,item.freq);
     else if(item.type==='binaural') buildBinaural(ctx,master,item.freq);
   }catch(e){console.error(e);}
+}
+
+function buildPisPis(ctx,dest){
+  // Ritmik "pişş pişş" sesi — beyaz gürültü + alçak geçiren filtre + ritimli zarf
+  const bufSize=ctx.sampleRate*2;
+  const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);
+  const data=buf.getChannelData(0);
+  for(let i=0;i<bufSize;i++) data[i]=(Math.random()*2-1);
+  
+  function oneBurst(){
+    if(!activeCtx) return;
+    const src=ctx.createBufferSource();
+    src.buffer=buf; src.loop=true;
+    const filt=ctx.createBiquadFilter();
+    filt.type='bandpass'; filt.frequency.value=1200; filt.Q.value=0.8;
+    const env=ctx.createGain();
+    env.gain.setValueAtTime(0,ctx.currentTime);
+    env.gain.linearRampToValueAtTime(0.55,ctx.currentTime+0.06);
+    env.gain.setValueAtTime(0.55,ctx.currentTime+0.18);
+    env.gain.linearRampToValueAtTime(0,ctx.currentTime+0.32);
+    src.connect(filt); filt.connect(env); env.connect(dest);
+    src.start(); src.stop(ctx.currentTime+0.35);
+    activeNodes.push(src,filt,env);
+    if(activeItemId) setTimeout(oneBurst,700);
+  }
+  oneBurst();
 }
 
 function buildTone(ctx,dest,freq){
