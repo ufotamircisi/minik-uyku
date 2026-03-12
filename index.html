@@ -706,6 +706,8 @@ function renderKolik(){
 // ═══════════════════════════════════════
 // PLAY LULLABY (ElevenLabs + loop)
 // ═══════════════════════════════════════
+let bgMusicAudio = null; // Arka plan müziği ayrı değişkende
+
 async function playLullaby(id){
   const l=LULLABIES.find(x=>x.id===id); if(!l) return;
   if(activeItemId===id){stopAll();return;}
@@ -716,10 +718,9 @@ async function playLullaby(id){
   setNP('np-nin',l.emoji,l.name,'Derya sesiyle çalıyor',!isPremium);
   // Arka plan müziği varsa çal
   if(l.bgMusic){
-    const bgAudio=new Audio(l.bgMusic);
-    bgAudio.loop=true; bgAudio.volume=0.28;
-    bgAudio.play().catch(e=>console.log('Müzik yüklenemedi:',e));
-    activeAudio=bgAudio;
+    bgMusicAudio=new Audio(l.bgMusic);
+    bgMusicAudio.loop=true; bgMusicAudio.volume=0.28;
+    bgMusicAudio.play().catch(e=>console.log('Müzik yüklenemedi:',e));
   }
   await playEL(l.text, id, 'nin', !isPremium);
 }
@@ -912,6 +913,7 @@ function buildBinaural(ctx,dest,diff){
 function stopAll(){
   if('speechSynthesis'in window) speechSynthesis.cancel();
   clearTimeout(freeTO); clearTimeout(loopTO);
+  if(bgMusicAudio){try{bgMusicAudio.pause();bgMusicAudio.src='';}catch(e){} bgMusicAudio=null;}
   if(activeAudio){try{activeAudio.pause();activeAudio.src='';}catch(e){} activeAudio=null;}
   activeNodes.forEach(n=>{try{n.stop?.();n.disconnect?.();}catch(e){}});
   activeNodes=[];
