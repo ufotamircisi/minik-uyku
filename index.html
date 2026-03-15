@@ -748,8 +748,6 @@ function renderKolik(){
 // ═══════════════════════════════════════
 // PLAY LULLABY (ElevenLabs + loop)
 // ═══════════════════════════════════════
-let bgMusicAudio = null; // Arka plan müziği ayrı değişkende
-
 async function playLullaby(id){
   const l=LULLABIES.find(x=>x.id===id); if(!l) return;
   if(activeItemId===id){stopAll();return;}
