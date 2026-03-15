@@ -384,13 +384,12 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       <div class="rec-stat" id="rec-stat">Kayıt başlatmak için basın</div>
       <div class="waveform" id="waveform"></div>
     </div>
-    <div style="font-size:.73rem;color:var(--text2);font-weight:700;margin-bottom:7px">Bu cümleleri okuyun (en az 1 dk):</div>
+    <div style="font-size:.73rem;color:var(--text2);font-weight:700;margin-bottom:7px">Aşağıdaki ninnileri okuyun (en az 1 dk, 2-3 kez tekrar):</div>
     <div class="phrase-list">
-      <div class="phrase">Ninni derler ninni, ninni yavrum ninni... uyu tatlım uyu, uyu da büyü.</div>
-      <div class="phrase">Ay doğdu güneş battı, minik bebek uyumaya yattı, ninni ninni be.</div>
-      <div class="phrase">Uyu yavrucuğum, sen benim her şeyimsin, gözlerini kapat, ninni.</div>
-      <div class="phrase">Hünnap hünnap hünnaptır, bebeğim oynaştır, al yanaklım uyusun.</div>
-      <div class="phrase">Bir varmış bir yokmuş, çok tatlı küçük bir bebek varmış, ninni ninni.</div>
+      <div class="phrase">Dandini dandini danalı bebek, elleri kolları kınalı bebek. Bu bebeğin babası, oğlanların ağası, sallasam da uyusun.</div>
+      <div class="phrase">Dandini dandini danalı bebek, elleri kolları kınalı bebek. Bu bebeğin babası, oğlanların ağası, sallasam da uyusun.</div>
+      <div class="phrase">Fışfış kayıkçı fışfış kayıkçı, bebeğimi uyut ninni ninni be. Fışfış kayıkçı fışfış kayıkçı, ninni ninni be.</div>
+      <div class="phrase">Fışfış kayıkçı fışfış kayıkçı, bebeğimi uyut ninni ninni be. Fışfış kayıkçı fışfış kayıkçı, ninni ninni be.</div>
     </div>
   </div>
   <div class="stitle">Kayıtlarım</div>
@@ -408,13 +407,16 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
         <select id="voi-content" class="finp">
           <option value="">— Seçin —</option>
           <optgroup label="🎵 Ninniler">
-            <option value="Ninni derler ninni, ninni ninni be. Uyu da büyü yavrum, ninni ninni be. Ay doğdu mu uyusun, güneş battı mı uyusun. Annenin kuzusu uyusun, ninni.">Ninni</option>
             <option value="Dandini dandini danalı bebek, elleri kolları kınalı bebek. Bu bebeğin babası, oğlanların ağası, sallasam da uyusun.">Dandini Dandini</option>
-            <option value="Hünnap hünnap hünnaptır, bebeğim oynaştır. Al al kırmızı al, yanaklarım allıdır. Uyu tatlım uyu.">Hünnap</option>
+            <option value="Fışfış kayıkçı fışfış kayıkçı, bebeğimi uyut ninni ninni be.">Fış Fış Kayıkçı</option>
           </optgroup>
           <optgroup label="📖 Hikayeler">
             <option value="Bir varmış bir yokmuş. Gökyüzünün en küçük yıldızı varmış, adı Işık'mış. Her gece diğer yıldızların yanında parıldarmış. Ay dede ona dedi ki: Sen kalplerin içindesin küçük Işık. Ve o geceden sonra her bebek uyurken onu rüyasında görürmüş. Uyu tatlım.">Küçük Yıldız</option>
             <option value="Büyük ormanda gece olmuş. Tilki yavrusu yuvaya girmiş, anne tilki ninni söylemiş. Hepsi birer birer gözlerini yummuş. Yapraklar fısıldamış: iyi geceler. Sen de uyu tatlım.">Ormandaki Uyku</option>
+            <option value="Bir bulut bebek varmış. Pofuduk, beyaz, yumuşacık. Adı Pamuk'muş. Anası her akşam onu sararmış. Yağmur damlaları senin ninnindir, demiş. Pamuk gülümseyerek uyumuş.">Bulut Bebeği</option>
+            <option value="Küçük Deniz sahilde bir kabuk bulmuş. Kulağına götürmüş. İçinden, uyu, demiş kabuk. Dalgalar seni sallasın, yunuslar dans etsin. Ve tatlı tatlı uyumuş.">Deniz Kabuğu</option>
+            <option value="Her gece ay pencereden içeri bakarmış. Sen en parlak yıldızsın, demiş ay. Gözlerini kapat, seninle rüyanda konuşurum. Bebek gözlerini yummuş ve rüyasında ayın yanında uçmuş.">Ay ile Bebek</option>
+            <option value="Küçük Peri uyumadan önce bir kelebek görmüş. Uyu, demiş kelebek, ben seni güzel yerlere götüreyim. Rüyasında binlerce çiçekten oluşan bir bahçeye geldiler. Sabah Peri gülerek uyandı.">Kelebek Rüyası</option>
           </optgroup>
         </select>
       </div>
@@ -536,7 +538,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 // ═══════════════════════════════════════
 // CONFIG — API KEY VE VOICE ID
 // ═══════════════════════════════════════
-const EL_API_KEY = 'c54d6f40fcd26006eafbb3bcaa5a5d8459fbba41220811395a4b7186e963a4fa';
+const EL_API_KEY = 'API_KEY_BURAYA';
 const DERYA_VOICE_ID = 'NNn9dv8zq2kUo7d3JSGG';
 const FREE_SEC = 30;
 
@@ -695,7 +697,7 @@ function renderVoiceNinniler(){
     </div>`;
     return;
   }
-  c.innerHTML = LULLABIES.slice(0,4).map(l=>`
+  c.innerHTML = LULLABIES.map(l=>`
     <div class="lcard" id="vlc-${l.id}" style="--ca:rgba(240,192,96,.10);--cb:rgba(240,192,96,.02)">
       <span class="lc-em">🎙️</span>
       <div class="lc-inf">
