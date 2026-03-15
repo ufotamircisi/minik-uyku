@@ -544,25 +544,14 @@ const FREE_SEC = 30;
 // DATA
 // ═══════════════════════════════════════
 const LULLABIES = [
-  {id:'l1',name:'Ninni',origin:'Geleneksel',emoji:'🌙',ca:'rgba(157,140,239,.13)',cb:'rgba(157,140,239,.03)',
-   desc:'Yüzyıllardır söylenen en sevilen Türk ninnisi',
-   text:'Ninni derler ninni, ninni ninni be. Uyu da büyü yavrum, ninni ninni be. Ay doğdu mu uyusun, güneş battı mı uyusun. Annenin kuzusu uyusun, ninni.'},
-  {id:'l2',name:'Dandini Dandini',origin:'Anadolu',emoji:'⭐',ca:'rgba(240,192,96,.11)',cb:'rgba(240,192,96,.03)',
+  {id:'l1',name:'Dandini Dandini',origin:'Anadolu',emoji:'⭐',ca:'rgba(240,192,96,.11)',cb:'rgba(240,192,96,.03)',
    desc:'Nesilden nesile aktarılan sevimli Anadolu ninnisi',
-   bgMusic:'dandini-muzik.mp3',
+   file:'dandini.mp3',
    text:'Dandini dandini danalı bebek, elleri kolları kınalı bebek. Bu bebeğin babası, oğlanların ağası, sallasam da uyusun.'},
-  {id:'l3',name:'Hünnap',origin:'Ege',emoji:'🌸',ca:'rgba(232,130,154,.13)',cb:'rgba(232,130,154,.03)',
-   desc:'Ege bölgesine özgü tatlı dilli bir ninni',
-   text:'Hünnap hünnap hünnaptır, bebeğim oynaştır. Al al kırmızı al, yanaklarım allıdır. Uyu tatlım uyu.'},
-  {id:'l4',name:'Ay Dede',origin:'Halk',emoji:'🌕',ca:'rgba(240,168,112,.13)',cb:'rgba(240,168,112,.03)',
-   desc:'Ay ışığında uyuyan bebekler için romantik ninni',
-   text:'Ay dede ay dede, çık kapıya gel bana. Bebeğimi al yükle, ninniler söyle.'},
-  {id:'l5',name:'Karadeniz Ninnisi',origin:'Karadeniz',emoji:'🌊',ca:'rgba(106,184,232,.13)',cb:'rgba(106,184,232,.03)',
-   desc:'Karadeniz yöresine özgü melodili ninni',
-   text:'Uyusun da büyüsün, al yeşil giysin. Al yanaklar pembe olsun, gözler kapansın. Rüyalarda uçsun bebek, melekler beklesin.'},
-  {id:'l6',name:'Minnoş Ninni',origin:'Modern',emoji:'💫',ca:'rgba(93,216,168,.13)',cb:'rgba(93,216,168,.03)',
-   desc:'Çağdaş annelerin söylediği sevgi dolu ninni',
-   text:'Minik minik eller, minik minik ayaklar. Minnoş bebek uyusun, rüyalar bekliyor. Annen yanında, hiçbir şey yok korkacak.'},
+  {id:'l2',name:'Fış Fış Kayıkçı',origin:'Halk',emoji:'🚣',ca:'rgba(106,184,232,.11)',cb:'rgba(106,184,232,.03)',
+   desc:'Sevimli ve eğlenceli geleneksel Türk halk ninnisi',
+   file:'fisfis.mp3',
+   text:'Fışfış kayıkçı, fışfış kayıkçı, bebeğimi uyut, ninni ninni be.'},
 ];
 
 const STORIES = [
@@ -755,14 +744,22 @@ async function playLullaby(id){
   document.getElementById('pb-'+id).innerHTML='⏸';
   document.getElementById('pb-'+id).classList.add('active');
   document.getElementById('lc-'+id).classList.add('playing');
-  setNP('np-nin',l.emoji,l.name,'Derya sesiyle çalıyor',!isPremium);
-  // Arka plan müziği varsa çal
-  if(l.bgMusic){
-    bgMusicAudio=new Audio(l.bgMusic);
-    bgMusicAudio.loop=true; bgMusicAudio.volume=0.28;
-    bgMusicAudio.play().catch(e=>console.log('Müzik yüklenemedi:',e));
+  setNP('np-nin',l.emoji,l.name,'Çalıyor',!isPremium);
+  if(l.file){
+    // Gerçek ses kaydı — direkt çal, döngüde
+    const audio = new Audio(l.file);
+    audio.loop = true;
+    activeAudio = audio;
+    audio.play().catch(e=>{
+      console.error('Ninni dosyası yüklenemedi:',e);
+      // Fallback ElevenLabs
+      playEL(l.text, id, 'nin', !isPremium);
+    });
+    if(!isPremium) startFreeTimer();
+  } else {
+    // ElevenLabs ile üret
+    await playEL(l.text, id, 'nin', !isPremium);
   }
-  await playEL(l.text, id, 'nin', !isPremium);
 }
 
 async function playEL(text, itemId, barType, isFree){
@@ -850,7 +847,10 @@ function openStory(id){
     stopAll(); activeItemId='s'+id;
     setNP('np-hik',s.emoji,s.title,'Sesli hikaye',!isPremium);
     document.getElementById('np-hik').classList.add('show');
-    await playEL(s.tts, 's'+id, 'hik', !isPremium);
+    const storyText = babyName 
+      ? `${babyName}'m, sana güzel bir masal anlatacağım. ` + injectBabyName(s.tts)
+      : s.tts;
+    await playEL(storyText, 's'+id, 'hik', !isPremium);
   },350);
 }
 
@@ -1193,11 +1193,13 @@ function getBabyName(){ return babyName || ''; }
 
 function injectBabyName(text){
   if(!babyName) return text;
-  // "tatlım" ve "yavrum" kelimelerini bebeğin adıyla değiştir
-  return text
-    .replace(/tatlım/g, babyName+"'m")
-    .replace(/yavrum/g, babyName+"'m")
-    .replace(/bebeğim/g, babyName+"'m");
+  // İsmi metnin başına ekle
+  const isim = babyName;
+  return `Uyu ${isim}'m, uyu. ` + text
+    .replace(/tatlım/g, isim+"'m")
+    .replace(/yavrum/g, isim+"'m")
+    .replace(/bebeğim/g, isim+"'m")
+    .replace(/minik bebek/g, 'minik '+isim);
 }
 
 // ═══════════════════════════════════════
