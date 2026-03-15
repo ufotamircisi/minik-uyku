@@ -273,9 +273,14 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 <div class="header">
   <div class="brand"><span class="brand-moon">🌙</span><span class="brand-name">Minik Uyku</span></div>
-  <button class="premium-btn" id="pm-btn" onclick="openModal('modal-premium')">
-    <span>👑</span><span id="pm-txt">Premium</span>
-  </button>
+  <div style="display:flex;gap:7px;align-items:center">
+    <button class="premium-btn" style="background:rgba(93,216,168,.10);border-color:rgba(93,216,168,.28);color:var(--mint)" onclick="openModal('modal-settings')">
+      <span>👶</span><span id="baby-name-btn-txt">Bebek Adı</span>
+    </button>
+    <button class="premium-btn" id="pm-btn" onclick="openModal('modal-premium')">
+      <span>👑</span><span id="pm-txt">Premium</span>
+    </button>
+  </div>
 </div>
 
 <div class="tabs">
@@ -303,6 +308,12 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   </div>
   <div class="timer-row">
     <button class="timer-trig" onclick="toggleTimerPicker()">⏱ Uyku Zamanlayıcısı</button>
+    <button class="timer-trig" id="cry-btn" onclick="toggleCryDetector()" style="background:rgba(232,130,154,.06);border-color:rgba(232,130,154,.18);color:var(--rose)">🎙 Ağlama Dedektörü</button>
+  </div>
+  <div id="cry-status" style="display:none;background:rgba(232,130,154,.08);border:1px solid rgba(232,130,154,.22);border-radius:11px;padding:10px 14px;margin-bottom:12px;font-size:.76rem;color:var(--rose);display:none;align-items:center;gap:8px">
+    <span style="animation:recpulse 1s ease-in-out infinite;display:inline-block">🔴</span>
+    <span>Dinleniyor... Bebek ağlarsa Dandini Dandini otomatik başlar.</span>
+    <span onclick="toggleCryDetector()" style="cursor:pointer;margin-left:auto;font-weight:700">✕</span>
   </div>
   <div class="tpicker" id="tpicker">
     <div style="font-size:.76rem;color:var(--text2);font-weight:600">Ne kadar sonra kapansın?</div>
@@ -491,6 +502,25 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   </div>
 </div>
 
+<!-- SETTINGS MODAL -->
+<div class="modal" id="modal-settings" onclick="closeOutside(event,'modal-settings')">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <button class="mclose" onclick="closeModal('modal-settings')">✕</button>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;margin-bottom:3px">Bebek Bilgileri</div>
+    <div style="font-size:.73rem;color:var(--text2);margin-bottom:18px">Bebeğinizin adı ninni ve hikayelerde kullanılır</div>
+    <div class="frow">
+      <label class="flabel">BEBEĞİNİZİN ADI</label>
+      <input type="text" class="finp" id="baby-name-input" placeholder="Örn: Ayşe, Ali, Zeynep..." maxlength="20">
+    </div>
+    <div style="font-size:.72rem;color:var(--text2);margin:8px 0 14px;line-height:1.6">
+      💡 Örnek: "Uyu <strong style="color:var(--mint)">Ayşe'm</strong>, ninni ninni be..." şeklinde seslenilir.
+    </div>
+    <button class="abtn btn-gold" onclick="saveBabyName()">💾 Kaydet</button>
+    <div class="smsg" id="baby-name-stat"></div>
+  </div>
+</div>
+
 <!-- SUCCESS MODAL -->
 <div class="modal" id="modal-success">
   <div class="msheet" style="text-align:center">
@@ -603,12 +633,24 @@ let loopTO = null, freeTO = null;
 let timerInterv = null, timerSec = 0;
 let isRecording = false, mediaRec = null, recTimerInterv = null, recSec = 0;
 let waveCtx = null, waveAnalyser = null;
+let bgMusicAudio = null;
+
+// Bebek ismi
+let babyName = localStorage.getItem('mu_baby_name') || '';
+
+// Ağlama dedektörü
+let cryDetecting = false, cryStream = null, cryCtx = null, cryAnalyser = null, cryInterv = null;
 
 // ═══════════════════════════════════════
 // BOOT
 // ═══════════════════════════════════════
 window.addEventListener('load',()=>{
   renderAll(); refreshUI(); initWaveform();
+  // Bebek adını yükle
+  if(babyName){
+    document.getElementById('baby-name-btn-txt').textContent = babyName;
+    document.getElementById('baby-name-input').value = babyName;
+  }
 });
 
 function renderAll(){
@@ -727,12 +769,13 @@ async function playLullaby(id){
 
 async function playEL(text, itemId, barType, isFree){
   const voiceId = clonedVoiceId || DERYA_VOICE_ID;
+  const finalText = injectBabyName(text);
   try{
     const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,{
       method:'POST',
       headers:{'xi-api-key': EL_API_KEY,'Content-Type':'application/json'},
       body: JSON.stringify({
-        text, model_id:'eleven_multilingual_v2',
+        text: finalText, model_id:'eleven_multilingual_v2',
         voice_settings:{stability:.72,similarity_boost:.80,style:.35,use_speaker_boost:true}
       })
     });
@@ -1133,6 +1176,90 @@ async function speakWithVoice(){
     showStat(stat,'ok','🎵 Sizin sesinizle çalıyor!');
   }catch(e){showStat(stat,'err','❌ '+e.message);}
   finally{btn.disabled=false;}
+}
+
+// ═══════════════════════════════════════
+// BEBEK ADI
+// ═══════════════════════════════════════
+function saveBabyName(){
+  const val = document.getElementById('baby-name-input').value.trim();
+  babyName = val;
+  localStorage.setItem('mu_baby_name', val);
+  const btn = document.getElementById('baby-name-btn-txt');
+  btn.textContent = val ? val : 'Bebek Adı';
+  showStat(document.getElementById('baby-name-stat'),'ok', val ? `✨ "${val}" kaydedildi!` : 'İsim silindi.');
+  setTimeout(()=>closeModal('modal-settings'), 1200);
+}
+
+function getBabyName(){ return babyName || ''; }
+
+function injectBabyName(text){
+  if(!babyName) return text;
+  // "tatlım" ve "yavrum" kelimelerini bebeğin adıyla değiştir
+  return text
+    .replace(/tatlım/g, babyName+"'m")
+    .replace(/yavrum/g, babyName+"'m")
+    .replace(/bebeğim/g, babyName+"'m");
+}
+
+// ═══════════════════════════════════════
+// AĞLAMA DEDEKTÖRÜ
+// ═══════════════════════════════════════
+async function toggleCryDetector(){
+  if(cryDetecting){ stopCryDetector(); return; }
+  try{
+    cryStream = await navigator.mediaDevices.getUserMedia({audio:true});
+    cryCtx = new(window.AudioContext||window.webkitAudioContext)();
+    cryAnalyser = cryCtx.createAnalyser();
+    cryAnalyser.fftSize = 256;
+    cryCtx.createMediaStreamSource(cryStream).connect(cryAnalyser);
+    cryDetecting = true;
+    document.getElementById('cry-btn').style.background='rgba(232,130,154,.18)';
+    document.getElementById('cry-btn').textContent='🔴 Dinleniyor...';
+    const cs = document.getElementById('cry-status');
+    cs.style.display='flex';
+    let cryCount = 0;
+    cryInterv = setInterval(()=>{
+      const data = new Uint8Array(cryAnalyser.frequencyBinCount);
+      cryAnalyser.getByteFrequencyData(data);
+      // 300-3000 Hz arası ses seviyesi — bebek ağlaması bu aralıkta
+      const relevant = data.slice(3, 30);
+      const avg = relevant.reduce((a,b)=>a+b,0)/relevant.length;
+      if(avg > 55){ cryCount++; } else { cryCount = Math.max(0, cryCount-1); }
+      // 3 saniye boyunca yüksek ses varsa ağlıyor
+      if(cryCount >= 6){
+        cryCount = 0;
+        stopCryDetector();
+        // Dandini Dandini'yi başlat, 15 dk zamanlayıcı
+        playLullaby('l2');
+        setTimerAuto(15);
+      }
+    }, 500);
+  }catch(e){
+    alert('Mikrofon erişimi gerekli: '+e.message);
+  }
+}
+
+function stopCryDetector(){
+  cryDetecting = false;
+  clearInterval(cryInterv);
+  if(cryStream) cryStream.getTracks().forEach(t=>t.stop());
+  if(cryCtx) cryCtx.close();
+  cryStream=null; cryCtx=null; cryAnalyser=null;
+  const btn = document.getElementById('cry-btn');
+  if(btn){ btn.style.background=''; btn.textContent='🎙 Ağlama Dedektörü'; }
+  const cs = document.getElementById('cry-status');
+  if(cs) cs.style.display='none';
+}
+
+function setTimerAuto(min){
+  clearInterval(timerInterv); timerSec=min*60; updTimer();
+  document.getElementById('tmini').classList.add('show');
+  timerInterv=setInterval(()=>{
+    timerSec--; updTimer();
+    if(timerSec<=30&&activeAudio) activeAudio.volume=Math.max(0,timerSec/30);
+    if(timerSec<=0){clearInterval(timerInterv);stopAll();document.getElementById('tmini').classList.remove('show');}
+  },1000);
 }
 
 // ═══════════════════════════════════════
