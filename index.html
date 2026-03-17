@@ -2253,11 +2253,11 @@ async function playWithElevenLabs(lullaby, id) {
                     },
                     body: JSON.stringify({
                         text: finalText,
-                        model_id: 'eleven_turbo_v2',
+                        model_id: 'eleven_multilingual_v2',
                         voice_settings: {
-                            stability: 0.5,        // Dengeli
-                            similarity_boost: 0.75, // Doğal
-                            style: 0.3,            // Hafif duygu
+                            stability: 0.4,        // Dengeli
+                            similarity_boost: 0.8, // Doğal
+                            style: 0.2,            // Hafif duygu
                             use_speaker_boost: true
                         }
                     })
