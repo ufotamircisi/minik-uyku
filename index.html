@@ -2077,29 +2077,56 @@
         // SES OYNATMA - NİNNİLER
         // ═══════════════════════════════════════════════════════════════
         async function playLullaby(id) {
-            const lullaby = LULLABIES.find(l => l.id === id);
-            if (!lullaby) return;
-            
-            if (state.currentTrack === id && state.isPlaying) { 
-                stopAll(); 
-                return; 
-            }
-            
-            stopAll();
-            state.currentTrack = id;
-            state.isPlaying = true;
-            updatePlayUI(id, 'card-', 'btn-', true);
-            showNowPlaying('ninniler', lullaby.emoji, lullaby.name, 'ElevenLabs ile üretiliyor...');
-            
-            try {
-                // DÜZELTME: Premium değilse 60 saniye sınırı
-                const limit = state.isPremium ? Infinity : CONFIG.FREE_PREVIEW_SECONDS;
-                await generateSpeech(lullaby.text, id, 'ninniler', !state.isPremium, null, limit);
-            } catch (error) {
-                console.error('Playback error:', error);
-                fallbackTTS(lullaby.text);
-            }
+    const lullaby = LULLABIES.find(l => l.id === id);
+    if (!lullaby) return;
+
+    if (state.currentTrack === id && state.isPlaying) {
+        stopAll();
+        return;
+    }
+
+    stopAll();
+    state.currentTrack = id;
+    state.isPlaying = true;
+    updatePlayUI(id, 'card-', 'btn-', true);
+
+    // YENİ: Eğer hazır ses dosyası varsa onu çal
+    if (lullaby.file) {
+        showNowPlaying('ninniler', lullaby.emoji, lullaby.name, 'Çalınıyor...');
+        try {
+            const audio = new Audio(CONFIG.LOCAL_SOUNDS_PATH + lullaby.file);
+            audio.onended = () => {
+                state.isPlaying = false;
+                updatePlayUI(id, 'card-', 'btn-', false);
+            };
+            audio.onerror = () => {
+                console.error('Ses dosyası hatası:', lullaby.file);
+                // Hata olursa ElevenLabs'a düş
+                playWithElevenLabs(lullaby, id);
+            };
+            state.currentAudio = audio;
+            await audio.play();
+        } catch (error) {
+            console.error('Yerel ses hatası:', error);
+            playWithElevenLabs(lullaby, id);
         }
+    } else {
+        // Hazır ses yoksa ElevenLabs kullan
+        playWithElevenLabs(lullaby, id);
+    }
+}
+
+// YENİ: ElevenLabs ile çalma fonksiyonu
+async function playWithElevenLabs(lullaby, id) {
+    showNowPlaying('ninniler', lullaby.emoji, lullaby.name, 'ElevenLabs ile üretiliyor...');
+    try {
+        const limit = state.isPremium ? Infinity : CONFIG.FREE_PREVIEW_SECONDS;
+        await generateSpeech(lullaby.text, id, 'ninniler', !state.isPremium, null, limit);
+    } catch (error) {
+        console.error('Playback error:', error);
+        fallbackTTS(lullaby.text);
+    }
+}
 
         async function playVoiceLullaby(id) {
             if (!state.clonedVoiceId) { 
@@ -2226,12 +2253,12 @@
                     },
                     body: JSON.stringify({
                         text: finalText,
-                        model_id: 'eleven_multilingual_v2',
-                        voice_settings: { 
-                            stability: 0.35, 
-                            similarity_boost: 0.85, 
-                            style: 0.0, 
-                            use_speaker_boost: true 
+                        model_id: 'eleven_turbo_v2',
+                        voice_settings: {
+                            stability: 0.5,        // Dengeli
+                            similarity_boost: 0.75, // Doğal
+                            style: 0.3,            // Hafif duygu
+                            use_speaker_boost: true
                         }
                     })
                 });
