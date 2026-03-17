@@ -2249,14 +2249,13 @@
                 throw error;
             }
         }
-        async function playAudioWithLoop(url, trackId, page, isFree, timeLimit) {
+                async function playAudioWithLoop(url, trackId, page, isFree, timeLimit) {
             return new Promise((resolve) => {
                 const audio = new Audio(url);
                 state.audioElement = audio;
                 
                 let playCount = 0;
-                let totalPlayed = 0;  // Gerçek zamanlı saniye sayacı
-                const maxPlays = isFree ? 1 : Infinity;
+                let totalPlayed = 0;
                 const limitSeconds = timeLimit || (isFree ? CONFIG.FREE_PREVIEW_SECONDS : Infinity);
                 
                 let checkInterval = null;
@@ -2298,7 +2297,7 @@
                             return;
                         }
                         
-                        totalPlayed++;  // Her saniye artır
+                        totalPlayed++;
                         
                         if (totalPlayed >= limitSeconds) {
                             clearInterval(checkInterval);
@@ -2329,7 +2328,7 @@
                     resolve();
                 });
             });
-        }}
+        }
                 
                 audio.onended = playNext;
                 audio.onerror = (e) => { 
