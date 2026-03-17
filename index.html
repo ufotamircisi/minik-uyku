@@ -1756,23 +1756,23 @@
 
         // Yerel ses dosyaları (GitHub'dan)
         const KOLIK_SOUNDS = {
-            beyaz: [
-                { id: 'b1', name: 'Saç Kurutma Makinesi', emoji: '💨', desc: 'Güçlü hava akışı - anında sakinleştirir', file: 'hairdryer.mp3' },
-                { id: 'b2', name: 'Elektrik Süpürgesi', emoji: '🌀', desc: 'Derin motor tınısı', file: 'vacuum.mp3' },
-                { id: 'b3', name: 'Beyaz Gürültü', emoji: '📻', desc: 'Saf beyaz gürültü', file: 'white-noise.mp3' },
-                { id: 'b4', name: 'Klima Sesi', emoji: '❄️', desc: 'Sabit monoton uğultu', file: 'ac.mp3' }
-            ],
-            doga: [
-                { id: 'd1', name: 'Yağmur Sesi', emoji: '🌧️', desc: 'Hafif çiseleme', file: 'rain.mp3' },
-                { id: 'd2', name: 'Dalga Sesi', emoji: '🌊', desc: 'Ritmik okyanus dalgaları', file: 'waves.mp3' },
-                { id: 'd3', name: 'Orman Sesi', emoji: '🌲', desc: 'Yaprak ve kuş sesleri', file: 'forest.mp3' },
-                { id: 'd4', name: 'Şelale', emoji: '💧', desc: 'Sürekli akan su', file: 'waterfall.mp3' }
-            ],
-            rahat: [
-                { id: 'r1', name: 'Kalp Atışı', emoji: '❤️', desc: 'Anne karnındaki ritim', file: 'heartbeat.mp3' },
-                { id: 'r2', name: 'Piş Piş Sesi', emoji: '🤫', desc: 'Ağlama krizlerinde etkili', file: 'shush.mp3' }
-            ]
-        };
+    beyaz: [
+        { id: 'b1', name: 'Saç Kurutma Makinesi', emoji: '💨', desc: 'Güçlü hava akışı - anında sakinleştirir', file: 'sac-kurutma.mp3' },
+        { id: 'b2', name: 'Elektrik Süpürgesi', emoji: '🌀', desc: 'Derin motor tınısı', file: 'supurge.mp3' },
+        { id: 'b3', name: 'Beyaz Gürültü', emoji: '📻', desc: 'Saf beyaz gürültü', file: 'beyaz-gurultu.mp3' },
+        { id: 'b4', name: 'Klima Sesi', emoji: '❄️', desc: 'Sabit monoton uğultu', file: 'klima.mp3' }
+    ],
+    doga: [
+        { id: 'd1', name: 'Yağmur Sesi', emoji: '🌧️', desc: 'Hafif çiseleme', file: 'yagmur.mp3' },
+        { id: 'd2', name: 'Dalga Sesi', emoji: '🌊', desc: 'Ritmik okyanus dalgaları', file: 'dalga.mp3' },
+        { id: 'd3', name: 'Orman Sesi', emoji: '🌲', desc: 'Yaprak ve kuş sesleri', file: 'orman.mp3' },
+        { id: 'd4', name: 'Şelale', emoji: '💧', desc: 'Sürekli akan su', file: 'selale.mp3' }
+    ],
+    rahat: [
+        { id: 'r1', name: 'Kalp Atışı', emoji: '❤️', desc: 'Anne karnındaki ritim', file: 'kalp.mp3' },
+        { id: 'r2', name: 'Piş Piş Sesi', emoji: '🤫', desc: 'Ağlama krizlerinde etkili', file: 'pispis.mp3' }
+    ]
+};
 
         const EXPERT_TIPS = {
             0: [ // 0-3 ay
@@ -2162,49 +2162,50 @@
         // KOLİK SESLERİ - YEREL DOSYALAR
         // ═══════════════════════════════════════════════════════════════
         async function playKolik(id) {
-            if (state.currentTrack === id && state.isPlaying) { 
-                stopAll(); 
-                return; 
-            }
-            
-            stopAll();
-            state.currentTrack = id;
-            state.isPlaying = true;
-            
-            // UI güncelle
-            document.querySelectorAll('.kolik-item').forEach(el => el.classList.remove('playing'));
-            document.querySelectorAll('.kolik-play').forEach(el => { 
-                el.innerHTML = '▶'; 
-                el.classList.remove('playing'); 
-            });
-            
-            const item = document.getElementById('kitem-' + id);
-            const btn = document.getElementById('kbtn-' + id);
-            if (item) item.classList.add('playing');
-            if (btn) { btn.innerHTML = '⏸'; btn.classList.add('playing'); }
-            
-            const allSounds = [...KOLIK_SOUNDS.beyaz, ...KOLIK_SOUNDS.doga, ...KOLIK_SOUNDS.rahat];
-            const sound = allSounds.find(s => s.id === id);
-            
-            showNowPlaying('kolik', sound.emoji, sound.name, 'Sınırsız · Döngü · Ücretsiz');
-            
-            // Yerel dosyayı dene, yoksa Web Audio API ile üret
-            try {
-                const audio = new Audio(CONFIG.LOCAL_SOUNDS_PATH + sound.file);
-                audio.loop = true;
-                state.audioElement = audio;
-                
-                await audio.play();
-                
-                // Progress animasyonu (sınırsız olduğu için pulse)
-                document.querySelector('#np-kolik .progress-fill').style.animation = 'pulse 2s infinite';
-                
-            } catch (e) {
-                // Dosya yoksa Web Audio API ile üret
-                console.log('Yerel dosya bulunamadı, Web Audio API kullanılıyor:', e);
-                generateKolikSound(id);
-            }
-        }
+    if (state.currentTrack === id && state.isPlaying) { 
+        stopAll(); 
+        return; 
+    }
+    
+    stopAll();
+    state.currentTrack = id;
+    state.isPlaying = true;
+    
+    // UI güncelle
+    document.querySelectorAll('.kolik-item').forEach(el => el.classList.remove('playing'));
+    document.querySelectorAll('.kolik-play').forEach(el => { 
+        el.innerHTML = '▶'; 
+        el.classList.remove('playing'); 
+    });
+    
+    const item = document.getElementById('kitem-' + id);
+    const btn = document.getElementById('kbtn-' + id);
+    if (item) item.classList.add('playing');
+    if (btn) { btn.innerHTML = '⏸'; btn.classList.add('playing'); }
+    
+    const allSounds = [...KOLIK_SOUNDS.beyaz, ...KOLIK_SOUNDS.doga, ...KOLIK_SOUNDS.rahat];
+    const sound = allSounds.find(s => s.id === id);
+    
+    showNowPlaying('kolik', sound.emoji, sound.name, 'Sınırsız · Döngü · Ücretsiz');
+    
+    try {
+        // GitHub raw URL oluştur
+        const audioUrl = CONFIG.LOCAL_SOUNDS_PATH + sound.file;
+        console.log('Ses yükleniyor:', audioUrl); // Debug için
+        
+        const audio = new Audio(audioUrl);
+        audio.loop = true;
+        state.audioElement = audio;
+        
+        await audio.play();
+        
+        document.querySelector('#np-kolik .progress-fill').style.animation = 'pulse 2s infinite';
+        
+    } catch (e) {
+        console.log('GitHub ses dosyası yüklenemedi, Web Audio API kullanılıyor:', e);
+        generateKolikSound(id);
+    }
+}
 
         // ═══════════════════════════════════════════════════════════════
         // ELEVENLABS ENTEGRASYONU
