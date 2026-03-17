@@ -1448,7 +1448,7 @@
                     <span class="np-icon" id="np-hik-icon">📖</span>
                     <div class="np-info">
                         <div class="np-title" id="np-hik-title">—</div>
-                        <div class="np-subsubtitle" id="np-hik-subtitle">Hazır</div>
+                        <div class="np-subtitle" id="np-hik-subtitle">Hazır</div>
                     </div>
                     <div class="np-badges">
                         <span class="badge badge-loop">🔁 Döngü</span>
@@ -1776,7 +1776,7 @@
 
         const EXPERT_TIPS = {
             0: [ // 0-3 ay
-                                { author: 'Dr. Ayşe Yılmaz', title: 'Pedagog', avatar: '👩‍⚕️', tip: 'Yeni doğan bebekler günde 16-18 saat uyur. Uyku aralıkları 2-3 saattir. Bebeğinizin uyku sinyallerini (esneme, göz ovuşturma) kaçırmayın.' },
+                { author: 'Dr. Ayşe Yılmaz', title: 'Pedagog', avatar: '👩‍⚕️', tip: 'Yeni doğan bebekler günde 16-18 saat uyur. Uyku aralıkları 2-3 saattir. Bebeğinizin uyku sinyallerini (esneme, göz ovuşturma) kaçırmayın.' },
                 { author: 'Uzm. Dr. Can Kaya', title: 'Çocuk Uzmanı', avatar: '👨‍⚕️', tip: '0-3 aylık bebeklerde kolik yaygındır. Beyaz gürültü ve sallanma hareketleri rahatlatır. Saat 17-20 arası kolik krizleri artabilir.' },
                 { author: 'Ebe Zeynep Demir', title: 'Emzirme Danışmanı', avatar: '🤱', tip: 'Açlık ve uyku ilişkisi yakındır. Bebek doyunca uykuya daha kolay dalacaktır. Uyku öncesi emzirme ritüeli oluşturun.' }
             ],
@@ -2249,7 +2249,8 @@
                 throw error;
             }
         }
-                async function playAudioWithLoop(url, trackId, page, isFree, timeLimit) {
+
+        async function playAudioWithLoop(url, trackId, page, isFree, timeLimit) {
             return new Promise((resolve) => {
                 const audio = new Audio(url);
                 state.audioElement = audio;
@@ -2327,17 +2328,6 @@
                     console.error('Initial play error:', err);
                     resolve();
                 });
-            });
-        }
-                
-                audio.onended = playNext;
-                audio.onerror = (e) => { 
-                    console.error('Audio error:', e); 
-                    resolve(); 
-                };
-                
-                playNext();
-                startProgressAnimation(page === 'ninniler' ? 'progress-fill' : 'progress-hik-fill', audio);
             });
         }
 
