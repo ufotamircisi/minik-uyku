@@ -1402,7 +1402,7 @@
                     </div>
                     <div class="np-badges">
                         <span class="badge badge-loop">🔁 Döngü</span>
-                        <span class="badge badge-timer" id="np-timer" style="display: none;">⏱ 30sn</span>
+                        <span class="badge badge-timer" id="np-timer" style="display: none;">⏱ 1dk</span>
                     </div>
                     <button class="np-stop" onclick="stopAll()">⏹</button>
                 </div>
@@ -1429,7 +1429,7 @@
                 </div>
             </div>
             
-            <div class="section-title">Türk Ninnileri <span class="premium-badge" id="ninniler-badge">30sn</span></div>
+            <div class="section-title">Türk Ninnileri <span class="premium-badge" id="ninniler-badge">1dk</span></div>
             <div id="lullabies-list"></div>
             
             <div class="section-title">Anne Sesli Ninniler</div>
@@ -1680,7 +1680,7 @@
                         <span class="premium-check">✓</span>
                         <div class="premium-feature-text">
                             Sınırsız Ninni Dinleme
-                            <br><span>30 saniye sınırı kalkıyor</span>
+                            <br><span>1 dakika sınırı kalkıyor</span>
                         </div>
                     </div>
                     <div class="premium-feature">
@@ -1924,7 +1924,7 @@
             } else {
                 btn.classList.remove('premium');
                 text.textContent = 'Premium';
-                ninnilerBadge.textContent = '30sn';
+                ninnilerBadge.textContent = '1dk';
                 hikayelerBadge.textContent = '1 dk';
             }
         }
@@ -1968,7 +1968,7 @@
                         <div class="card-desc">${l.desc}</div>
                         <div class="card-tags">
                             <span class="card-tag">${l.origin}</span>
-                            ${!state.isPremium ? '<span class="card-tag premium">👑 30sn</span>' : '<span class="card-tag premium">Sınırsız</span>'}
+                            ${!state.isPremium ? '<span class="card-tag premium">👑 1dk</span>' : '<span class="card-tag premium">Sınırsız</span>'}
                         </div>
                     </div>
                     <button class="play-btn" id="btn-${l.id}">▶</button>
@@ -2764,8 +2764,8 @@
         async function startCryDetector() {
             // Premium kontrolü
             if (!state.isPremium) {
-                showToast('👑 Ağlama Dedektörü için Premium gerekli (30sn ücretsiz deneme)');
-                // 30 saniyelik deneme için devam et
+                showToast('👑 Ağlama Dedektörü için Premium gerekli (1dk ücretsiz deneme)');
+                // 1 dakikalık deneme için devam et
             }
             
             try {
@@ -2789,7 +2789,7 @@
                 let startTime = Date.now();
                 
                 state.cryDetector.interval = setInterval(() => {
-                    // Ücretsiz kullanımda 30 saniye sınırı
+                    // Ücretsiz kullanımda 1 dakika sınırı
                     if (!state.isPremium && (Date.now() - startTime) > 30000) {
                         stopCryDetector();
                         showPremiumPrompt();
@@ -2845,7 +2845,7 @@
 
         async function startKolikDetector() {
             if (!state.isPremium) {
-                showToast('👑 Kolik Kriz Dedektörü için Premium gerekli (30sn ücretsiz deneme)');
+                showToast('👑 Kolik Kriz Dedektörü için Premium gerekli (1dk ücretsiz deneme)');
             }
             
             try {
