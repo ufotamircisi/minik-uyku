@@ -2239,7 +2239,7 @@ async function playWithElevenLabs(lullaby, id) {
         // ═══════════════════════════════════════════════════════════════
         async function generateSpeech(text, trackId, page, isFree, voiceId = null, timeLimit = null) {
             const useVoiceId = voiceId || state.clonedVoiceId || CONFIG.DEFAULT_VOICE_ID;
-            const finalText = injectBabyName(text);
+            const finalText = `<speak><prosody rate='slow'>${injectBabyName(text)}</prosody></speak>`;
             
             updateNowPlayingSubtitle(page, 'Ses oluşturuluyor...');
             
