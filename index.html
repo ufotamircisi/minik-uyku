@@ -1730,7 +1730,7 @@
         const CONFIG = {
             ELEVENLABS_API_KEY: 'sk_c24004207ae55dcbc3d1dcf69d28107fe11b4cd194d80bcc',
             DEFAULT_VOICE_ID: 'fiJAXyQ6FFAU0DnR04iy',
-            FREE_PREVIEW_SECONDS: 30,
+            FREE_PREVIEW_SECONDS: 60,
             FREE_STORY_SECONDS: 60,
             MAX_RECORDING_SECONDS: 300,
             PREMIUM_PRICE: 49,
@@ -1947,9 +1947,9 @@
             if (state.isPremium) return true;
             
             const limits = {
-                'ninniler': 30,
+                'ninniler': 60,
                 'hikayeler': 60,
-                'detector': 30
+                'detector': 60
             };
             
             return limits[feature] || 30;
@@ -2092,7 +2092,8 @@
             showNowPlaying('ninniler', lullaby.emoji, lullaby.name, 'ElevenLabs ile üretiliyor...');
             
             try {
-                const limit = checkPremiumLimit('ninniler');
+                // DÜZELTME: Premium değilse 60 saniye sınırı
+                const limit = state.isPremium ? Infinity : CONFIG.FREE_PREVIEW_SECONDS;
                 await generateSpeech(lullaby.text, id, 'ninniler', !state.isPremium, null, limit);
             } catch (error) {
                 console.error('Playback error:', error);
@@ -2141,16 +2142,16 @@
             state.isPlaying = true;
             showNowPlaying('hikayeler', story.emoji, story.title, 'Hikaye anlatılıyor...');
             
-            // Bebek ismini ekle
             let text = story.text;
             if (state.babyName) {
                 text = `${state.babyName}'m, sana bir masal anlatacağım. ` + text;
             } else {
-                text = `Tatlı, sana bir masal anlatacağım. ` + text;
+                text = `Tatlım, sana bir masal anlatacağım. ` + text;
             }
             
             try {
-                const limit = checkPremiumLimit('hikayeler');
+                // DÜZELTME: Premium değilse 60 saniye sınırı
+                const limit = state.isPremium ? Infinity : CONFIG.FREE_STORY_SECONDS;
                 await generateSpeech(text, 's'+id, 'hikayeler', !state.isPremium, null, limit);
             } catch (error) {
                 fallbackTTS(text);
@@ -2248,23 +2249,34 @@
                 throw error;
             }
         }
-
         async function playAudioWithLoop(url, trackId, page, isFree, timeLimit) {
             return new Promise((resolve) => {
                 const audio = new Audio(url);
                 state.audioElement = audio;
                 
                 let playCount = 0;
-                let totalPlayed = 0;
+                let totalPlayed = 0;  // Gerçek zamanlı saniye sayacı
                 const maxPlays = isFree ? 1 : Infinity;
+                const limitSeconds = timeLimit || (isFree ? CONFIG.FREE_PREVIEW_SECONDS : Infinity);
+                
+                let checkInterval = null;
+                
+                const stopPlayback = () => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    stopAll();
+                    if (isFree) showPremiumPrompt();
+                    resolve();
+                };
                 
                 const playNext = () => {
-                    if (state.currentTrack !== trackId || playCount >= maxPlays) {
-                        if (isFree && playCount >= maxPlays) {
-                            stopAll();
-                            showPremiumPrompt();
-                        }
+                    if (state.currentTrack !== trackId) {
                         resolve();
+                        return;
+                    }
+                    
+                    if (isFree && totalPlayed >= limitSeconds) {
+                        stopPlayback();
                         return;
                     }
                     
@@ -2278,17 +2290,46 @@
                     });
                 };
                 
-                // Süre kontrolü için
-                if (isFree && timeLimit) {
-                    audio.ontimeupdate = () => {
-                        if (audio.currentTime >= timeLimit) {
-                            audio.pause();
-                            stopAll();
-                            showPremiumPrompt();
-                            resolve();
+                // Kritik: setInterval ile gerçek zamanlı sayaç
+                if (isFree && limitSeconds < Infinity) {
+                    checkInterval = setInterval(() => {
+                        if (!state.isPlaying || state.currentTrack !== trackId) {
+                            clearInterval(checkInterval);
+                            return;
                         }
-                    };
+                        
+                        totalPlayed++;  // Her saniye artır
+                        
+                        if (totalPlayed >= limitSeconds) {
+                            clearInterval(checkInterval);
+                            stopPlayback();
+                        }
+                    }, 1000);
                 }
+                
+                audio.onended = () => {
+                    if (isFree && totalPlayed >= limitSeconds) {
+                        stopPlayback();
+                    } else {
+                        playNext();
+                    }
+                };
+                
+                audio.onerror = (e) => { 
+                    console.error('Audio error:', e); 
+                    clearInterval(checkInterval);
+                    resolve(); 
+                };
+                
+                // İlk oynatma
+                audio.play().then(() => {
+                    startProgressAnimation(page === 'ninniler' ? 'progress-fill' : 'progress-hik-fill', audio);
+                }).catch(err => {
+                    console.error('Initial play error:', err);
+                    resolve();
+                });
+            });
+        }}
                 
                 audio.onended = playNext;
                 audio.onerror = (e) => { 
@@ -2790,7 +2831,7 @@
                 
                 state.cryDetector.interval = setInterval(() => {
                     // Ücretsiz kullanımda 1 dakika sınırı
-                    if (!state.isPremium && (Date.now() - startTime) > 30000) {
+                    if (!state.isPremium && (Date.now() - startTime) > 60000) {
                         stopCryDetector();
                         showPremiumPrompt();
                         return;
@@ -2869,7 +2910,7 @@
                 let startTime = Date.now();
                 
                 state.kolikDetector.interval = setInterval(() => {
-                    if (!state.isPremium && (Date.now() - startTime) > 30000) {
+                    if (!state.isPremium && (Date.now() - startTime) > 60000) {
                         stopKolikDetector();
                         showPremiumPrompt();
                         return;
