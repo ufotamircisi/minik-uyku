@@ -1741,11 +1741,25 @@
         // VERİ YAPILARI
         // ═══════════════════════════════════════════════════════════════
         const LULLABIES = [
-            { id: 'l1', name: 'Dandini Dandini', emoji: '⭐', origin: 'Anadolu', desc: 'Nesilden nesile aktarılan klasik Türk ninnisi', text: 'Dandini, dandini, danalı bebek... elleri, kolları, kınalı bebek... Bu bebeğin babası... oğlanların ağası... sallasam da uyusun..' },
-            { id: 'l2', name: 'Fış Fış Kayıkçı', emoji: '🚣', origin: 'Halk', desc: 'Sevimli ve eğlenceli geleneksel ninnisi', file: 'fisfis.mp3', text: 'Fııış fış kayııkçı, kayıkçının küreği. Hop, hop, eder yüreeği. Akşama, fincan böreeği. Yavrum, yesin büyüüsün. Tıpış, tıpış yürüüsün. Fııış fış kayııkçı. Kayıkçıya, gideelim. Kayıığına, binelim. Denizlerde, gezeelim. Akşam, evee gideelim. Balıkları, yiyeelim. eee eee eee eee. Pışş Pışş Pışşş Pışş.' },
-            { id: 'l3', name: 'Uyusun Da Büyüsün', emoji: '🌙', origin: 'Anadolu', desc: 'En sevilen ninnilerden biri', text: 'Uyusun da büyüsün, ninni gibi tıpış tıpış yürüsün. Biner atın iyisine, düşer yolun kıyısına.' },
-            { id: 'l4', name: 'Dandini Dastana', emoji: '💫', origin: 'Anadolu', desc: 'Huzur veren melodik ninnisi', file: 'dandini.mp3', text: 'Dandini dandini dastana, danalar girmiş bostana. Kov bostancı danayı, yemesin lahanayı.' }
-        ];
+    { 
+        id: 'l1', 
+        name: 'Dandini Dandini', 
+        emoji: '⭐', 
+        origin: 'Anadolu', 
+        desc: 'Nesilden nesile aktarılan klasik Türk ninnisi',
+        file: 'dandini.mp3',
+        text: 'Dandini dandini danalı bebek...'
+    },
+    { 
+        id: 'l2', 
+        name: 'Fış Fış Kayıkçı', 
+        emoji: '🚣', 
+        origin: 'Halk', 
+        desc: 'Sevimli ve eğlenceli geleneksel ninnisi',
+        file: 'fisfis.mp3',
+        text: 'Fııış fış kayııkçı...'
+    }
+];
 
         const STORIES = [
             { id: 's1', title: 'Küçük Yıldız', emoji: '⭐', age: '0-3 yaş', duration: '5 dk', type: 'Masal', desc: 'Gökyüzündeki en küçük yıldığın hikayesi', text: 'Bir varmış bir yokmuş. Gökyüzünün en küçük yıldızı varmış, adı Işık\'mış. Her gece diğer yıldızların yanında parıldarmış. Ay dede ona dedi ki: Sen kalplerin içindesin küçük Işık. Ve o geceden sonra her bebek uyurken onu rüyasında görürmüş. Uyu tatlım, uyu.' },
@@ -2076,16 +2090,18 @@
         // ═══════════════════════════════════════════════════════════════
         // SES OYNATMA - NİNNİLER
         // ═══════════════════════════════════════════════════════════════
-        async function playLullaby(id) {
+        async function playLullaby(id) { 
+    await stopAll();
+    await new Promise(r => setTimeout(r, 100)); // 100ms bekle
     const lullaby = LULLABIES.find(l => l.id === id);
     if (!lullaby) return;
 
     if (state.currentTrack === id && state.isPlaying) {
-        stopAll();
+       
         return;
     }
 
-    stopAll();
+    
     state.currentTrack = id;
     state.isPlaying = true;
     updatePlayUI(id, 'card-', 'btn-', true);
@@ -2189,6 +2205,8 @@ async function playWithElevenLabs(lullaby, id) {
         // KOLİK SESLERİ - YEREL DOSYALAR
         // ═══════════════════════════════════════════════════════════════
         async function playKolik(id) {
+    await stopAll();
+    await new Promise(r => setTimeout(r, 100));
     if (state.currentTrack === id && state.isPlaying) { 
         stopAll(); 
         return; 
@@ -2855,14 +2873,16 @@ async function playWithElevenLabs(lullaby, id) {
                     }
                     
                     state.cryDetector.analyser.getByteFrequencyData(dataArray);
-                    const lowFreq = dataArray.slice(2, 10);
-                    const average = lowFreq.reduce((a, b) => a + b, 0) / lowFreq.length;
-                    
-                    if (average > 60) {
+                    const cryFreq = dataArray.slice(5, 15); // ~250-500Hz bebek ağlaması
+                    const average = cryFreq.reduce((a, b) => a + b, 0) / cryFreq.length;
+                    const peak = Math.max(...cryFreq);
+
+                    // Hem ortalama hem tepe değer yüksekse (gerçek ağlama)
+                    if (average > 80 && peak > 120) {
                         cryDetected++;
                         if (cryDetected > 3) { 
                             stopCryDetector(); 
-                            playLullaby('l1'); 
+                            playLullaby('l1'); // dandini.mp3
                             setTimer(15, document.querySelector('.timer-option')); 
                         }
                     } else {
