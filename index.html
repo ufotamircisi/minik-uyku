@@ -1727,7 +1727,7 @@
             
             <div class="input-group">
                 <label class="input-label">Bebeğinizin Adı</label>
-                <input type="text" class="input-field" id="baby-name-input" placeholder="Örn: Ayşe, Mehmet..." maxlength="15">
+                <input type="text" class="input-field" id="baby-name-input" placeholder="Ayşe / Emma" maxlength="15">
             </div>
             
             <div class="input-group">
@@ -1736,7 +1736,7 @@
             </div>
             
             <div style="font-size: 12px; color: var(--text-muted); margin: 12px 0; line-height: 1.5;">
-                💡 Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>'m, tatlı rüyalar gör..."
+                💡 <span id="settings-example-text">Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>'m, tatlı rüyalar gör..."</span>
             </div>
             
             <button class="btn-primary" onclick="saveBabySettings()">💾 Kaydet</button>
@@ -1931,24 +1931,24 @@
 
         const PHRASE_SETS = {
             tr: {
-                title: '📝 Kitap okur gibi doğal ve sakin tonla okuyun. (Yaklaşık 1 dakika):',
+                title: '📝 Masal okur gibi yavaş, sıcak ve doğal bir tonla okuyun. (Yaklaşık 1 dakika):',
                 lines: [
-                    'Dandini dandini dastana, danalar girmiş bostana...',
-                    'Biner atın iyisine, düşer yolun kıyısına...',
-                    'E... e... e... e... (nefes sesleri)'
+                    'Uyu bebeğim... şimdi dinlenme zamanı...',
+                    'Gece sessiz, yıldızlar gökyüzünde parlıyor... ay ışığı odana yumuşakça vuruyor...',
+                    'Mmm... eee... şşş... derin bir nefes al ve bırak...'
                 ],
-                voiceTextPlaceholder: 'Buraya yazın...',
-                voiceTextValue: 'Dandini dandini danalı bebek, elleri kolları kınalı bebek...'
+                voiceTextPlaceholder: 'Buraya sakin bir ninni ya da kısa masal metni yazın...',
+                voiceTextValue: 'Uyu bebeğim... gece sessiz, yıldızlar parlarken şimdi tatlı rüyalara dalma zamanı...'
             },
             en: {
-                title: '📝 Read in a calm, natural storytelling tone. (About 1 minute):',
+                title: '📝 Read slowly in a warm, natural storytelling tone. (About 1 minute):',
                 lines: [
-                    'Twinkle, twinkle, little star, how I wonder what you are...',
-                    'Up above the world so high, like a diamond in the sky...',
-                    'Mmm... shh... mmm... (soft breathing sounds)'
+                    'Sleep softly, little one... it is time to rest now...',
+                    'The night is calm, the stars are shining, and the moonlight is touching your room gently...',
+                    'Mmm... shh... take a deep breath... and slowly let it go...'
                 ],
-                voiceTextPlaceholder: 'Write here...',
-                voiceTextValue: 'Twinkle, twinkle, little star, how I wonder what you are...'
+                voiceTextPlaceholder: 'Write a calm lullaby or a short bedtime text here...',
+                voiceTextValue: 'Sleep softly, little one... the night is quiet and it is time to drift into sweet dreams...'
             }
         };
 
@@ -1994,7 +1994,31 @@ const KOLIK_SOUNDS = {
             ]
         };
 
-        // ═══════════════════════════════════════════════════════════════
+        
+        const EXPERT_TIPS_EN = {
+            0: [
+                { author: 'Dr. Ayşe Yılmaz', title: 'Pedagogue', avatar: '👩‍⚕️', tip: 'Newborn babies usually sleep 16 to 18 hours a day. Sleep windows are often 2 to 3 hours. Watch for sleepy cues such as yawning and eye rubbing.' },
+                { author: 'Dr. Can Kaya', title: 'Pediatrician', avatar: '👨‍⚕️', tip: 'Colic is common in the first months. White noise and gentle rocking can be soothing. Crying may increase especially in the late afternoon and early evening.' },
+                { author: 'Midwife Zeynep Demir', title: 'Lactation Consultant', avatar: '🤱', tip: 'Feeding and sleep are closely linked. A full baby often settles more easily. A calm feeding routine before sleep can help.' }
+            ],
+            1: [
+                { author: 'Dr. Selin Aydın', title: 'Sleep Therapist', avatar: '😴', tip: 'After 3 months, babies may begin sleeping longer at night. Be prepared for the 4-month sleep regression; it is common and temporary.' },
+                { author: 'Dr. Mehmet Şahin', title: 'Development Specialist', avatar: '👨‍⚕️', tip: 'At this stage, babies often sleep 14 to 15 hours a day and may take 3 to 4 shorter naps.' },
+                { author: 'Psychologist Elif Yıldız', title: 'Family Therapist', avatar: '🧠', tip: 'Routines matter. Repeating the same bedtime order such as bath, story and lullaby helps babies understand that sleep is coming.' }
+            ],
+            2: [
+                { author: 'Dr. Burak Tan', title: 'Pedagogue', avatar: '👨‍⚕️', tip: 'Between 6 and 12 months, babies often sleep 12 to 14 hours a day. Day naps may reduce to two and night wakings from hunger often decrease.' },
+                { author: 'Midwife Seda Kılıç', title: 'Sleep Consultant', avatar: '🌙', tip: 'Crawling and movement milestones can briefly affect sleep. Babies may want to practice new skills. Stay patient and consistent.' },
+                { author: 'Dr. Aslı Koç', title: 'Nutrition Specialist', avatar: '🍼', tip: 'Starting solids may change the sleep routine. Heavy meals right before sleep may not be ideal for some babies.' }
+            ],
+            3: [
+                { author: 'Dr. Kerem Arslan', title: 'Child Psychiatrist', avatar: '🧸', tip: 'After age one, many babies move toward one daytime nap. A long, consistent night sleep becomes the main goal.' },
+                { author: 'Psychologist Derya Uzun', title: 'Play Therapist', avatar: '🎈', tip: 'Separation anxiety often peaks between 12 and 18 months. Special one-on-one time before bedtime can help your child settle more calmly.' },
+                { author: 'Dr. Hakan Yücel', title: 'Pedagogue', avatar: '📚', tip: 'Bedtime stories become especially powerful in this stage. Repeating a familiar story often creates comfort and security.' }
+            ]
+        };
+
+// ═══════════════════════════════════════════════════════════════
         // UYGULAMA DURUMU
         // ═══════════════════════════════════════════════════════════════
         let state = {
@@ -2245,14 +2269,16 @@ const KOLIK_SOUNDS = {
 
         function renderRecordings() {
             const container = document.getElementById('recordings-list');
+            if (!container) return;
             if (state.recordings.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎙️</div><div class="empty-text">Henüz kayıt yok</div></div>`;
+                container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎙️</div><div class="empty-text">${state.language === 'tr' ? 'Henüz kayıt yok' : 'No recordings yet'}</div></div>`;
                 return;
             }
+            const locale = state.language === 'tr' ? 'tr-TR' : 'en-US';
             container.innerHTML = state.recordings.map(r => `
                 <div class="recording-item">
                     <span class="rec-icon">🎙️</span>
-                    <div class="rec-info"><div class="rec-name">${r.name}</div><div class="rec-meta">${formatTime(r.duration)} · ${r.date}</div></div>
+                    <div class="rec-info"><div class="rec-name">${r.name}</div><div class="rec-meta">${formatTime(r.duration)} · ${new Date(r.createdAt || Date.now()).toLocaleDateString(locale)}</div></div>
                     <div class="rec-actions">
                         <button class="rec-btn play" onclick="playRecording('${r.id}')">▶</button>
                         <button class="rec-btn delete" onclick="deleteRecording('${r.id}')">🗑</button>
@@ -2263,23 +2289,35 @@ const KOLIK_SOUNDS = {
 
         function updateCloneSection() {
             const container = document.getElementById('clone-section');
+            if (!container) return;
             if (state.recordings.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-text">Önce ses kaydı yapın</div></div>';
+                container.innerHTML = `<div class="empty-state"><div class="empty-text">${state.language === 'tr' ? 'Önce ses kaydı yapın' : 'Please record your voice first'}</div></div>`;
                 return;
             }
+            const title = state.language === 'tr' ? '✨ ElevenLabs ile Ses Klonla' : '✨ Clone with ElevenLabs';
+            const desc = state.language === 'tr'
+                ? 'Kaydınızı seçin ve yapay zeka ile sesinizin dijital kopyasını oluşturun. <strong style="color: var(--mint);">Ücretsiz!</strong>'
+                : 'Choose a recording and create a digital copy of your voice with AI. <strong style="color: var(--mint);">Free!</strong>';
+            const selectLabel = state.language === 'tr' ? 'Kayıt Seç' : 'Choose Recording';
+            const voiceLabel = state.language === 'tr' ? 'Ses Adı' : 'Voice Name';
+            const placeholder = state.language === 'tr' ? 'Annenin Sesi' : 'Mom Voice';
+            const buttonText = state.language === 'tr' ? '🌟 Sesi Klonla — Ücretsiz' : '🌟 Clone Voice — Free';
+            const defaultName = state.babyName
+                ? (state.language === 'tr' ? `${state.babyName} için Anne Sesi` : `Mom Voice for ${state.babyName}`)
+                : placeholder;
             container.innerHTML = `
                 <div class="clone-box">
-                    <div class="clone-title">✨ ElevenLabs ile Ses Klonla</div>
-                    <div class="clone-desc">Kaydınızı seçin ve yapay zeka ile sesinizin dijital kopyasını oluşturun. <strong style="color: var(--mint);">Ücretsiz!</strong></div>
+                    <div class="clone-title">${title}</div>
+                    <div class="clone-desc">${desc}</div>
                     <div class="input-group">
-                        <label class="input-label">Kayıt Seç</label>
+                        <label class="input-label">${selectLabel}</label>
                         <select class="input-field" id="clone-select">${state.recordings.map(r => `<option value="${r.id}">${r.name} (${formatTime(r.duration)})</option>`).join('')}</select>
                     </div>
                     <div class="input-group">
-                        <label class="input-label">Ses Adı</label>
-                        <input type="text" class="input-field" id="clone-name" placeholder="Annenin Sesi" value="${state.babyName ? state.babyName + '\'nin Annesi' : 'Annenin Sesi'}">
+                        <label class="input-label">${voiceLabel}</label>
+                        <input type="text" class="input-field" id="clone-name" placeholder="${placeholder}" value="${defaultName}">
                     </div>
-                    <button class="btn-primary" onclick="cloneVoice()" id="clone-btn">🌟 Sesi Klonla — Ücretsiz</button>
+                    <button class="btn-primary" onclick="cloneVoice()" id="clone-btn">${buttonText}</button>
                     <div class="status-msg" id="clone-status"></div>
                 </div>
             `;
@@ -3301,56 +3339,48 @@ async function playWithElevenLabs(lullaby, id) {
 
         function renderSleepStats() {
             const today = new Date().toDateString();
-            const todaySleeps = state.sleepTracking.history.filter(s => 
-                new Date(s.date).toDateString() === today
-            );
-            
+            const todaySleeps = state.sleepTracking.history.filter(s => new Date(s.date).toDateString() === today);
             const totalSeconds = todaySleeps.reduce((sum, s) => sum + s.duration, 0);
             const count = todaySleeps.length;
             const avgSeconds = count > 0 ? Math.floor(totalSeconds / count) : 0;
-            
-            // Gece uyanmaları (23:00-06:00 arası uyanmalar)
             const wakeCount = todaySleeps.filter(s => {
                 const hour = new Date(s.endTime).getHours();
                 return hour >= 23 || hour <= 6;
             }).length;
-            
+
             document.getElementById('stat-total').textContent = formatShortDuration(totalSeconds);
             document.getElementById('stat-count').textContent = count;
-            document.getElementById('stat-avg').textContent = Math.floor(avgSeconds / 60) + 'dk';
+            document.getElementById('stat-avg').textContent = Math.floor(avgSeconds / 60) + (state.language === 'tr' ? 'dk' : 'm');
             document.getElementById('stat-wake').textContent = wakeCount;
-            
-            // Son uykular listesi
+
             const recentSleeps = state.sleepTracking.history.slice(-5).reverse();
             const listContainer = document.getElementById('sleep-list');
-            
+            if (!listContainer) return;
             if (recentSleeps.length === 0) {
                 listContainer.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">🌙</div>
-                        <div class="empty-text">Henüz uyku kaydı yok</div>
+                        <div class="empty-text">${state.language === 'tr' ? 'Henüz uyku kaydı yok' : 'No sleep records yet'}</div>
                     </div>
                 `;
                 return;
             }
-            
+
+            const locale = state.language === 'tr' ? 'tr-TR' : 'en-US';
             listContainer.innerHTML = recentSleeps.map(s => {
                 const date = new Date(s.date);
-                const timeStr = date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+                const timeStr = date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
                 const isNight = s.isNight ? '🌙' : '☀️';
-                
                 return `
                     <div class="sleep-item">
                         <div class="sleep-info">
                             <h4>${isNight} ${timeStr}</h4>
-                            <p>${date.toLocaleDateString('tr-TR')}</p>
+                            <p>${date.toLocaleDateString(locale)}</p>
                         </div>
                         <div class="sleep-duration">${formatDuration(s.duration)}</div>
                     </div>
                 `;
             }).join('');
-            
-            // Grafiği güncelle (son 7 gün)
             updateSleepChart();
         }
 
@@ -3463,9 +3493,10 @@ async function playWithElevenLabs(lullaby, id) {
         }
 
         function renderExpertTips() {
-            const tips = EXPERT_TIPS[state.currentAgeGroup] || EXPERT_TIPS[0];
+            const data = state.language === 'tr' ? EXPERT_TIPS : EXPERT_TIPS_EN;
+            const tips = data[state.currentAgeGroup] || data[0];
             const container = document.getElementById('expert-tips');
-            
+            if (!container) return;
             container.innerHTML = tips.map(tip => `
                 <div class="expert-card">
                     <div class="expert-header">
@@ -3512,7 +3543,7 @@ async function playWithElevenLabs(lullaby, id) {
             }
             
             closeModal('settings-modal');
-            showToast(name ? `✓ ${name} için ayarlar kaydedildi` : '✓ Ayarlar kaydedildi');
+            showToast(state.language === 'tr' ? (name ? `✓ ${name} için ayarlar kaydedildi` : '✓ Ayarlar kaydedildi') : (name ? `✓ Settings saved for ${name}` : '✓ Settings saved'));
             
             // Uyku tahminini güncelle
             checkSleepPrediction();
@@ -3705,7 +3736,7 @@ async function playWithElevenLabs(lullaby, id) {
             const title = modal.querySelector('.premium-title');
             const subtitle = modal.querySelector('.premium-modal-content p');
             const priceEl = modal.querySelector('.premium-price');
-            if (title) title.textContent = state.language === 'tr' ? 'Minik Uyku Premium' : 'Minik Sleep Premium';
+            if (title) title.textContent = 'Minik Uyku Premium';
             if (subtitle) subtitle.textContent = state.language === 'tr' ? 'Yayın öncesi gerçek mağaza fiyatlarını bağlayın' : 'Connect real store prices before launch';
             if (priceEl) priceEl.innerHTML = price + `<div style="font-size:13px; color: var(--text-muted); margin-top:8px;">${yearly}</div>`;
         }
@@ -3718,7 +3749,7 @@ async function playWithElevenLabs(lullaby, id) {
             document.getElementById('onboard-lang-en')?.classList.toggle('active', state.language === 'en');
             const isTR = state.language === 'tr';
             const logo = document.querySelector('.logo-text');
-            if (logo) logo.textContent = isTR ? 'Minik Uyku' : 'Minik Sleep';
+            if (logo) logo.textContent = 'Minik Uyku';
             const map = {
                 'nav-lullabies': isTR ? 'Ninniler' : 'Lullabies',
                 'nav-stories': isTR ? 'Hikayeler' : 'Stories',
@@ -3763,7 +3794,11 @@ async function playWithElevenLabs(lullaby, id) {
             if (sectionTitles[4]) sectionTitles[4].childNodes[0].textContent = isTR ? 'Beyaz Gürültü ' : 'White Noise ';
             if (sectionTitles[5]) sectionTitles[5].childNodes[0].textContent = isTR ? 'Doğa Sesleri' : 'Nature Sounds';
             if (sectionTitles[6]) sectionTitles[6].childNodes[0].textContent = isTR ? 'Rahatlatıcı Sesler' : 'Soothing Sounds';
-            if (sectionTitles[9]) sectionTitles[9].childNodes[0].textContent = isTR ? 'Uzman Önerileri' : 'Expert Tips';
+            if (sectionTitles[7]) sectionTitles[7].childNodes[0].textContent = isTR ? 'Bugünün İstatistikleri' : "Today's Stats";
+            if (sectionTitles[8]) sectionTitles[8].childNodes[0].textContent = isTR ? 'Uyku Grafiği (Son 7 Gün)' : 'Sleep Chart (Last 7 Days)';
+            if (sectionTitles[9]) sectionTitles[9].childNodes[0].textContent = isTR ? 'Son Uykular' : 'Recent Sleeps';
+            if (sectionTitles[10]) sectionTitles[0].textContent = sectionTitles[0].textContent;
+            if (sectionTitles[10]) sectionTitles[10].childNodes[0].textContent = isTR ? 'Uzman Önerileri' : 'Expert Tips';
 
             renderLullabies();
             renderStories();
@@ -4126,7 +4161,7 @@ async function playWithElevenLabs(lullaby, id) {
       }
     },
     en: {
-      appName: 'Minik Sleep',
+      appName: 'Minik Uyku',
       premium: 'Premium',
       baby: 'Baby',
       navLullabies: 'Lullabies',
@@ -4181,7 +4216,7 @@ async function playWithElevenLabs(lullaby, id) {
       babyNameLabel: "Baby's Name",
       birthDateLabel: 'Birth Date',
       save: 'Save',
-      premiumTitle: 'Minik Sleep Premium',
+      premiumTitle: 'Minik Uyku Premium',
       premiumSubtitle: 'Continue with premium after the 3-day trial',
       premiumFeature1: 'Unlimited lullabies',
       premiumFeature1Sub: 'Continue with premium after trial',
@@ -4674,6 +4709,86 @@ async function playWithElevenLabs(lullaby, id) {
     setLanguage(state.language, true);
   }
   window.addEventListener('load', initFixes);
+})();
+</script>
+
+
+<script>
+(function(){
+  function applyFinalLanguageFixes(){
+    const isTR = (window.state && state.language === 'tr');
+    const logo = document.querySelector('.logo-text');
+    if (logo) logo.textContent = 'Minik Uyku';
+
+    const premiumTitle = document.querySelector('#premium-modal .premium-title');
+    if (premiumTitle) premiumTitle.textContent = 'Minik Uyku Premium';
+
+    const settingsTitle = document.querySelector('#settings-modal [style*="font-family"]');
+    if (settingsTitle) settingsTitle.textContent = isTR ? 'Bebek Ayarları' : 'Baby Settings';
+    const settingsDesc = settingsTitle?.nextElementSibling;
+    if (settingsDesc) settingsDesc.textContent = isTR ? 'Kişiselleştirilmiş deneyim için' : 'For a personalized experience';
+
+    const babyNameLabel = document.querySelector('label[for="baby-name-input"], #baby-name-input')?.previousElementSibling;
+    const birthLabel = document.querySelector('label[for="baby-birthdate"], #baby-birthdate')?.previousElementSibling;
+    if (babyNameLabel && babyNameLabel.classList.contains('input-label')) babyNameLabel.textContent = isTR ? 'Bebeğinizin Adı' : "Baby's Name";
+    if (birthLabel && birthLabel.classList.contains('input-label')) birthLabel.textContent = isTR ? 'Doğum Tarihi' : 'Birth Date';
+
+    const babyInput = document.getElementById('baby-name-input');
+    if (babyInput) babyInput.placeholder = isTR ? 'Ayşe / Mehmet' : 'Emma / Noah';
+    const example = document.getElementById('settings-example-text');
+    if (example) example.innerHTML = isTR
+      ? 'Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>\'m, tatlı rüyalar gör..."'
+      : 'Example: "Sleep softly, <strong style="color: var(--mint);">Emma</strong>... sweet dreams..."';
+    const saveBtn = document.querySelector('#settings-modal .btn-primary');
+    if (saveBtn) saveBtn.textContent = isTR ? 'Kaydet' : 'Save';
+
+    const phraseTitle = document.getElementById('phrase-title');
+    if (phraseTitle) phraseTitle.textContent = isTR
+      ? '📝 Masal okur gibi yavaş, sıcak ve doğal bir tonla okuyun. (Yaklaşık 1 dakika):'
+      : '📝 Read slowly in a warm, natural storytelling tone. (About 1 minute):';
+    const p1 = document.getElementById('phrase-1');
+    const p2 = document.getElementById('phrase-2');
+    const p3 = document.getElementById('phrase-3');
+    if (p1) p1.textContent = isTR ? 'Uyu bebeğim... şimdi dinlenme zamanı...' : 'Sleep softly, little one... it is time to rest now...';
+    if (p2) p2.textContent = isTR ? 'Gece sessiz, yıldızlar gökyüzünde parlıyor... ay ışığı odana yumuşakça vuruyor...' : 'The night is calm, the stars are shining, and the moonlight is touching your room gently...';
+    if (p3) p3.textContent = isTR ? 'Mmm... eee... şşş... derin bir nefes al ve bırak...' : 'Mmm... shh... take a deep breath... and slowly let it go...';
+    const voiceText = document.getElementById('voice-text');
+    if (voiceText && !voiceText.dataset.userEdited) {
+      voiceText.placeholder = isTR ? 'Buraya sakin bir ninni ya da kısa masal metni yazın...' : 'Write a calm lullaby or a short bedtime text here...';
+      voiceText.value = isTR ? 'Uyu bebeğim... gece sessiz, yıldızlar parlarken şimdi tatlı rüyalara dalma zamanı...' : 'Sleep softly, little one... the night is quiet and it is time to drift into sweet dreams...';
+    }
+
+    const trialTitle = document.getElementById('trial-title');
+    const trialSub = document.getElementById('trial-subtitle');
+    if (trialTitle && trialSub && !state.isPremium) {
+      const days = (window.getTrialDaysLeft ? getTrialDaysLeft() : 3);
+      if (window.isTrialActive && isTrialActive()) {
+        trialTitle.textContent = isTR ? `${days} gün ücretsiz deneme kaldı` : `${days} day free trial left`;
+        trialSub.textContent = isTR ? 'Ses klonlama, analiz ve tüm içerikleri deneyin' : 'Try voice cloning, analysis and all content';
+      }
+    }
+
+    if (typeof renderRecordings === 'function') renderRecordings();
+    if (typeof updateCloneSection === 'function') updateCloneSection();
+    if (typeof renderSleepStats === 'function') renderSleepStats();
+    if (typeof renderExpertTips === 'function') renderExpertTips();
+  }
+
+  const originalUpdateLanguageUI = window.updateLanguageUI;
+  window.updateLanguageUI = function(){
+    if (originalUpdateLanguageUI) originalUpdateLanguageUI();
+    applyFinalLanguageFixes();
+  };
+
+  const originalRenderExpertTips = window.renderExpertTips;
+  window.renderExpertTips = function(){
+    if (originalRenderExpertTips) originalRenderExpertTips();
+    const heading = document.querySelectorAll('.section-title')[10];
+    if (heading) heading.childNodes[0].textContent = state.language === 'tr' ? 'Uzman Önerileri' : 'Expert Tips';
+  };
+
+  document.addEventListener('DOMContentLoaded', () => setTimeout(applyFinalLanguageFixes, 200));
+  setTimeout(applyFinalLanguageFixes, 600);
 })();
 </script>
 
