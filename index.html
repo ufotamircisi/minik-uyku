@@ -1,1373 +1,1039 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#07101e">
-    <title>Minik Uyku – LumiBaby</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0e1a;
-            --bg-light: #151b2d;
-            --card: rgba(255,255,255,0.05);
-            --border: rgba(255,255,255,0.1);
-            --text: #e8ecf4;
-            --text-muted: #8b9bb4;
-            --accent: #9d8cef;
-            --accent-light: #b8a8f8;
-            --gold: #f0c060;
-            --rose: #e8829a;
-            --mint: #5dd8a8;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            max-width: 480px;
-            margin: 0 auto;
-            overflow-x: hidden;
-        }
-        
-        .bg-stars {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
-        }
-        
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s ease-in-out infinite;
-        }
-        
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        
-        .header {
-            position: relative;
-            z-index: 10;
-            padding: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#07101e" />
+  <title>Minik Uyku – LumiBaby</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+:root {
+  --bg: #0a0e1a;
+  --bg-light: #151b2d;
+  --card: rgba(255,255,255,0.05);
+  --border: rgba(255,255,255,0.1);
+  --text: #e8ecf4;
+  --text-muted: #8b9bb4;
+  --accent: #9d8cef;
+  --accent-light: #b8a8f8;
+  --gold: #f0c060;
+  --rose: #e8829a;
+  --mint: #5dd8a8;
+  --sky: #6ab8e8;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.app-shell{position:relative;max-width:480px;margin:0 auto;min-height:100vh;overflow:hidden}
+.bg-stars,.bg-glow{pointer-events:none;position:fixed;inset:0;z-index:0}
+.bg-stars{overflow:hidden}
+.star{position:absolute;width:2px;height:2px;background:white;border-radius:50%;animation:twinkle 3s ease-in-out infinite}
+.bg-glow{width:300px;height:300px;border-radius:50%;filter:blur(80px);opacity:.15}
+.glow-1{top:-100px;left:-100px;background:var(--accent)}
+.glow-2{right:-100px;bottom:20%;background:var(--mint)}
+.header,.nav,.content,.bottom-nav,.mini-timer,.modal{position:relative;z-index:2}
+.header{display:flex;align-items:center;justify-content:space-between;padding:20px;gap:12px}
+.logo{display:flex;align-items:flex-start;gap:10px}
+.logo-stack{display:flex;flex-direction:column;line-height:1.1}
+.logo-moon{font-size:28px;animation:float 3s ease-in-out infinite}
+.logo-text,.logo-subtext{font-family:'Quicksand',sans-serif;font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--text) 0%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header-btns,.lang-switch,.analysis-actions,.timer-section,.np-badges{display:flex;gap:8px;align-items:center}
+.header-btn,.timer-btn,.bottom-item,.lang-chip,.btn-primary,.btn-secondary,.sleep-action-btn,.mini-cancel{transition:all .25s ease}
+.header-btn,.lang-chip,.timer-btn,.bottom-item{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text-muted);border-radius:14px}
+.header-btn{padding:8px 14px;display:flex;align-items:center;gap:6px;font-size:12px}
+.header-btn.premium,.btn-primary{background:linear-gradient(135deg,rgba(240,192,96,.2),rgba(240,192,96,.05));border-color:var(--gold);color:var(--gold)}
+.compact-lang-switch{margin-bottom:0}.compact-lang-chip{padding:8px 10px;min-width:42px;font-size:12px}
+.lang-chip{padding:10px 12px;flex:1;text-align:center;font-size:13px;font-weight:700}
+.lang-chip.active{border-color:var(--accent);background:rgba(157,140,239,.15);color:var(--accent-light)}
+.nav{display:flex;gap:8px;padding:0 20px 15px;overflow:auto;scrollbar-width:none}.nav::-webkit-scrollbar,.content::-webkit-scrollbar{display:none}
+.nav-item{flex:1;min-width:70px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .25s ease}
+.nav-item.active{background:rgba(157,140,239,.15);border-color:var(--accent)}
+.nav-icon{display:block;font-size:20px;margin-bottom:4px}.nav-label{font-size:11px;font-weight:600;color:var(--text-muted)}
+.nav-item.active .nav-label{color:var(--accent-light)}
+.content{height:calc(100vh - 146px);overflow:auto;padding:0 20px 100px}
+.page{display:none}.page.active{display:block;animation:fadeIn .25s ease}
+.section-title{display:flex;align-items:center;gap:8px;font-family:'Quicksand',sans-serif;font-size:16px;font-weight:600;margin:20px 0 12px}.section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border) 0%,transparent 100%)}
+.card,.story-card,.kolik-item,.recording-item,.expert-card,.stat-card,.sleep-item,.analysis-card,.prediction-card,.sleep-tracker-card,.chart-container,.clone-box,.trial-banner,.timer-picker,.now-playing,.record-section,.onboard-point{background:var(--card);border:1px solid var(--border);border-radius:16px}
+.premium-badge,.badge,.card-tag{font-size:10px;padding:4px 10px;border-radius:999px;font-weight:700}
+.premium-badge{background:linear-gradient(135deg,var(--gold),#d4a84b);color:#0a0e1a}.free-badge{background:var(--mint)}
+.trial-banner,.analysis-card,.prediction-card,.sleep-tracker-card,.record-section,.clone-box{padding:16px}
+.analysis-title{font-weight:700;font-size:15px}.analysis-topline{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.analysis-subtitle,.soft-note,.modal-subtitle{font-size:12px;color:var(--text-muted);line-height:1.5;margin-top:4px}.soft-note{margin-top:12px}.centered-note{text-align:center}
+.pill-inline{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--gold);background:rgba(240,192,96,.12);border:1px solid rgba(240,192,96,.25);padding:4px 8px;border-radius:999px}
+.btn-primary,.btn-secondary,.sleep-action-btn{width:100%;padding:14px;border:none;border-radius:14px;font-weight:700;display:flex;justify-content:center;align-items:center;gap:8px}
+.btn-primary{color:#0a0e1a}.btn-secondary{background:linear-gradient(135deg,var(--accent),#7c6ac8);color:white}.sleep-start{background:linear-gradient(135deg,var(--mint),#3cb371);color:#0a0e1a}.sleep-stop{background:linear-gradient(135deg,var(--rose),#c44569);color:#fff}
+.now-playing{display:none;margin-bottom:16px;background:linear-gradient(135deg,rgba(157,140,239,.2),rgba(93,216,168,.1));border-color:rgba(157,140,239,.3)}.now-playing.show{display:block}
+.np-header{display:flex;align-items:center;gap:12px}.np-icon{font-size:32px}.np-info{flex:1}.np-title{font-size:15px;font-weight:700}.np-subtitle{font-size:12px;color:var(--accent-light)}
+.badge-loop{background:rgba(93,216,168,.15);color:var(--mint);border:1px solid rgba(93,216,168,.3)}.badge-timer{background:rgba(240,192,96,.15);color:var(--gold);border:1px solid rgba(240,192,96,.3)}
+.np-stop,.play-btn,.kolik-play,.rec-btn,.record-btn{display:flex;align-items:center;justify-content:center;border:none;border-radius:50%}
+.np-stop{width:36px;height:36px;background:rgba(232,130,154,.2);color:var(--rose)}
+.progress-bar{height:4px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin-top:12px}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--mint))}
+.timer-section{flex-wrap:wrap;margin-bottom:16px}.timer-btn{flex:1;min-width:140px;justify-content:center;padding:12px;color:var(--text)}.timer-btn.active{background:rgba(232,130,154,.15);border-color:var(--rose);color:var(--rose)}
+.timer-picker{display:none;padding:16px;margin-bottom:16px}.timer-picker.show{display:block}.soft-label{font-size:13px;color:var(--text-muted);margin-bottom:8px}.timer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.timer-option{padding:12px;text-align:center;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;cursor:pointer}.timer-option.selected{background:rgba(157,140,239,.15);border-color:var(--accent);color:var(--accent-light)}
+.card,.kolik-item,.recording-item,.sleep-item{display:flex;align-items:center;gap:14px;padding:16px;margin-bottom:12px}.card-icon,.kolik-icon,.rec-icon{font-size:32px}.card-content,.kolik-info,.rec-info,.sleep-info{flex:1}.card-title,.kolik-name,.rec-name,.sleep-info h4{font-size:15px;font-weight:700;margin-bottom:4px}.card-desc,.kolik-desc,.rec-meta,.sleep-info p{font-size:12px;color:var(--text-muted);line-height:1.5}
+.card-tags,.story-footer{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.card-tag{background:rgba(255,255,255,.05);color:var(--text-muted)}
+.play-btn,.kolik-play,.rec-btn{width:44px;height:44px;background:rgba(255,255,255,.1);color:var(--text);font-size:16px}.play-btn.playing,.kolik-play.playing{background:var(--accent);color:#fff}
+.story-card{overflow:hidden;margin-bottom:12px}.story-header{display:flex;gap:14px;padding:16px;align-items:flex-start}.story-emoji{font-size:40px}.story-content h3{font-size:16px;margin-bottom:6px}.story-content p{font-size:13px;color:var(--text-muted);line-height:1.5}.story-footer{padding:12px 16px;border-top:1px solid var(--border)}
+.record-section{text-align:center;background:linear-gradient(135deg,rgba(157,140,239,.1),rgba(93,216,168,.05));border-color:rgba(157,140,239,.2)}.record-btn{width:80px;height:80px;margin:0 auto 16px;background:linear-gradient(135deg,var(--rose),#c44569);color:#fff;font-size:28px;box-shadow:0 8px 30px rgba(232,130,154,.4)}.record-btn.recording{animation:recordPulse 1.5s ease-in-out infinite}.record-timer{font-size:32px;font-weight:700;color:var(--gold);font-family:monospace;margin-bottom:8px}.record-status{font-size:13px;color:var(--text-muted)}
+.waveform{display:flex;justify-content:center;align-items:center;gap:3px;height:40px;margin:16px 0}.wave-bar{width:3px;background:var(--accent);border-radius:3px;min-height:4px}
+.phrase-box{background:rgba(255,255,255,.03);border:1px dashed var(--border);border-radius:12px;padding:16px;text-align:left}.phrase-title{font-size:12px;color:var(--text-muted);font-weight:700;margin-bottom:10px}.phrase{font-size:14px;color:var(--text-muted);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)}.phrase:last-child{border-bottom:none}
+.input-group{margin-bottom:12px}.input-label{display:block;font-size:11px;color:var(--text-muted);font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}.input-field{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text);outline:none}
+.status-msg{display:none;padding:12px;border-radius:10px;font-size:13px;margin-top:12px}.status-msg.show{display:block}.status-success{background:rgba(93,216,168,.1);border:1px solid rgba(93,216,168,.2);color:var(--mint)}
+.prediction-card{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,rgba(157,140,239,.2),rgba(240,192,96,.1));border-color:rgba(157,140,239,.3);margin-bottom:16px}.prediction-icon{font-size:40px}.prediction-content h3{font-size:16px;margin-bottom:4px;color:var(--accent-light)}.prediction-content p{font-size:14px}.prediction-time{font-size:24px;font-weight:700;color:var(--gold);margin-top:8px}
+.sleep-tracker-card{text-align:center;background:linear-gradient(135deg,rgba(93,216,168,.15),rgba(157,140,239,.1));border-color:rgba(93,216,168,.3);margin-bottom:16px}.sleep-status{font-size:14px;color:var(--text-muted)}.sleep-timer-large{font-size:48px;font-weight:700;color:var(--mint);font-family:monospace;margin:16px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}.stat-card{padding:16px;text-align:center}.stat-value{font-size:28px;font-weight:700;color:var(--accent-light);margin-bottom:4px}.stat-label{font-size:12px;color:var(--text-muted)}.sleep-duration{font-size:16px;font-weight:700;color:var(--mint)}
+.age-selector{display:flex;gap:8px;overflow:auto;padding-bottom:8px;margin-bottom:16px}.age-option{flex-shrink:0;padding:10px 16px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--text-muted);font-size:13px;cursor:pointer}.age-option.active{background:rgba(157,140,239,.2);border-color:var(--accent);color:var(--accent-light)}
+.expert-card{padding:16px;border-left:4px solid var(--accent);margin-bottom:12px}.expert-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}.expert-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--mint));font-size:20px}.expert-info h4{font-size:14px;margin-bottom:2px}.expert-info p{font-size:11px;color:var(--text-muted)}.expert-content{font-size:13px;line-height:1.6}
+.bottom-nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:480px;display:flex;justify-content:space-around;padding:8px 0 20px;background:rgba(10,14,26,.98);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:10}.bottom-item{border:none;background:none;color:var(--text-muted);display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 12px;font-size:11px}.bottom-item.active{color:var(--accent)}.bottom-icon{font-size:20px}.bottom-label{font-size:10px;font-weight:600}
+.mini-timer{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);display:none;align-items:center;gap:12px;min-width:220px;padding:12px 20px;background:rgba(10,14,26,.95);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:12px}.mini-timer.show{display:flex}.mini-time{font-size:18px;font-weight:700;color:var(--gold);font-family:monospace}.mini-label{font-size:12px;color:var(--text-muted);flex:1}.mini-cancel{background:none;border:none;color:var(--rose);font-weight:700}
+.modal{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:20}.modal.show{display:flex}.modal-sheet{width:100%;max-width:480px;max-height:85vh;overflow:auto;padding:20px;background:var(--bg-light);border-radius:24px 24px 0 0;animation:slideUp .25s ease}.modal-handle{width:40px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;margin:0 auto 20px}.modal-title{font-family:'Quicksand',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px}.modal-secondary-btn{width:100%;margin-top:12px;border:none;justify-content:center}.premium-modal-content{text-align:center;padding:10px 0}.premium-icon{font-size:64px;margin-bottom:16px}.premium-title{font-size:24px;font-weight:700;margin-bottom:8px;background:linear-gradient(135deg,var(--gold),#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.premium-price{font-size:32px;font-weight:700;margin:16px 0}.premium-price span{font-size:16px;color:var(--text-muted);font-weight:400}.premium-features{text-align:left;margin:24px 0}.premium-feature{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}.premium-feature:last-child{border-bottom:none}.premium-check{color:var(--mint);font-size:20px}.premium-feature-text{font-size:14px}.premium-feature-text span{color:var(--text-muted);font-size:12px}
+.hero-onboard{text-align:center;padding:12px 0 6px}.onboard-hero-icon{font-size:56px;margin-bottom:8px}.hero-onboard h2{font-size:24px;margin-bottom:8px}.hero-onboard p{font-size:14px;color:var(--text-muted);line-height:1.6}.onboard-points{display:grid;gap:10px;margin:18px 0}.onboard-point{padding:14px;text-align:left}.onboard-point strong{display:block;margin-bottom:4px}
+.empty-state{padding:28px 18px;text-align:center;color:var(--text-muted);background:var(--card);border:1px solid var(--border);border-radius:16px}.empty-icon{font-size:42px;margin-bottom:10px}.empty-text{font-size:14px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes twinkle{0%,100%{opacity:.3}50%{opacity:1}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes recordPulse{0%,100%{box-shadow:0 8px 30px rgba(232,130,154,.4)}50%{box-shadow:0 8px 50px rgba(255,60,60,.6),0 0 0 15px rgba(255,60,60,.1)}}@keyframes slideUp{from{transform:translateY(24px);opacity:.2}to{transform:translateY(0);opacity:1}}
+@media (max-width:380px){.header{flex-direction:column;align-items:flex-start}.header-btns{width:100%;justify-content:space-between}.timer-btn{min-width:100%}.analysis-topline{flex-direction:column}.content{padding:0 14px 100px}.nav{padding:0 14px 15px}}
 
-        .logo-moon {
-            font-size: 24px;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-        
-        .logo-text {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .header-btns {
-            display: flex;
-            gap: 6px;
-        }
-        
-        .header-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            padding: 6px 10px;
-            border-radius: 16px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .header-btn.premium {
-            background: linear-gradient(135deg, rgba(240,192,96,0.2), rgba(240,192,96,0.05));
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-        
-        .nav {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            gap: 6px;
-            padding: 0 16px 12px;
-            overflow-x: auto;
-        }
-        
-        .nav::-webkit-scrollbar { display: none; }
-        
-        .nav-item {
-            flex: 1;
-            min-width: 60px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px 6px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .nav-item.active {
-            background: rgba(157,140,239,0.15);
-            border-color: var(--accent);
-        }
-        
-        .nav-icon {
-            font-size: 18px;
-            display: block;
-            margin-bottom: 3px;
-        }
-        
-        .nav-label {
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-        
-        .nav-item.active .nav-label { color: var(--accent-light); }
-        
-        .content {
-            position: relative;
-            z-index: 10;
-            padding: 0 16px 90px;
-            min-height: calc(100vh - 120px);
-        }
-        
-        .page { display: none; }
-        .page.active { display: block; animation: fadeIn 0.3s ease; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .section-title {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            margin: 16px 0 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .section-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
-        }
-        
-        .premium-badge {
-            background: linear-gradient(135deg, var(--gold), #d4a84b);
-            color: #0a0e1a;
-            font-size: 9px;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-weight: 700;
-        }
-        
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .card:hover { border-color: rgba(157,140,239,0.3); }
-        .card.playing { border-color: var(--accent); }
-        
-        .card-icon {
-            font-size: 28px;
-        }
-        
-        .card-content {
-            flex: 1;
-        }
-        
-        .card-title {
-            font-weight: 700;
-            font-size: 14px;
-            margin-bottom: 3px;
-        }
-        
-        .card-desc {
-            font-size: 11px;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-        
-        .card-tags {
-            display: flex;
-            gap: 4px;
-            margin-top: 6px;
-            flex-wrap: wrap;
-        }
-        
-        .card-tag {
-            font-size: 9px;
-            padding: 2px 6px;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.05);
-            color: var(--text-muted);
-        }
-        
-        .card-tag.premium {
-            background: rgba(240,192,96,0.1);
-            color: var(--gold);
-        }
-        
-        .play-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255,255,255,0.1);
-            color: var(--text);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        
-        .play-btn:hover {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .play-btn.playing {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .now-playing {
-            background: linear-gradient(135deg, rgba(157,140,239,0.2), rgba(93,216,168,0.1));
-            border: 1px solid rgba(157,140,239,0.3);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
-            display: none;
-        }
-        
-        .now-playing.show { display: block; }
-        
-        .np-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-        
-        .np-icon {
-            font-size: 24px;
-        }
-        
-        .np-info { flex: 1; }
-        
-        .np-title {
-            font-weight: 700;
-            font-size: 13px;
-        }
-        
-        .np-subtitle {
-            font-size: 11px;
-            color: var(--accent-light);
-        }
-        
-        .np-stop {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(232,130,154,0.2);
-            color: var(--rose);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-        
-        .progress-bar {
-            height: 3px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--mint));
-            width: 0%;
-            transition: width 0.3s;
-        }
-        
-        .timer-section {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-        
-        .timer-btn {
-            flex: 1;
-            min-width: 100px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 12px;
-            cursor: pointer;
-            border: none;
-        }
-        
-        .timer-btn.active {
-            background: rgba(232,130,154,0.15);
-            color: var(--rose);
-        }
-        
-        .analysis-card {
-            background: linear-gradient(135deg, rgba(106,184,232,0.16), rgba(93,216,168,0.1));
-            border: 1px solid rgba(106,184,232,0.24);
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 12px;
-        }
-        
-        .analysis-result {
-            margin-top: 12px;
-            display: none;
-        }
-        
-        .analysis-result.show { display: block; }
-        
-        .analysis-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 8px 0;
-        }
-        
-        .analysis-label {
-            min-width: 80px;
-            font-size: 12px;
-        }
-        
-        .analysis-bar {
-            flex: 1;
-            height: 6px;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.08);
-            overflow: hidden;
-        }
-        
-        .analysis-fill {
-            height: 100%;
-            border-radius: 10px;
-            background: linear-gradient(90deg, var(--accent), var(--mint));
-        }
-        
-        .analysis-pct {
-            width: 36px;
-            text-align: right;
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-        
-        .soft-note {
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-top: 8px;
-            line-height: 1.4;
-        }
-        
-        .pill-inline {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 10px;
-            color: var(--gold);
-            background: rgba(240,192,96,0.12);
-            border: 1px solid rgba(240,192,96,0.25);
-            padding: 3px 6px;
-            border-radius: 20px;
-        }
-        
-        .btn-primary {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            background: linear-gradient(135deg, var(--gold), #d4a84b);
-            color: #0a0e1a;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        
-        .btn-secondary {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            background: linear-gradient(135deg, var(--accent), #7c6ac8);
-            color: white;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        
-        .story-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-        
-        .story-header {
-            padding: 14px;
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-        
-        .story-emoji { font-size: 32px; line-height: 1; }
-        
-        .story-content h3 {
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-        
-        .story-content p {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-        
-        .story-footer {
-            padding: 10px 14px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 6px;
-        }
-        
-        .kolik-item {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-        
-        .kolik-icon { font-size: 24px; }
-        .kolik-info { flex: 1; }
-        .kolik-name { font-weight: 600; font-size: 13px; }
-        .kolik-desc { font-size: 11px; color: var(--text-muted); }
-        
-        .kolik-tag {
-            font-size: 9px;
-            padding: 3px 8px;
-            border-radius: 8px;
-            background: rgba(93,216,168,0.1);
-            color: var(--mint);
-        }
-        
-        .record-section {
-            background: linear-gradient(135deg, rgba(157,140,239,0.1), rgba(93,216,168,0.05));
-            border: 1px solid rgba(157,140,239,0.2);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        
-        .record-btn {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, var(--rose), #c44569);
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            margin-bottom: 12px;
-        }
-        
-        .record-btn.recording { animation: pulse 1.5s infinite; }
-        
-        .record-timer {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--gold);
-            font-family: monospace;
-        }
-        
-        .waveform {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            height: 32px;
-            margin: 12px 0;
-        }
-        
-        .wave-bar {
-            width: 3px;
-            background: var(--accent);
-            border-radius: 2px;
-            min-height: 4px;
-        }
-        
-        .sleep-tracker-card {
-            background: linear-gradient(135deg, rgba(93,216,168,0.15), rgba(157,140,239,0.1));
-            border: 1px solid rgba(93,216,168,0.3);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        
-        .sleep-timer-large {
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--mint);
-            font-family: monospace;
-            margin: 12px 0;
-        }
-        
-        .sleep-action-btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        
-        .sleep-start {
-            background: linear-gradient(135deg, var(--mint), #3cb371);
-            color: #0a0e1a;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        
-        .stat-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 14px;
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--accent-light);
-        }
-        
-        .stat-label {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-        
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.8);
-            z-index: 200;
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-        }
-        
-        .modal.show { display: flex; }
-        
-        .modal-sheet {
-            background: var(--bg-light);
-            border-radius: 20px 20px 0 0;
-            width: 100%;
-            max-width: 480px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 16px;
-        }
-        
-        .modal-handle {
-            width: 36px;
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            margin: 0 auto 16px;
-        }
-        
-        .input-group { margin-bottom: 12px; }
-        
-        .input-label {
-            display: block;
-            font-size: 10px;
-            color: var(--text-muted);
-            font-weight: 600;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-        
-        .input-field {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.03);
-            color: var(--text);
-            font-family: inherit;
-            font-size: 13px;
-        }
-        
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 480px;
-            background: rgba(10,14,26,0.98);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0 16px;
-            z-index: 100;
-        }
-        
-        .bottom-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            padding: 6px 10px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 10px;
-        }
-        
-        .bottom-item.active { color: var(--accent); }
-        .bottom-icon { font-size: 18px; }
-        
-        .empty-state {
-            text-align: center;
-            padding: 30px 20px;
-            color: var(--text-muted);
-        }
-        
-        .empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.5; }
-        
-        .onboarding {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .onboarding.hide { display: none; }
-        
-        .onboarding-card {
-            text-align: center;
-            max-width: 320px;
-        }
-        
-        .onboarding-emoji {
-            font-size: 64px;
-            margin-bottom: 16px;
-        }
-        
-        .onboarding h2 {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 22px;
-            margin-bottom: 12px;
-        }
-        
-        .onboarding p {
-            color: var(--text-muted);
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 24px;
-        }
-        
-        .lang-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .lang-btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: var(--card);
-            color: var(--text);
-            cursor: pointer;
-        }
-        
-        .lang-btn.active {
-            border-color: var(--accent);
-            background: rgba(157,140,239,0.15);
-        }
-    </style>
+  </style>
 </head>
 <body>
-    <!-- Yıldızlar -->
-    <div class="bg-stars" id="stars"></div>
-    
-    <!-- Header -->
-    <div class="header">
-        <div class="logo">
-            <span class="logo-moon">🌙</span>
-            <span class="logo-text">Minik Uyku</span>
+<div class="bg-stars" id="stars"></div>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+
+  <div class="app-shell">
+    <header class="header">
+      <div class="logo">
+        <span class="logo-moon">🌙</span>
+        <div class="logo-stack">
+          <span class="logo-text" data-i18n="app.name">Minik Uyku</span>
+          <span class="logo-subtext">LumiBaby</span>
         </div>
-        <div class="header-btns">
-            <button class="header-btn" onclick="toggleLanguage()">
-                <span id="lang-btn">TR</span>
-            </button>
-            <button class="header-btn premium" onclick="showPremium()">
-                <span>👑</span>
-            </button>
-            <button class="header-btn" onclick="showSettings()">
-                <span>👶</span> <span id="baby-btn">Bebek</span>
-            </button>
+      </div>
+
+      <div class="header-btns">
+        <div class="lang-switch compact-lang-switch" aria-label="Language switcher">
+          <button type="button" class="lang-chip compact-lang-chip" data-lang="tr">TR</button>
+          <button type="button" class="lang-chip compact-lang-chip" data-lang="en">EN</button>
         </div>
-    </div>
-    
-    <!-- Üst Navigasyon -->
-    <div class="nav">
-        <div class="nav-item active" onclick="goTo('ninniler')">
-            <span class="nav-icon">🎵</span>
-            <span class="nav-label" data-i18n="nav-lullabies">Ninniler</span>
-        </div>
-        <div class="nav-item" onclick="goTo('hikayeler')">
-            <span class="nav-icon">📖</span>
-            <span class="nav-label" data-i18n="nav-stories">Hikayeler</span>
-        </div>
-        <div class="nav-item" onclick="goTo('kolik')">
-            <span class="nav-icon">🌿</span>
-            <span class="nav-label" data-i18n="nav-colic">Kolik</span>
-        </div>
-        <div class="nav-item" onclick="goTo('takip')">
-            <span class="nav-icon">📊</span>
-            <span class="nav-label" data-i18n="nav-tracking">Takip</span>
-        </div>
-        <div class="nav-item" onclick="goTo('sesim')">
-            <span class="nav-icon">🎙️</span>
-            <span class="nav-label" data-i18n="nav-voice">Sesim</span>
-        </div>
-    </div>
-    
-    <!-- İçerik -->
-    <div class="content">
-        <!-- Ninniler -->
-        <div class="page active" id="page-ninniler">
-            <div class="analysis-card">
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-                    <div>
-                        <div style="font-weight:700; font-size:14px;">🩺 <span data-i18n="cry-title">Bebek neden ağlıyor?</span></div>
-                        <div style="font-size:11px; color:var(--text-muted); margin-top:3px;" data-i18n="cry-sub">10 saniye dinleyip olasılık gösterir</div>
-                    </div>
-                    <span class="pill-inline" data-i18n="prediction-badge">Tahmin · tanı değil</span>
-                </div>
-                <button class="btn-secondary" onclick="analyzeCry()" data-i18n="analyze-btn">🎙 10 sn analiz et</button>
-                <div class="analysis-result" id="cry-result"></div>
-                <div class="soft-note" data-i18n="cry-note">Tıbbi teşhis değildir</div>
-            </div>
-            
-            <div class="now-playing" id="player-ninniler">
-                <div class="np-header">
-                    <span class="np-icon" id="np-icon">🎵</span>
-                    <div class="np-info">
-                        <div class="np-title" id="np-title">-</div>
-                        <div class="np-subtitle" id="np-subtitle">Hazır</div>
-                    </div>
-                    <button class="np-stop" onclick="stop()">⏹</button>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-            </div>
-            
-            <div class="timer-section">
-                <button class="timer-btn" onclick="setTimer(30)" data-i18n="timer">⏱ 30 dk</button>
-                <button class="timer-btn" onclick="toggleDetector('cry')" id="btn-cry" data-i18n="cry-detector">🎙 Ağlama</button>
-            </div>
-            
-            <div class="section-title" data-i18n="section-lullabies">Ninniler <span class="premium-badge">Ücretsiz</span></div>
-            <div id="list-lullabies"></div>
-        </div>
-        
-        <!-- Diğer sayfalar benzer şekilde... -->
-        <div class="page" id="page-hikayeler">
-            <div class="section-title" data-i18n="section-stories">Hikayeler</div>
-            <div id="list-stories"></div>
-        </div>
-        
-        <div class="page" id="page-kolik">
-            <div class="section-title" data-i18n="section-white">Beyaz Gürültü <span class="premium-badge" style="background:var(--mint);color:#0a0e1a;">ÜCRETSİZ</span></div>
-            <div id="list-kolik"></div>
-        </div>
-        
-        <div class="page" id="page-takip">
-            <div class="sleep-tracker-card">
-                <div style="font-size:12px; color:var(--text-muted);" data-i18n="sleep-status">Bebek uyanık</div>
-                <div class="sleep-timer-large" id="sleep-time">00:00</div>
-                <button class="sleep-action-btn sleep-start" onclick="toggleSleep()" id="btn-sleep" data-i18n="sleep-start">😴 Uykuya Geçti</button>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-total">0</div>
-                    <div class="stat-label" data-i18n="total-sleep">Toplam</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-count">0</div>
-                    <div class="stat-label" data-i18n="sleep-count">Sayı</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="page" id="page-sesim">
-            <div class="record-section">
-                <button class="record-btn" onclick="toggleRecord()" id="btn-record">🎙️</button>
-                <div class="record-timer" id="record-time">0:00</div>
-                <div class="waveform" id="waveform"></div>
-            </div>
-            <div class="section-title" data-i18n="section-recordings">Kayıtlarım</div>
-            <div id="list-recordings"></div>
-        </div>
-    </div>
-    
-    <!-- Alt Navigasyon -->
-    <div class="bottom-nav">
-        <button class="bottom-item active" onclick="goTo('ninniler')">
-            <span class="bottom-icon">🎵</span>
-            <span class="bottom-label" data-i18n="nav-lullabies">Ninniler</span>
+        <button class="header-btn premium" id="premium-btn">
+          <span>👑</span>
+          <span data-i18n="premium.ctaShort">Premium</span>
         </button>
-        <button class="bottom-item" onclick="goTo('hikayeler')">
-            <span class="bottom-icon">📖</span>
-            <span class="bottom-label" data-i18n="nav-stories">Hikayeler</span>
+        <button class="header-btn" id="settings-btn">
+          <span>👶</span>
+          <span id="baby-name-display" data-i18n="settings.defaultBabyName">Bebek</span>
         </button>
-        <button class="bottom-item" onclick="goTo('kolik')">
-            <span class="bottom-icon">🌿</span>
-            <span class="bottom-label" data-i18n="nav-colic">Kolik</span>
-        </button>
-        <button class="bottom-item" onclick="goTo('takip')">
-            <span class="bottom-icon">📊</span>
-            <span class="bottom-label" data-i18n="nav-tracking">Takip</span>
-        </button>
-        <button class="bottom-item" onclick="goTo('sesim')">
-            <span class="bottom-icon">🎙️</span>
-            <span class="bottom-label" data-i18n="nav-voice">Sesim</span>
-        </button>
-    </div>
-    
-    <!-- Onboarding -->
-    <div class="onboarding" id="onboarding">
-        <div class="onboarding-card">
-            <div class="onboarding-emoji">🌙</div>
-            <h2>Minik Uyku</h2>
-            <p data-i18n="onboard-text">Bebeğiniz için en iyi uyku deneyimi</p>
-            <div class="lang-buttons">
-                <button class="lang-btn active" onclick="setLang('tr')">Türkçe</button>
-                <button class="lang-btn" onclick="setLang('en')">English</button>
-            </div>
-            <button class="btn-primary" onclick="startApp()" data-i18n="start">Başla</button>
+      </div>
+    </header>
+
+    <nav class="nav" id="top-nav"></nav>
+
+    <main class="content">
+      <section class="page active" id="page-ninniler" data-page="ninniler">
+        <div class="trial-banner">
+          <div>
+            <div class="trial-title" data-i18n="trial.title">3 gün ücretsiz deneme aktif</div>
+            <div class="trial-subtitle" data-i18n="trial.subtitle">Tüm premium özellikleri deneyin</div>
+          </div>
+          <button class="header-btn premium" data-action="show-premium" data-i18n="premium.upgrade">Yükselt</button>
         </div>
-    </div>
-    
-    <!-- Ayarlar Modal -->
-    <div class="modal" id="modal-settings" onclick="closeModal(event)">
-        <div class="modal-sheet">
-            <div class="modal-handle"></div>
-            <h3 style="margin-bottom:16px;" data-i18n="settings-title">Ayarlar</h3>
+
+        <div class="analysis-card">
+          <div class="analysis-topline">
+            <div>
+              <div class="analysis-title" data-i18n="analysis.title">🩺 Bebek neden ağlıyor?</div>
+              <div class="analysis-subtitle" data-i18n="analysis.subtitle">10 saniye dinleyip olasılık dağılımı gösterir.</div>
+            </div>
+            <span class="pill-inline" data-i18n="analysis.badge">Tahmin · tanı değil</span>
+          </div>
+          <div class="analysis-actions">
+            <button class="btn-secondary" id="cry-analysis-btn" data-i18n="analysis.button">🎙 10 sn analiz et</button>
+          </div>
+          <div class="analysis-result" id="cry-analysis-result"></div>
+          <div class="soft-note" data-i18n="analysis.note">Bu sonuçlar tıbbi teşhis değildir.</div>
+        </div>
+
+        <div class="now-playing" id="now-playing">
+          <div class="np-header">
+            <span class="np-icon" id="np-icon">🎵</span>
+            <div class="np-info">
+              <div class="np-title" id="np-title">—</div>
+              <div class="np-subtitle" id="np-subtitle" data-i18n="player.ready">Hazır</div>
+            </div>
+            <div class="np-badges">
+              <span class="badge badge-loop">🔁 <span data-i18n="player.loop">Döngü</span></span>
+              <span class="badge badge-timer hidden" id="np-timer"></span>
+            </div>
+            <button class="np-stop" id="stop-btn">⏹</button>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="timer-section">
+          <button class="timer-btn" id="toggle-timer-btn">⏱ <span data-i18n="timer.title">Zamanlayıcı</span></button>
+          <button class="timer-btn" id="cry-detector-btn">🎙 <span data-i18n="detectors.cry">Ağlama Dedektörü</span></button>
+          <button class="timer-btn" id="colic-detector-btn">🌿 <span data-i18n="detectors.colic">Kolik Kriz Dedektörü</span></button>
+        </div>
+
+        <div class="timer-picker" id="timer-picker">
+          <div class="soft-label" data-i18n="timer.question">Ne zaman dursun?</div>
+          <div class="timer-grid" id="timer-grid"></div>
+        </div>
+
+        <div class="section-title"><span data-i18n="sections.lullabies">Türk Ninnileri</span> <span class="premium-badge" data-i18n="trial.badgeSmall">3 gün</span></div>
+        <div id="lullabies-list"></div>
+
+        <div class="section-title" data-i18n="sections.voiceLullabies">Sesimle Ninniler</div>
+        <div id="voice-lullabies-list"></div>
+      </section>
+
+      <section class="page" id="page-hikayeler" data-page="hikayeler">
+        <div class="section-title"><span data-i18n="sections.stories">Uyku Masalları</span> <span class="premium-badge" data-i18n="premium.unlimited">Sınırsız</span></div>
+        <div id="stories-list"></div>
+      </section>
+
+      <section class="page" id="page-kolik" data-page="kolik">
+        <div class="section-title"><span data-i18n="sections.whiteNoise">Beyaz Gürültü</span> <span class="premium-badge free-badge" data-i18n="common.free">Ücretsiz</span></div>
+        <div id="colic-list"></div>
+      </section>
+
+      <section class="page" id="page-takip" data-page="takip">
+        <div class="prediction-card" id="sleep-prediction">
+          <span class="prediction-icon">🔮</span>
+          <div class="prediction-content">
+            <h3 data-i18n="tracking.predictionTitle">Uyku Tahmini</h3>
+            <p id="prediction-text" data-i18n="tracking.predictionText">Bebeğiniz uykuya hazır görünüyor</p>
+            <div class="prediction-time" id="prediction-time">17 dk</div>
+          </div>
+        </div>
+
+        <div class="sleep-tracker-card">
+          <div class="sleep-status" id="sleep-status" data-i18n="tracking.awake">Bebek uyanık</div>
+          <div class="sleep-timer-large" id="sleep-timer">00:00</div>
+          <button class="sleep-action-btn sleep-start" id="sleep-btn">
+            <span>😴</span>
+            <span data-i18n="tracking.start">Uykuya Geçti</span>
+          </button>
+        </div>
+
+        <div class="section-title" data-i18n="tracking.todayStats">Bugünün İstatistikleri</div>
+        <div class="stats-grid" id="stats-grid"></div>
+
+        <div class="section-title" data-i18n="tracking.recentSleeps">Son Uykular</div>
+        <div class="sleep-list" id="sleep-list"></div>
+
+        <div class="section-title" data-i18n="tracking.expertTips">Uzman Önerileri</div>
+        <div class="age-selector" id="age-selector"></div>
+        <div id="expert-tips"></div>
+      </section>
+
+      <section class="page" id="page-sesim" data-page="sesim">
+        <div class="record-section">
+          <button class="record-btn" id="record-btn">🎙️</button>
+          <div class="record-timer" id="record-timer">0:00</div>
+          <div class="record-status" id="record-status" data-i18n="voice.recordIdle">Kayıt başlatmak için dokunun</div>
+          <div class="waveform" id="waveform"></div>
+
+          <div class="phrase-box">
+            <div class="phrase-title" data-i18n="voice.readPrompt">Masal okur gibi yavaş, sıcak ve doğal bir tonla okuyun.</div>
+            <div class="phrase" data-i18n="voice.sample1">Dandini dandini danalı bebek...</div>
+            <div class="phrase" data-i18n="voice.sample2">Biner atın iyisine, düşer yolun kıyısına...</div>
+            <div class="phrase" data-i18n="voice.sample3">E... e... e... e... (nefes sesleri)</div>
+          </div>
+        </div>
+
+        <div class="section-title" data-i18n="voice.myRecordings">Kayıtlarım</div>
+        <div id="recordings-list"></div>
+
+        <div class="section-title"><span data-i18n="voice.cloning">Ses Klonlama</span> <span class="premium-badge free-badge" data-i18n="common.free">Ücretsiz</span></div>
+        <div id="clone-section"></div>
+
+        <div id="voice-generator" class="hidden">
+          <div class="section-title" data-i18n="voice.readWithMyVoice">Sesimle Oku</div>
+          <div class="clone-box">
             <div class="input-group">
-                <label class="input-label" data-i18n="baby-name">Bebek Adı</label>
-                <input type="text" class="input-field" id="input-name" placeholder="Ayşe">
+              <label class="input-label" for="voice-text" data-i18n="common.text">Metin</label>
+              <textarea class="input-field" id="voice-text" rows="3"></textarea>
             </div>
-            <button class="btn-primary" onclick="saveSettings()" data-i18n="save">Kaydet</button>
+            <button class="btn-secondary" id="speak-btn" data-i18n="voice.speak">🎵 Sesimle Oku</button>
+            <div class="status-msg" id="speak-status"></div>
+          </div>
         </div>
+      </section>
+    </main>
+
+    <div class="mini-timer" id="mini-timer">
+      <span>⏱</span>
+      <span class="mini-time" id="mini-time">--:--</span>
+      <span class="mini-label" data-i18n="timer.remaining">sonra kapanacak</span>
+      <button class="mini-cancel" id="cancel-timer-btn" data-i18n="common.cancel">İptal</button>
     </div>
 
-    <script>
-        // ========== SADELEŞTİRİLMİŞ TEK JS DOSYASI ==========
-        
-        // Veri
-        const DATA = {
-            tr: {
-                lullabies: [
-                    {id: 'l1', name: 'Dandini Dandini', emoji: '⭐', text: 'Dandini dandini danalı bebek...'},
-                    {id: 'l2', name: 'Fış Fış Kayıkçı', emoji: '🚣', text: 'Fııış fış kayııkçı...'}
-                ],
-                stories: [
-                    {id: 's1', title: 'Küçük Yıldız', emoji: '⭐', text: 'Bir varmış bir yokmuş...'}
-                ],
-                kolik: [
-                    {id: 'b1', name: 'Beyaz Gürültü', emoji: '📻'},
-                    {id: 'b2', name: 'Saç Kurutma', emoji: '💨'},
-                    {id: 'd1', name: 'Yağmur', emoji: '🌧️'}
-                ],
-                ui: {
-                    'nav-lullabies': 'Ninniler', 'nav-stories': 'Hikayeler', 'nav-colic': 'Kolik',
-                    'nav-tracking': 'Takip', 'nav-voice': 'Sesim', 'cry-title': 'Bebek neden ağlıyor?',
-                    'cry-sub': '10 saniye dinleyip olasılık gösterir', 'analyze-btn': '🎙 10 sn analiz et',
-                    'timer': '⏱ Zamanlayıcı', 'cry-detector': '🎙 Ağlama', 'section-lullabies': 'Ninniler',
-                    'section-stories': 'Hikayeler', 'section-white': 'Beyaz Gürültü', 'sleep-status': 'Bebek uyanık',
-                    'sleep-start': '😴 Uykuya Geçti', 'total-sleep': 'Toplam Uyku', 'sleep-count': 'Uyku Sayısı',
-                    'section-recordings': 'Kayıtlarım', 'settings-title': 'Ayarlar', 'baby-name': 'Bebek Adı',
-                    'save': 'Kaydet', 'start': 'Başla', 'onboard-text': 'Bebeğiniz için en iyi uyku deneyimi',
-                    'prediction-badge': 'Tahmin · tanı değil', 'cry-note': 'Bu sonuçlar tıbbi teşhis değildir'
-                }
-            },
-            en: {
-                lullabies: [
-                    {id: 'l1', name: 'Twinkle Star', emoji: '✨', text: 'Twinkle twinkle little star...'},
-                    {id: 'l2', name: 'Rock-a-Bye', emoji: '🌙', text: 'Rock-a-bye baby...'}
-                ],
-                stories: [
-                    {id: 's1', title: 'Little Star', emoji: '⭐', text: 'Once upon a time...'}
-                ],
-                kolik: [
-                    {id: 'b1', name: 'White Noise', emoji: '📻'},
-                    {id: 'b2', name: 'Hair Dryer', emoji: '💨'},
-                    {id: 'd1', name: 'Rain', emoji: '🌧️'}
-                ],
-                ui: {
-                    'nav-lullabies': 'Lullabies', 'nav-stories': 'Stories', 'nav-colic': 'Colic',
-                    'nav-tracking': 'Tracking', 'nav-voice': 'My Voice', 'cry-title': 'Why is baby crying?',
-                    'cry-sub': 'Listens 10 sec and shows probability', 'analyze-btn': '🎙 Analyze 10 sec',
-                    'timer': '⏱ Timer', 'cry-detector': '🎙 Cry Detector', 'section-lullabies': 'Lullabies',
-                    'section-stories': 'Stories', 'section-white': 'White Noise', 'sleep-status': 'Baby awake',
-                    'sleep-start': '😴 Fell Asleep', 'total-sleep': 'Total Sleep', 'sleep-count': 'Sessions',
-                    'section-recordings': 'My Recordings', 'settings-title': 'Settings', 'baby-name': 'Baby Name',
-                    'save': 'Save', 'start': 'Start', 'onboard-text': 'The best sleep experience for your baby',
-                    'prediction-badge': 'Estimate · not diagnosis', 'cry-note': 'These results are not a medical diagnosis'
-                }
-            }
-        };
+    <nav class="bottom-nav" id="bottom-nav"></nav>
+  </div>
 
-        // State
-        let state = {
-            lang: localStorage.getItem('lang') || 'tr',
-            babyName: localStorage.getItem('babyName') || '',
-            page: 'ninniler',
-            playing: null,
-            audio: null,
-            recording: false,
-            recorder: null,
-            sleepStart: null,
-            timer: null
-        };
+  <div class="modal" id="settings-modal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title" data-i18n="settings.title">Bebek Ayarları</div>
+      <div class="modal-subtitle" data-i18n="settings.subtitle">Kişiselleştirilmiş deneyim için</div>
 
-        // Init
-        document.addEventListener('DOMContentLoaded', () => {
-            initStars();
-            if (!localStorage.getItem('onboarded')) {
-                document.getElementById('onboarding').classList.remove('hide');
-            }
-            updateUI();
-            renderAll();
+      <div class="input-group">
+        <label class="input-label" for="baby-name-input" data-i18n="settings.babyName">Bebeğinizin Adı</label>
+        <input type="text" class="input-field" id="baby-name-input" maxlength="15" />
+      </div>
+
+      <div class="input-group">
+        <label class="input-label" for="baby-birthdate" data-i18n="settings.birthDate">Doğum Tarihi</label>
+        <input type="date" class="input-field" id="baby-birthdate" />
+      </div>
+
+      <div class="soft-note" id="settings-example" data-i18n="settings.example">Örnek: Uyu Ayşe'm, tatlı rüyalar gör...</div>
+      <button class="btn-primary" id="save-settings-btn" data-i18n="common.save">Kaydet</button>
+    </div>
+  </div>
+
+  <div class="modal" id="premium-modal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="premium-modal-content">
+        <div class="premium-icon">👑</div>
+        <div class="premium-title" data-i18n="premium.title">Minik Uyku Premium</div>
+        <p class="modal-subtitle" data-i18n="premium.subtitle">3 günlük denemeden sonra premium ile devam edin</p>
+        <div class="premium-price">129₺ <span data-i18n="premium.monthly">/aylık</span></div>
+        <div class="premium-features" id="premium-features"></div>
+        <button class="btn-primary" id="activate-premium-btn" data-i18n="premium.upgrade">Premium'a Yükselt</button>
+        <button class="header-btn modal-secondary-btn" id="cancel-premium-btn" data-i18n="common.notNow">Şimdilik İptal</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="onboarding-modal">
+    <div class="modal-sheet onboarding-sheet">
+      <div class="modal-handle"></div>
+      <div class="hero-onboard">
+        <div class="onboard-hero-icon">🌙</div>
+        <h2 data-i18n="onboarding.title">Minik Uyku</h2>
+        <p data-i18n="onboarding.subtitle">Bebeğinizin ağlamasını daha iyi anlamak, kendi sesinizle ninni söylemek ve uyku düzenini takip etmek için hazırlandı.</p>
+      </div>
+      <div class="lang-switch">
+        <button type="button" class="lang-chip" data-lang="tr">Türkçe</button>
+        <button type="button" class="lang-chip" data-lang="en">English</button>
+      </div>
+      <div class="onboard-points" id="onboard-points"></div>
+      <div class="input-group">
+        <label class="input-label" for="onboard-baby-name" data-i18n="settings.babyName">Bebek adı</label>
+        <input type="text" class="input-field" id="onboard-baby-name" maxlength="15" />
+      </div>
+      <button class="btn-primary" id="finish-onboarding-btn" data-i18n="onboarding.start">Başla</button>
+      <div class="soft-note centered-note" data-i18n="onboarding.note">Gerçek ödeme ve gerçek ses klonlama için yayın öncesi backend gerekir.</div>
+    </div>
+  </div>
+
+  
+
+<script>
+(() => {
+  const STORAGE_KEYS = {
+    lang: 'minikuyku_lang',
+    settings: 'minikuyku_settings',
+    onboarded: 'minikuyku_onboarded',
+    premium: 'minikuyku_premium',
+    recordings: 'minikuyku_recordings',
+    sleepSessions: 'minikuyku_sleep_sessions'
+  };
+
+  const I18N = {
+    tr: {"app": {"name": "Minik Uyku", "nav": [{"id": "ninniler", "icon": "🎵", "label": "Ninniler"}, {"id": "hikayeler", "icon": "📖", "label": "Hikayeler"}, {"id": "kolik", "icon": "🌿", "label": "Kolik"}, {"id": "takip", "icon": "📊", "label": "Takip"}, {"id": "sesim", "icon": "🎙️", "label": "Sesim"}]}, "trial": {"title": "3 gün ücretsiz deneme aktif", "subtitle": "Tüm premium özellikleri deneyin", "badgeSmall": "3 gün"}, "premium": {"ctaShort": "Premium", "title": "Minik Uyku Premium", "subtitle": "3 günlük denemeden sonra premium ile devam edin", "upgrade": "Yükselt", "monthly": "/aylık", "unlimited": "Sınırsız", "features": [{"title": "Sınırsız ninni dinleme", "subtitle": "1 dakika sınırı kalkar"}, {"title": "Tüm masallar ve hikayeler", "subtitle": "Türkçe ve İngilizce içerikler"}, {"title": "Gelişmiş dedektörler", "subtitle": "Ağlama ve kolik araçları"}, {"title": "Detaylı uyku analizi", "subtitle": "Rutin ve tahmin görünümü"}, {"title": "Ses klonlama desteği", "subtitle": "Yayın öncesi backend ile bağlanmalı"}]}, "sections": {"lullabies": "Türk Ninnileri", "voiceLullabies": "Sesimle Ninniler", "stories": "Uyku Masalları", "whiteNoise": "Beyaz Gürültü"}, "analysis": {"title": "🩺 Bebek neden ağlıyor?", "subtitle": "10 saniye dinleyip olasılık dağılımı gösterir.", "badge": "Tahmin · tanı değil", "button": "🎙 10 sn analiz et", "note": "Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk, alt ıslaklığı veya kaka rahatsızlığı için fikir vermek üzere tasarlanmıştır.", "labels": {"hunger": "Açlık", "gas": "Gaz", "sleepy": "Uykusuzluk", "diaper": "Alt ıslak", "other": "Diğer"}}, "player": {"ready": "Hazır", "loop": "Döngü", "playing": "Çalınıyor...", "storyPlaying": "Hikaye anlatılıyor..."}, "timer": {"title": "Zamanlayıcı", "question": "Ne zaman dursun?", "remaining": "sonra kapanacak"}, "detectors": {"cry": "Ağlama Dedektörü", "colic": "Kolik Kriz Dedektörü"}, "common": {"free": "Ücretsiz", "cancel": "İptal", "save": "Kaydet", "notNow": "Şimdilik İptal", "text": "Metin"}, "settings": {"title": "Bebek Ayarları", "subtitle": "Kişiselleştirilmiş deneyim için", "babyName": "Bebeğinizin Adı", "birthDate": "Doğum Tarihi", "defaultBabyName": "Bebek", "example": "Örnek: Uyu Ayşe'm, tatlı rüyalar gör..."}, "tracking": {"predictionTitle": "Uyku Tahmini", "predictionText": "Bebeğiniz uykuya hazır görünüyor", "awake": "Bebek uyanık", "asleep": "Bebek uyuyor", "start": "Uykuya Geçti", "stop": "Uyandı", "todayStats": "Bugünün İstatistikleri", "recentSleeps": "Son Uykular", "expertTips": "Uzman Önerileri", "stats": ["Toplam Uyku", "Uyku Sayısı", "Ortalama", "Uyanma"]}, "voice": {"recordIdle": "Kayıt başlatmak için dokunun", "recording": "Kaydediliyor...", "readPrompt": "📝 Masal okur gibi yavaş, sıcak ve doğal bir tonla okuyun. (Yaklaşık 1 dakika):", "sample1": "Dandini dandini danalı bebek...", "sample2": "Biner atın iyisine, düşer yolun kıyısına...", "sample3": "E... e... e... e... (nefes sesleri)", "myRecordings": "Kayıtlarım", "cloning": "Ses Klonlama", "readWithMyVoice": "Sesimle Oku", "speak": "🎵 Sesimle Oku"}, "onboarding": {"title": "Minik Uyku", "subtitle": "Bebeğinizin ağlamasını daha iyi anlamak, kendi sesinizle ninni söylemek ve uyku düzenini takip etmek için hazırlandı.", "start": "Başla", "note": "Not: Gerçek ödeme ve gerçek ses klonlama bağlantısı için yayın öncesi backend gerekir.", "points": [{"title": "🎙 Ses klonlama", "text": "Kendi sesinizle ninni ve hikaye deneyimi."}, {"title": "🩺 Ağlama tahmini", "text": "Açlık, gaz, uykusuzluk, çiş ve kaka için olasılık sonucu."}, {"title": "📊 Uyku analizi", "text": "Uyku oturumları, tahminler ve rutin takibi."}]}, "empty": {"voiceLullabies": "\"Sesim\" sekmesinden sesinizi klonlayın", "recordings": "Henüz kayıt yok", "clone": "Önce ses kaydı yapın", "sleeps": "Henüz uyku kaydı yok"}, "data": {"lullabies": [{"id": "l1", "emoji": "⭐", "name": "Dandini Dandini", "desc": "Nesilden nesile aktarılan klasik Türk ninnisi", "tags": ["Anadolu", "Klasik"]}, {"id": "l2", "emoji": "🚣", "name": "Fış Fış Kayıkçı", "desc": "Sevimli ve yumuşak ritimli geleneksel ninni", "tags": ["Halk", "Yumuşak"]}], "stories": [{"id": "s1", "emoji": "⭐", "title": "Küçük Yıldız", "desc": "Gökyüzündeki küçük yıldızın uyku hikayesi", "tags": ["0-3 yaş", "5 dk"]}, {"id": "s2", "emoji": "🌿", "title": "Ormandaki Uyku", "desc": "Orman hayvanlarının geceye hazırlanışı", "tags": ["1-4 yaş", "7 dk"]}], "colic": [{"id": "c1", "emoji": "💨", "name": "Saç Kurutma", "desc": "Sabit ve güçlü ses akışı"}, {"id": "c2", "emoji": "🌧️", "name": "Yağmur Sesi", "desc": "Yumuşak yağmur ambiyansı"}, {"id": "c3", "emoji": "🤍", "name": "Beyaz Gürültü", "desc": "Tekdüze rahatlatıcı ses"}], "ageOptions": ["0-3 ay", "3-6 ay", "6-12 ay", "1+ yaş"], "expertTips": [[{"avatar": "👩‍⚕️", "author": "Dr. Ayşe Yılmaz", "title": "Pedagog", "tip": "Yenidoğan bebekler genelde günde 16-18 saat uyur. Esneme ve göz ovuşturma gibi uyku sinyallerini takip edin."}, {"avatar": "👨‍⚕️", "author": "Dr. Can Kaya", "title": "Çocuk Doktoru", "tip": "İlk aylarda kolik yaygındır. Beyaz gürültü ve nazik sallama bazı bebeklerde rahatlatıcı olabilir."}], [{"avatar": "😴", "author": "Dr. Selin Aydın", "title": "Uyku Terapisti", "tip": "3. aydan sonra gece uykuları uzayabilir. 4. ay uyku regresyonu sık görülür ve genelde geçicidir."}], [{"avatar": "🌙", "author": "Ebe Seda Kılıç", "title": "Uyku Danışmanı", "tip": "Emekleme ve hareket dönemleri uykuyu geçici olarak etkileyebilir. Sabırlı ve tutarlı olun."}], [{"avatar": "🎈", "author": "Psikolog Derya Uzun", "title": "Oyun Terapisti", "tip": "Ayrılma kaygısı döneminde uyku öncesi kaliteli rutin, güven hissini artırır."}]]}},
+    en: {"app": {"name": "Minik Uyku", "nav": [{"id": "ninniler", "icon": "🎵", "label": "Lullabies"}, {"id": "hikayeler", "icon": "📖", "label": "Stories"}, {"id": "kolik", "icon": "🌿", "label": "Colic"}, {"id": "takip", "icon": "📊", "label": "Tracking"}, {"id": "sesim", "icon": "🎙️", "label": "My Voice"}]}, "trial": {"title": "3 day free trial active", "subtitle": "Try all premium features", "badgeSmall": "3 days"}, "premium": {"ctaShort": "Premium", "title": "Minik Uyku Premium", "subtitle": "Continue with premium after the 3-day trial", "upgrade": "Upgrade", "monthly": "/monthly", "unlimited": "Unlimited", "features": [{"title": "Unlimited lullabies", "subtitle": "The 1 minute limit disappears"}, {"title": "All stories", "subtitle": "Turkish and English content"}, {"title": "Advanced detectors", "subtitle": "Cry and colic tools"}, {"title": "Detailed sleep analysis", "subtitle": "Routine and prediction view"}, {"title": "Voice cloning support", "subtitle": "Connect a backend before release"}]}, "sections": {"lullabies": "English Lullabies", "voiceLullabies": "Lullabies In My Voice", "stories": "Bedtime Stories", "whiteNoise": "White Noise"}, "analysis": {"title": "🩺 Why is the baby crying?", "subtitle": "Listens for 10 seconds and shows a probability breakdown.", "badge": "Prediction · not diagnosis", "button": "🎙 Analyze for 10 sec", "note": "These results are not a medical diagnosis. They are designed to suggest possible reasons such as hunger, gas, sleepiness, wet diaper, or other discomfort.", "labels": {"hunger": "Hunger", "gas": "Gas", "sleepy": "Sleepy", "diaper": "Wet diaper", "other": "Other"}}, "player": {"ready": "Ready", "loop": "Loop", "playing": "Playing...", "storyPlaying": "Story is playing..."}, "timer": {"title": "Timer", "question": "When should it stop?", "remaining": "until stop"}, "detectors": {"cry": "Cry Detector", "colic": "Colic Detector"}, "common": {"free": "Free", "cancel": "Cancel", "save": "Save", "notNow": "Not now", "text": "Text"}, "settings": {"title": "Baby Settings", "subtitle": "For a personalized experience", "babyName": "Baby's Name", "birthDate": "Birth Date", "defaultBabyName": "Baby", "example": "Example: Sleep softly, Emma... sweet dreams..."}, "tracking": {"predictionTitle": "Sleep Prediction", "predictionText": "Your baby looks ready to sleep", "awake": "Baby is awake", "asleep": "Baby is sleeping", "start": "Fell Asleep", "stop": "Woke Up", "todayStats": "Today's Stats", "recentSleeps": "Recent Sleeps", "expertTips": "Expert Tips", "stats": ["Total Sleep", "Sleep Sessions", "Average", "Wake Ups"]}, "voice": {"recordIdle": "Tap to start recording", "recording": "Recording...", "readPrompt": "📝 Read slowly in a warm, natural storytelling tone. (About 1 minute):", "sample1": "Twinkle twinkle little star...", "sample2": "Close your eyes and drift so far...", "sample3": "Shh... shh... soft breathing sounds", "myRecordings": "My Recordings", "cloning": "Voice Cloning", "readWithMyVoice": "Read In My Voice", "speak": "🎵 Read In My Voice"}, "onboarding": {"title": "Minik Uyku", "subtitle": "Built to help you understand crying better, soothe with your own voice, and track sleep routines.", "start": "Start", "note": "Note: real payments and real voice cloning need backend integrations before release.", "points": [{"title": "🎙 Voice cloning", "text": "A lullaby and story experience in your own voice."}, {"title": "🩺 Cry prediction", "text": "Possible outcomes for hunger, gas, sleepiness, pee, and poop discomfort."}, {"title": "📊 Sleep analysis", "text": "Sleep sessions, predictions, and routine tracking."}]}, "empty": {"voiceLullabies": "Clone your voice from the My Voice tab", "recordings": "No recordings yet", "clone": "Record your voice first", "sleeps": "No sleep records yet"}, "data": {"lullabies": [{"id": "l1", "emoji": "✨", "name": "Twinkle Twinkle", "desc": "A classic bedtime lullaby", "tags": ["Classic", "Soft"]}, {"id": "l2", "emoji": "🌙", "name": "Rock-a-Bye Baby", "desc": "A gentle traditional sleep melody", "tags": ["Traditional", "Calm"]}], "stories": [{"id": "s1", "emoji": "⭐", "title": "Little Star", "desc": "A tiny star learns to glow", "tags": ["0-3 years", "5 min"]}, {"id": "s2", "emoji": "🌲", "title": "Sleepy Forest", "desc": "Forest friends get ready for bed", "tags": ["1-4 years", "6 min"]}], "colic": [{"id": "c1", "emoji": "💨", "name": "Hair Dryer", "desc": "A steady strong airflow sound"}, {"id": "c2", "emoji": "🌧️", "name": "Rain Sound", "desc": "Soft rainfall ambience"}, {"id": "c3", "emoji": "🤍", "name": "White Noise", "desc": "Flat soothing sound texture"}], "ageOptions": ["0-3 mo", "3-6 mo", "6-12 mo", "1+ yrs"], "expertTips": [[{"avatar": "👩‍⚕️", "author": "Dr. Ayse Yilmaz", "title": "Pedagogue", "tip": "Newborn babies usually sleep 16 to 18 hours a day. Watch sleepy cues like yawning and eye rubbing."}, {"avatar": "👨‍⚕️", "author": "Dr. Can Kaya", "title": "Pediatrician", "tip": "Colic is common in the first months. White noise and gentle rocking can help some babies settle."}], [{"avatar": "😴", "author": "Dr. Selin Aydin", "title": "Sleep Therapist", "tip": "After 3 months, night sleep may lengthen. The 4 month regression is common and usually temporary."}], [{"avatar": "🌙", "author": "Midwife Seda Kilic", "title": "Sleep Consultant", "tip": "Movement milestones can temporarily affect sleep. Stay patient and consistent with bedtime routines."}], [{"avatar": "🎈", "author": "Psychologist Derya Uzun", "title": "Play Therapist", "tip": "During separation anxiety phases, a stable bedtime routine can increase the feeling of safety."}]]}}
+  };
+
+  const state = {
+    language: localStorage.getItem(STORAGE_KEYS.lang) || 'tr',
+    currentPage: 'ninniler',
+    timerMinutes: null,
+    timerIntervalId: null,
+    timerEndsAt: null,
+    recordingIntervalId: null,
+    waveformIntervalId: null,
+    sleepIntervalId: null,
+    currentTrack: null,
+    currentTrackType: null,
+    currentTrackIcon: '🎵',
+    onboardingOpen: localStorage.getItem(STORAGE_KEYS.onboarded) !== 'true',
+    sleepStartedAt: null,
+    selectedAgeIndex: 0,
+    cryDetectorEnabled: false,
+    colicDetectorEnabled: false,
+    isRecording: false,
+    settings: loadJson(STORAGE_KEYS.settings, { babyName: '', birthDate: '' }),
+    premium: JSON.parse(localStorage.getItem(STORAGE_KEYS.premium) || 'false'),
+    recordings: loadJson(STORAGE_KEYS.recordings, []),
+    sleepSessions: loadJson(STORAGE_KEYS.sleepSessions, [])
+  };
+
+  let progressIntervalId = null;
+
+  function qs(selector, root = document) { return root.querySelector(selector); }
+  function qsa(selector, root = document) { return Array.from(root.querySelectorAll(selector)); }
+  function saveJson(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+  function loadJson(key, fallback) { try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } catch { return fallback; } }
+  function t(path, fallback = '') {
+    return path.split('.').reduce((acc, part) => acc && acc[part], I18N[state.language]) ?? fallback;
+  }
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = String(text ?? '');
+    return div.innerHTML;
+  }
+  function formatClock(totalSeconds) {
+    const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+    const secs = Math.floor(totalSeconds % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+  }
+  function formatDuration(totalSeconds) {
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
+    if (h > 0) return `${h}s ${m}dk`;
+    if (m > 0) return `${m}dk ${s}s`;
+    return `${s}s`;
+  }
+  function todayIso() { return new Date().toISOString().slice(0, 10); }
+
+  function init() {
+    document.documentElement.lang = state.language;
+    renderAll();
+    bindEvents();
+    initStars();
+    initWaveformBars();
+    if (state.onboardingOpen) openModal('onboarding-modal');
+  }
+
+  function renderAll() {
+    applyTranslations();
+    renderNavigation();
+    renderBottomNavigation();
+    renderTimerOptions();
+    renderPremiumFeatures();
+    renderOnboardingPoints();
+    renderAgeOptions();
+    renderLullabies();
+    renderStories();
+    renderColic();
+    renderVoiceLullabies();
+    renderRecordings();
+    renderCloneSection();
+    renderTrackingStats();
+    renderSleepList();
+    renderExpertTips();
+    updateSettingsUI();
+    updateBabyNameDisplay();
+    syncLanguageUi();
+    updateDetectorButtons();
+    updateSleepUI();
+  }
+
+  function applyTranslations() {
+    qsa('[data-i18n]').forEach((element) => {
+      const key = element.dataset.i18n;
+      const value = t(key);
+      if (value) element.textContent = value;
+    });
+    qs('#voice-text').value = state.language === 'tr'
+      ? "Dandini dandini danalı bebek, elleri kolları kınalı bebek..."
+      : "Twinkle twinkle little star, close your eyes and drift afar...";
+  }
+
+  function renderNavigation() {
+    const nav = qs('#top-nav');
+    nav.innerHTML = t('app.nav', []).map((item) => `
+      <button class="nav-item ${item.id === state.currentPage ? 'active' : ''}" data-page-target="${item.id}">
+        <span class="nav-icon">${item.icon}</span>
+        <span class="nav-label">${escapeHtml(item.label)}</span>
+      </button>
+    `).join('');
+  }
+
+  function renderBottomNavigation() {
+    const nav = qs('#bottom-nav');
+    nav.innerHTML = t('app.nav', []).map((item) => `
+      <button class="bottom-item ${item.id === state.currentPage ? 'active' : ''}" data-page-target="${item.id}">
+        <span class="bottom-icon">${item.icon}</span>
+        <span class="bottom-label">${escapeHtml(item.label)}</span>
+      </button>
+    `).join('');
+  }
+
+  function renderTimerOptions() {
+    const timerGrid = qs('#timer-grid');
+    const options = [15, 30, 60, 90, 120];
+    timerGrid.innerHTML = options.map((option) => `
+      <button class="timer-option ${state.timerMinutes === option ? 'selected' : ''}" data-minutes="${option}">${option} dk</button>
+    `).join('');
+  }
+
+  function renderPremiumFeatures() {
+    const wrap = qs('#premium-features');
+    wrap.innerHTML = t('premium.features', []).map((feature) => `
+      <div class="premium-feature">
+        <span class="premium-check">✓</span>
+        <div class="premium-feature-text">
+          ${escapeHtml(feature.title)}
+          <br><span>${escapeHtml(feature.subtitle)}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderOnboardingPoints() {
+    const wrap = qs('#onboard-points');
+    wrap.innerHTML = t('onboarding.points', []).map((point) => `
+      <div class="onboard-point">
+        <strong>${escapeHtml(point.title)}</strong>
+        <span style="font-size:13px;color:var(--text-muted)">${escapeHtml(point.text)}</span>
+      </div>
+    `).join('');
+  }
+
+  function renderAgeOptions() {
+    const wrap = qs('#age-selector');
+    wrap.innerHTML = t('data.ageOptions', []).map((label, index) => `
+      <button class="age-option ${index === state.selectedAgeIndex ? 'active' : ''}" data-age-index="${index}">${escapeHtml(label)}</button>
+    `).join('');
+  }
+
+  function renderLullabies() {
+    const wrap = qs('#lullabies-list');
+    wrap.innerHTML = t('data.lullabies', []).map((item) => `
+      <div class="card" data-play-title="${escapeHtml(item.name)}" data-play-icon="${item.emoji}" data-play-type="track">
+        <div class="card-icon">${item.emoji}</div>
+        <div class="card-content">
+          <div class="card-title">${escapeHtml(item.name)}</div>
+          <div class="card-desc">${escapeHtml(item.desc)}</div>
+          <div class="card-tags">${(item.tags || []).map(tag => `<span class="card-tag">${escapeHtml(tag)}</span>`).join('')}</div>
+        </div>
+        <button class="play-btn" aria-label="play">▶</button>
+      </div>
+    `).join('');
+  }
+
+  function renderStories() {
+    const wrap = qs('#stories-list');
+    wrap.innerHTML = t('data.stories', []).map((item) => `
+      <div class="story-card" data-play-title="${escapeHtml(item.title)}" data-play-icon="${item.emoji}" data-play-type="story">
+        <div class="story-header">
+          <div class="story-emoji">${item.emoji}</div>
+          <div class="story-content">
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.desc)}</p>
+            <div class="story-footer">${(item.tags || []).map(tag => `<span class="card-tag">${escapeHtml(tag)}</span>`).join('')}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderColic() {
+    const wrap = qs('#colic-list');
+    wrap.innerHTML = t('data.colic', []).map((item) => `
+      <div class="kolik-item" data-play-title="${escapeHtml(item.name)}" data-play-icon="${item.emoji}" data-play-type="track">
+        <div class="kolik-icon">${item.emoji}</div>
+        <div class="kolik-info">
+          <div class="kolik-name">${escapeHtml(item.name)}</div>
+          <div class="kolik-desc">${escapeHtml(item.desc)}</div>
+        </div>
+        <button class="kolik-play">▶</button>
+      </div>
+    `).join('');
+  }
+
+  function renderVoiceLullabies() {
+    const wrap = qs('#voice-lullabies-list');
+    if (!state.recordings.length) {
+      wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">🎙️</div><div class="empty-text">${escapeHtml(t('empty.voiceLullabies'))}</div></div>`;
+      return;
+    }
+    wrap.innerHTML = state.recordings.map((recording, index) => `
+      <div class="card" data-play-title="${escapeHtml(recording.name)}" data-play-icon="🎙️" data-play-type="track">
+        <div class="card-icon">🎙️</div>
+        <div class="card-content">
+          <div class="card-title">${escapeHtml(recording.name)}</div>
+          <div class="card-desc">${escapeHtml(recording.durationLabel)} · Demo kayıt</div>
+          <div class="card-tags"><span class="card-tag">Sesim</span><span class="card-tag">#${index + 1}</span></div>
+        </div>
+        <button class="play-btn">▶</button>
+      </div>
+    `).join('');
+  }
+
+  function renderRecordings() {
+    const wrap = qs('#recordings-list');
+    if (!state.recordings.length) {
+      wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">🎙️</div><div class="empty-text">${escapeHtml(t('empty.recordings'))}</div></div>`;
+      return;
+    }
+    wrap.innerHTML = state.recordings.map((recording) => `
+      <div class="recording-item" data-recording-id="${recording.id}">
+        <div class="rec-icon">🎙️</div>
+        <div class="rec-info">
+          <div class="rec-name">${escapeHtml(recording.name)}</div>
+          <div class="rec-meta">${escapeHtml(recording.dateLabel)} · ${escapeHtml(recording.durationLabel)}</div>
+        </div>
+        <div class="rec-actions">
+          <button class="rec-btn play" data-play-title="${escapeHtml(recording.name)}" data-play-icon="🎙️" data-play-type="track">▶</button>
+          <button class="rec-btn delete" data-delete-recording="${recording.id}">🗑</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderCloneSection() {
+    const wrap = qs('#clone-section');
+    const generator = qs('#voice-generator');
+    if (!state.recordings.length) {
+      wrap.innerHTML = `<div class="empty-state"><div class="empty-text">${escapeHtml(t('empty.clone'))}</div></div>`;
+      generator.classList.add('hidden');
+      return;
+    }
+    wrap.innerHTML = `
+      <div class="clone-box">
+        <div style="font-weight:700;font-size:15px;color:var(--accent-light);margin-bottom:8px;">🎙 ${escapeHtml(t('voice.cloning'))}</div>
+        <div class="soft-note" style="margin-top:0;">Demo modunda kaydınız yerelde saklanır. Gerçek klonlama için backend gerekir.</div>
+      </div>
+    `;
+    generator.classList.remove('hidden');
+  }
+
+  function renderTrackingStats() {
+    const labels = t('tracking.stats', []);
+    const today = todayIso();
+    const todaySessions = state.sleepSessions.filter((item) => item.date === today);
+    const totalSeconds = todaySessions.reduce((sum, item) => sum + item.seconds, 0);
+    const count = todaySessions.length;
+    const avg = count ? Math.round(totalSeconds / count) : 0;
+    const stats = [
+      formatDuration(totalSeconds),
+      String(count),
+      avg ? `${Math.round(avg / 60)}dk` : '0dk',
+      String(count)
+    ];
+    qs('#stats-grid').innerHTML = labels.map((label, index) => `
+      <div class="stat-card">
+        <div class="stat-value">${escapeHtml(stats[index] || '0')}</div>
+        <div class="stat-label">${escapeHtml(label)}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderSleepList() {
+    const wrap = qs('#sleep-list');
+    if (!state.sleepSessions.length) {
+      wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">🌙</div><div class="empty-text">${escapeHtml(t('empty.sleeps'))}</div></div>`;
+      return;
+    }
+    wrap.innerHTML = state.sleepSessions.slice().reverse().slice(0, 8).map((item) => `
+      <div class="sleep-item">
+        <div class="sleep-info">
+          <h4>${escapeHtml(item.label)}</h4>
+          <p>${escapeHtml(item.date)}</p>
+        </div>
+        <div class="sleep-duration">${escapeHtml(item.durationLabel)}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderExpertTips() {
+    const tips = t('data.expertTips', [])[state.selectedAgeIndex] || [];
+    qs('#expert-tips').innerHTML = tips.map((tip) => `
+      <div class="expert-card">
+        <div class="expert-header">
+          <div class="expert-avatar">${tip.avatar}</div>
+          <div class="expert-info">
+            <h4>${escapeHtml(tip.author)}</h4>
+            <p>${escapeHtml(tip.title)}</p>
+          </div>
+        </div>
+        <div class="expert-content">${escapeHtml(tip.tip)}</div>
+      </div>
+    `).join('');
+  }
+
+  function updateSettingsUI() {
+    qs('#baby-name-input').value = state.settings.babyName || '';
+    qs('#baby-birthdate').value = state.settings.birthDate || '';
+    qs('#onboard-baby-name').value = state.settings.babyName || '';
+  }
+
+  function updateBabyNameDisplay() {
+    qs('#baby-name-display').textContent = state.settings.babyName || t('settings.defaultBabyName');
+  }
+
+  function syncLanguageUi() {
+    qsa('[data-lang]').forEach((button) => {
+      button.classList.toggle('active', button.dataset.lang === state.language);
+    });
+  }
+
+  function updateDetectorButtons() {
+    qs('#cry-detector-btn').classList.toggle('active', state.cryDetectorEnabled);
+    qs('#colic-detector-btn').classList.toggle('active', state.colicDetectorEnabled);
+  }
+
+  function updateSleepUI() {
+    const active = Boolean(state.sleepStartedAt);
+    qs('#sleep-status').textContent = active ? t('tracking.asleep') : t('tracking.awake');
+    const btn = qs('#sleep-btn');
+    btn.classList.toggle('sleep-start', !active);
+    btn.classList.toggle('sleep-stop', active);
+    btn.innerHTML = active
+      ? `<span>🌞</span><span>${escapeHtml(t('tracking.stop'))}</span>`
+      : `<span>😴</span><span>${escapeHtml(t('tracking.start'))}</span>`;
+  }
+
+  function bindEvents() {
+    document.addEventListener('click', (event) => {
+      const navButton = event.target.closest('[data-page-target]');
+      if (navButton) goToPage(navButton.dataset.pageTarget);
+
+      const langButton = event.target.closest('[data-lang]');
+      if (langButton) setLanguage(langButton.dataset.lang);
+
+      if (event.target.closest('[data-action="show-premium"]') || event.target.id === 'premium-btn') openModal('premium-modal');
+      if (event.target.id === 'settings-btn') openModal('settings-modal');
+      if (event.target.id === 'cancel-premium-btn') closeModal('premium-modal');
+      if (event.target.id === 'activate-premium-btn') activatePremium();
+      if (event.target.id === 'save-settings-btn') handleSaveSettings();
+      if (event.target.id === 'finish-onboarding-btn') finishOnboarding();
+      if (event.target.id === 'stop-btn') stopTrack();
+      if (event.target.id === 'toggle-timer-btn') toggleTimerPicker();
+      if (event.target.classList.contains('timer-option')) handleTimerSelect(event.target);
+      if (event.target.id === 'cancel-timer-btn') cancelTimer();
+      if (event.target.id === 'cry-analysis-btn') runCryAnalysis();
+      if (event.target.id === 'cry-detector-btn') toggleDetector('cry');
+      if (event.target.id === 'colic-detector-btn') toggleDetector('colic');
+      if (event.target.id === 'record-btn') toggleRecording();
+      if (event.target.id === 'speak-btn') speakWithClonedVoice();
+      if (event.target.id === 'sleep-btn') toggleSleepTracking();
+
+      const deleteButton = event.target.closest('[data-delete-recording]');
+      if (deleteButton) deleteRecording(deleteButton.dataset.deleteRecording);
+
+      const playCard = event.target.closest('[data-play-title]');
+      if (playCard) {
+        playTrack({
+          title: playCard.dataset.playTitle,
+          icon: playCard.dataset.playIcon || '🎵',
+          type: playCard.dataset.playType || 'track'
         });
+      }
 
-        function initStars() {
-            const stars = document.getElementById('stars');
-            for (let i = 0; i < 20; i++) {
-                const s = document.createElement('div');
-                s.className = 'star';
-                s.style.left = Math.random() * 100 + '%';
-                s.style.top = Math.random() * 100 + '%';
-                s.style.animationDelay = Math.random() * 3 + 's';
-                stars.appendChild(s);
-            }
-        }
+      const ageOption = event.target.closest('[data-age-index]');
+      if (ageOption) {
+        state.selectedAgeIndex = Number(ageOption.dataset.ageIndex);
+        renderAgeOptions();
+        renderExpertTips();
+      }
 
-        // Navigation
-        function goTo(page) {
-            state.page = page;
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.querySelectorAll('.bottom-item').forEach(b => b.classList.remove('active'));
-            
-            document.getElementById('page-' + page)?.classList.add('active');
-            const index = ['ninniler', 'hikayeler', 'kolik', 'takip', 'sesim'].indexOf(page);
-            document.querySelectorAll('.nav-item')[index]?.classList.add('active');
-            document.querySelectorAll('.bottom-item')[index]?.classList.add('active');
-        }
+      const modal = event.target.classList.contains('modal') ? event.target : null;
+      if (modal) closeModal(modal.id);
+    });
+  }
 
-        // Language
-        function setLang(lang) {
-            state.lang = lang;
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-        }
+  function initStars() {
+    const container = qs('#stars');
+    container.innerHTML = '';
+    for (let i = 0; i < 32; i += 1) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 3}s`;
+      container.appendChild(star);
+    }
+  }
 
-        function toggleLanguage() {
-            state.lang = state.lang === 'tr' ? 'en' : 'tr';
-            localStorage.setItem('lang', state.lang);
-            updateUI();
-            renderAll();
-        }
+  function initWaveformBars() {
+    const waveform = qs('#waveform');
+    waveform.innerHTML = '';
+    for (let i = 0; i < 20; i += 1) {
+      const bar = document.createElement('div');
+      bar.className = 'wave-bar';
+      bar.style.height = '4px';
+      waveform.appendChild(bar);
+    }
+  }
 
-        function updateUI() {
-            document.getElementById('lang-btn').textContent = state.lang.toUpperCase();
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (DATA[state.lang].ui[key]) {
-                    el.textContent = DATA[state.lang].ui[key];
-                }
-            });
-            document.getElementById('baby-btn').textContent = state.babyName || (state.lang === 'tr' ? 'Bebek' : 'Baby');
-        }
+  function animateWaveform(active) {
+    if (state.waveformIntervalId) clearInterval(state.waveformIntervalId);
+    const bars = qsa('.wave-bar');
+    if (!active) {
+      bars.forEach((bar) => { bar.style.height = '4px'; });
+      return;
+    }
+    state.waveformIntervalId = setInterval(() => {
+      bars.forEach((bar) => {
+        bar.style.height = `${4 + Math.round(Math.random() * 28)}px`;
+      });
+    }, 140);
+  }
 
-        function startApp() {
-            localStorage.setItem('onboarded', 'true');
-            localStorage.setItem('lang', state.lang);
-            document.getElementById('onboarding').classList.add('hide');
-            updateUI();
-            renderAll();
-        }
+  function setLanguage(lang) {
+    state.language = lang;
+    localStorage.setItem(STORAGE_KEYS.lang, lang);
+    renderAll();
+  }
 
-        // Render
-        function renderAll() {
-            const d = DATA[state.lang];
-            
-            // Lullabies
-            document.getElementById('list-lullabies').innerHTML = d.lullabies.map(l => `
-                <div class="card" onclick="play('${l.id}', 'lullaby')">
-                    <span class="card-icon">${l.emoji}</span>
-                    <div class="card-content">
-                        <div class="card-title">${l.name}</div>
-                        <div class="card-tags"><span class="card-tag">✨ Free</span></div>
-                    </div>
-                    <button class="play-btn" id="play-${l.id}">▶</button>
-                </div>
-            `).join('');
-            
-            // Stories
-            document.getElementById('list-stories').innerHTML = d.stories.map(s => `
-                <div class="story-card" onclick="play('${s.id}', 'story')">
-                    <div class="story-header">
-                        <span class="story-emoji">${s.emoji}</span>
-                        <div class="story-content">
-                            <h3>${s.title}</h3>
-                            <p>${s.text.substring(0, 50)}...</p>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-            
-            // Kolik
-            document.getElementById('list-kolik').innerHTML = d.kolik.map(k => `
-                <div class="kolik-item" onclick="playKolik('${k.id}')">
-                    <span class="kolik-icon">${k.emoji}</span>
-                    <div class="kolik-info">
-                        <div class="kolik-name">${k.name}</div>
-                    </div>
-                    <span class="kolik-tag">FREE</span>
-                </div>
-            `).join('');
-        }
+  function goToPage(pageId) {
+    state.currentPage = pageId;
+    qsa('.page').forEach((page) => page.classList.toggle('active', page.dataset.page === pageId));
+    renderNavigation();
+    renderBottomNavigation();
+  }
 
-        // Audio
-        function play(id, type) {
-            stop();
-            const item = type === 'lullaby' 
-                ? DATA[state.lang].lullabies.find(l => l.id === id)
-                : DATA[state.lang].stories.find(s => s.id === id);
-            
-            state.playing = id;
-            document.getElementById('player-ninniler').classList.add('show');
-            document.getElementById('np-title').textContent = item.name || item.title;
-            document.getElementById('np-subtitle').textContent = state.lang === 'tr' ? 'Çalınıyor...' : 'Playing...';
-            document.getElementById('np-icon').textContent = item.emoji;
-            document.getElementById('play-' + id)?.classList.add('playing');
-            
-            // TTS
-            speak(item.text);
-        }
+  function openModal(id) { qs(`#${id}`).classList.add('show'); }
+  function closeModal(id) { qs(`#${id}`).classList.remove('show'); }
 
-        function speak(text) {
-            if (!window.speechSynthesis) return;
-            const u = new SpeechSynthesisUtterance(text);
-            u.lang = state.lang === 'tr' ? 'tr-TR' : 'en-US';
-            u.rate = 0.8;
-            u.pitch = 1;
-            u.onend = () => stop();
-            window.speechSynthesis.speak(u);
-            state.audio = u;
-        }
+  function activatePremium() {
+    state.premium = true;
+    localStorage.setItem(STORAGE_KEYS.premium, 'true');
+    closeModal('premium-modal');
+    alert(state.language === 'tr' ? 'Premium demo aktif edildi.' : 'Premium demo activated.');
+  }
 
-        function playKolik(id) {
-            stop();
-            // Web Audio API ile basit ses
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            
-            if (id === 'b1') { // White noise
-                // Buffer ile noise
-                const bufferSize = ctx.sampleRate * 2;
-                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) {
-                    data[i] = Math.random() * 2 - 1;
-                }
-                const noise = ctx.createBufferSource();
-                noise.buffer = buffer;
-                noise.loop = true;
-                noise.connect(gain);
-                noise.start();
-                state.audio = {stop: () => noise.stop()};
-            } else {
-                osc.frequency.value = id === 'b2' ? 200 : 100;
-                osc.start();
-                state.audio = osc;
-            }
-            
-            state.playing = id;
-            document.getElementById('player-ninniler').classList.add('show');
-            document.getElementById('np-title').textContent = 'Kolik Sesi';
-        }
+  function handleSaveSettings() {
+    state.settings = {
+      babyName: qs('#baby-name-input').value.trim(),
+      birthDate: qs('#baby-birthdate').value
+    };
+    saveJson(STORAGE_KEYS.settings, state.settings);
+    updateBabyNameDisplay();
+    closeModal('settings-modal');
+  }
 
-        function stop() {
-            if (state.audio) {
-                window.speechSynthesis?.cancel();
-                try { state.audio.stop(); } catch(e) {}
-                state.audio = null;
-            }
-            state.playing = null;
-            document.querySelectorAll('.play-btn').forEach(b => b.classList.remove('playing'));
-            document.querySelectorAll('.now-playing').forEach(p => p.classList.remove('show'));
-        }
+  function finishOnboarding() {
+    const onboardName = qs('#onboard-baby-name').value.trim();
+    if (onboardName) {
+      state.settings.babyName = onboardName;
+      saveJson(STORAGE_KEYS.settings, state.settings);
+      updateBabyNameDisplay();
+    }
+    state.onboardingOpen = false;
+    localStorage.setItem(STORAGE_KEYS.onboarded, 'true');
+    closeModal('onboarding-modal');
+  }
 
-        // Cry Analysis
-        async function analyzeCry() {
-            const btn = event.target;
-            btn.disabled = true;
-            btn.textContent = state.lang === 'tr' ? 'Dinleniyor...' : 'Listening...';
-            
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({audio: true});
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const analyser = ctx.createAnalyser();
-                const source = ctx.createMediaStreamSource(stream);
-                source.connect(analyser);
-                
-                await new Promise(r => setTimeout(r, 10000));
-                
-                stream.getTracks().forEach(t => t.stop());
-                
-                // Simüle edilmiş sonuç
-                const results = [
-                    {label: state.lang === 'tr' ? 'Açlık' : 'Hunger', val: 45},
-                    {label: state.lang === 'tr' ? 'Uykusuzluk' : 'Sleepy', val: 30},
-                    {label: state.lang === 'tr' ? 'Gaz' : 'Gas', val: 15},
-                    {label: state.lang === 'tr' ? 'Diğer' : 'Other', val: 10}
-                ];
-                
-                document.getElementById('cry-result').innerHTML = results.map(r => `
-                    <div class="analysis-row">
-                        <div class="analysis-label">${r.label}</div>
-                        <div class="analysis-bar"><div class="analysis-fill" style="width:${r.val}%"></div></div>
-                        <div class="analysis-pct">%${r.val}</div>
-                    </div>
-                `).join('');
-                document.getElementById('cry-result').classList.add('show');
-                
-            } catch(e) {
-                alert('Mikrofon izni gerekli');
-            }
-            
-            btn.disabled = false;
-            btn.textContent = state.lang === 'tr' ? '🎙 10 sn analiz et' : '🎙 Analyze 10 sec';
-        }
+  function toggleTimerPicker() {
+    qs('#timer-picker').classList.toggle('show');
+  }
 
-        // Recording
-        async function toggleRecord() {
-            if (state.recording) {
-                state.recorder?.stop();
-                state.recording = false;
-                document.getElementById('btn-record').classList.remove('recording');
-                return;
-            }
-            
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({audio: true});
-                state.recorder = new MediaRecorder(stream);
-                state.recording = true;
-                document.getElementById('btn-record').classList.add('recording');
-                
-                let sec = 0;
-                const interval = setInterval(() => {
-                    if (!state.recording) {
-                        clearInterval(interval);
-                        return;
-                    }
-                    sec++;
-                    document.getElementById('record-time').textContent = 
-                        `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`;
-                }, 1000);
-                
-                const chunks = [];
-                state.recorder.ondataavailable = e => chunks.push(e.data);
-                state.recorder.onstop = () => {
-                    const blob = new Blob(chunks, {type: 'audio/webm'});
-                    const url = URL.createObjectURL(blob);
-                    addRecording(url, sec);
-                    stream.getTracks().forEach(t => t.stop());
-                };
-                
-                state.recorder.start();
-            } catch(e) {
-                alert('Mikrofon izni gerekli');
-            }
-        }
+  function handleTimerSelect(button) {
+    const minutes = Number(button.dataset.minutes);
+    state.timerMinutes = minutes;
+    renderTimerOptions();
+    startTimer(minutes);
+  }
 
-        function addRecording(url, duration) {
-            const id = 'rec_' + Date.now();
-            const div = document.createElement('div');
-            div.className = 'card';
-            div.innerHTML = `
-                <span class="card-icon">🎙️</span>
-                <div class="card-content">
-                    <div class="card-title">Kayıt</div>
-                    <div class="card-desc">${Math.floor(duration/60)}:${(duration%60).toString().padStart(2,'0')}</div>
-                </div>
-                <button class="play-btn" onclick="playRecording('${url}')">▶</button>
-            `;
-            document.getElementById('list-recordings').appendChild(div);
-        }
+  function startTimer(minutes) {
+    cancelTimer(false);
+    state.timerEndsAt = Date.now() + minutes * 60 * 1000;
+    qs('#mini-timer').classList.add('show');
+    qs('#np-timer').classList.remove('hidden');
+    state.timerIntervalId = setInterval(() => {
+      const remainingMs = state.timerEndsAt - Date.now();
+      if (remainingMs <= 0) {
+        cancelTimer(false);
+        stopTrack();
+        return;
+      }
+      const remainingSec = Math.ceil(remainingMs / 1000);
+      qs('#mini-time').textContent = formatClock(remainingSec);
+      qs('#np-timer').textContent = `⏱ ${Math.ceil(remainingSec / 60)}dk`;
+    }, 1000);
+  }
 
-        function playRecording(url) {
-            new Audio(url).play();
-        }
+  function cancelTimer(clearSelection = true) {
+    if (state.timerIntervalId) clearInterval(state.timerIntervalId);
+    state.timerIntervalId = null;
+    state.timerEndsAt = null;
+    qs('#mini-timer').classList.remove('show');
+    qs('#np-timer').classList.add('hidden');
+    qs('#mini-time').textContent = '--:--';
+    qs('#np-timer').textContent = '';
+    if (clearSelection) {
+      state.timerMinutes = null;
+      renderTimerOptions();
+    }
+  }
 
-        // Sleep Tracking
-        function toggleSleep() {
-            const btn = document.getElementById('btn-sleep');
-            if (state.sleepStart) {
-                // Stop
-                const duration = Math.floor((Date.now() - state.sleepStart) / 1000);
-                state.sleepStart = null;
-                btn.textContent = state.lang === 'tr' ? '😴 Uykuya Geçti' : '😴 Fell Asleep';
-                btn.className = 'sleep-action-btn sleep-start';
-                document.getElementById('sleep-time').textContent = '00:00';
-                clearInterval(state.timer);
-                
-                // Update stats
-                const total = parseInt(document.getElementById('stat-total').textContent) + Math.floor(duration/60);
-                document.getElementById('stat-total').textContent = total;
-                document.getElementById('stat-count').textContent = parseInt(document.getElementById('stat-count').textContent) + 1;
-            } else {
-                // Start
-                state.sleepStart = Date.now();
-                btn.textContent = state.lang === 'tr' ? '☀️ Uyandı' : '☀️ Woke Up';
-                btn.className = 'sleep-action-btn sleep-stop';
-                
-                state.timer = setInterval(() => {
-                    const sec = Math.floor((Date.now() - state.sleepStart) / 1000);
-                    document.getElementById('sleep-time').textContent = 
-                        `${Math.floor(sec/60).toString().padStart(2,'0')}:${(sec%60).toString().padStart(2,'0')}`;
-                }, 1000);
-            }
-        }
+  function runCryAnalysis() {
+    const result = qs('#cry-analysis-result');
+    const labels = t('analysis.labels');
+    const base = [
+      { label: labels.hunger, value: randomBetween(20, 45) },
+      { label: labels.gas, value: randomBetween(15, 40) },
+      { label: labels.sleepy, value: randomBetween(10, 35) },
+      { label: labels.diaper, value: randomBetween(5, 25) },
+      { label: labels.other, value: randomBetween(5, 20) }
+    ];
+    const total = base.reduce((sum, item) => sum + item.value, 0);
+    const normalized = base.map((item, index) => ({
+      label: item.label,
+      value: index === base.length - 1
+        ? Math.max(0, 100 - base.slice(0, -1).reduce((sum, x) => sum + Math.round(x.value * 100 / total), 0))
+        : Math.round(item.value * 100 / total)
+    }));
+    result.classList.add('show');
+    result.innerHTML = normalized.map((item) => `
+      <div class="analysis-row">
+        <div class="analysis-label">${escapeHtml(item.label)}</div>
+        <div class="analysis-bar"><div class="analysis-fill" style="width:${item.value}%"></div></div>
+        <div class="analysis-pct">${item.value}%</div>
+      </div>
+    `).join('');
+  }
 
-        // Timer
-        function setTimer(minutes) {
-            if (state.timer) clearTimeout(state.timer);
-            state.timer = setTimeout(() => stop(), minutes * 60000);
-            alert(minutes + (state.lang === 'tr' ? ' dk sonra duracak' : ' min timer set'));
-        }
+  function randomBetween(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
-        // Detector
-        function toggleDetector(type) {
-            const btn = document.getElementById('btn-' + type);
-            if (btn.classList.contains('active')) {
-                btn.classList.remove('active');
-                // Stop detector
-            } else {
-                btn.classList.add('active');
-                // Start detector
-                setTimeout(() => {
-                    btn.classList.remove('active');
-                    if (type === 'cry') play('l1', 'lullaby');
-                }, 30000);
-            }
-        }
+  function toggleDetector(type) {
+    if (type === 'cry') state.cryDetectorEnabled = !state.cryDetectorEnabled;
+    if (type === 'colic') state.colicDetectorEnabled = !state.colicDetectorEnabled;
+    updateDetectorButtons();
+  }
 
-        // Settings
-        function showSettings() {
-            document.getElementById('modal-settings').classList.add('show');
-            document.getElementById('input-name').value = state.babyName;
-        }
+  function toggleRecording() {
+    if (state.isRecording) stopRecording();
+    else startRecording();
+  }
 
-        function saveSettings() {
-            state.babyName = document.getElementById('input-name').value;
-            localStorage.setItem('babyName', state.babyName);
-            document.getElementById('baby-btn').textContent = state.babyName || (state.lang === 'tr' ? 'Bebek' : 'Baby');
-            closeModal();
-        }
+  function startRecording() {
+    state.isRecording = true;
+    qs('#record-btn').classList.add('recording');
+    qs('#record-status').textContent = t('voice.recording');
+    let seconds = 0;
+    animateWaveform(true);
+    state.recordingIntervalId = setInterval(() => {
+      seconds += 1;
+      qs('#record-timer').textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+      if (seconds >= 12) stopRecording();
+    }, 1000);
+  }
 
-        function closeModal(e) {
-            if (!e || e.target === e.currentTarget) {
-                document.getElementById('modal-settings').classList.remove('show');
-            }
-        }
+  function stopRecording() {
+    if (!state.isRecording) return;
+    state.isRecording = false;
+    clearInterval(state.recordingIntervalId);
+    state.recordingIntervalId = null;
+    animateWaveform(false);
+    qs('#record-btn').classList.remove('recording');
+    qs('#record-status').textContent = t('voice.recordIdle');
+    const timer = qs('#record-timer').textContent;
+    const totalSec = Number(timer.split(':')[0]) * 60 + Number(timer.split(':')[1]);
+    const recording = {
+      id: String(Date.now()),
+      name: state.settings.babyName ? `${state.settings.babyName} Voice` : (state.language === 'tr' ? 'Anne Sesi Kaydı' : 'Voice Recording'),
+      date: new Date().toISOString(),
+      dateLabel: new Date().toLocaleDateString(state.language === 'tr' ? 'tr-TR' : 'en-US'),
+      seconds: totalSec || 12,
+      durationLabel: formatDuration(totalSec || 12)
+    };
+    state.recordings.push(recording);
+    saveJson(STORAGE_KEYS.recordings, state.recordings);
+    qs('#record-timer').textContent = '0:00';
+    renderVoiceLullabies();
+    renderRecordings();
+    renderCloneSection();
+  }
 
-        function showPremium() {
-            alert(state.lang === 'tr' ? 'Premium yakında!' : 'Premium coming soon!');
-        }
-    </script>
+  function deleteRecording(id) {
+    state.recordings = state.recordings.filter((item) => item.id !== id);
+    saveJson(STORAGE_KEYS.recordings, state.recordings);
+    renderVoiceLullabies();
+    renderRecordings();
+    renderCloneSection();
+  }
+
+  function speakWithClonedVoice() {
+    const status = qs('#speak-status');
+    status.className = 'status-msg status-success show';
+    status.textContent = state.language === 'tr'
+      ? 'Demo okuma başlatıldı. Gerçek ses klonlama için backend entegrasyonu gerekir.'
+      : 'Demo reading started. Real voice cloning needs backend integration.';
+    const text = qs('#voice-text').value.trim() || (state.language === 'tr' ? 'Sesimle Oku' : 'Read In My Voice');
+    playTrack({ title: text.slice(0, 24) + (text.length > 24 ? '…' : ''), icon: '🎙️', type: 'story' });
+  }
+
+  function playTrack({ title, icon = '🎵', type = 'track' }) {
+    stopTrack();
+    state.currentTrack = title;
+    state.currentTrackType = type;
+    state.currentTrackIcon = icon;
+    qs('#np-icon').textContent = icon;
+    qs('#np-title').textContent = title;
+    qs('#np-subtitle').textContent = type === 'story' ? t('player.storyPlaying') : t('player.playing');
+    qs('#now-playing').classList.add('show');
+    let width = 0;
+    progressIntervalId = setInterval(() => {
+      width = (width + 2) % 102;
+      qs('#progress-fill').style.width = `${width}%`;
+    }, 250);
+  }
+
+  function stopTrack() {
+    state.currentTrack = null;
+    qs('#now-playing').classList.remove('show');
+    qs('#progress-fill').style.width = '0%';
+    if (progressIntervalId) {
+      clearInterval(progressIntervalId);
+      progressIntervalId = null;
+    }
+  }
+
+  function toggleSleepTracking() {
+    if (state.sleepStartedAt) stopSleepTracking();
+    else startSleepTracking();
+  }
+
+  function startSleepTracking() {
+    state.sleepStartedAt = Date.now();
+    updateSleepUI();
+    state.sleepIntervalId = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - state.sleepStartedAt) / 1000);
+      qs('#sleep-timer').textContent = formatClock(elapsed);
+    }, 1000);
+  }
+
+  function stopSleepTracking() {
+    if (!state.sleepStartedAt) return;
+    const elapsed = Math.max(1, Math.floor((Date.now() - state.sleepStartedAt) / 1000));
+    clearInterval(state.sleepIntervalId);
+    state.sleepIntervalId = null;
+    const dt = new Date();
+    state.sleepSessions.push({
+      date: todayIso(),
+      label: state.language === 'tr' ? 'Uyku Oturumu' : 'Sleep Session',
+      durationLabel: formatDuration(elapsed),
+      seconds: elapsed
+    });
+    saveJson(STORAGE_KEYS.sleepSessions, state.sleepSessions);
+    state.sleepStartedAt = null;
+    qs('#sleep-timer').textContent = '00:00';
+    updateSleepUI();
+    renderTrackingStats();
+    renderSleepList();
+  }
+
+  document.addEventListener('DOMContentLoaded', init, { once: true });
+})();
+</script>
+
 </body>
 </html>
