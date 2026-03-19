@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#07101e">
-    <title>Minik Uyku - Bebek Ninnileri & Uyku Takibi</title>
+    <title>Minik Uyku – LumiBaby</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -1408,7 +1408,7 @@
     <div class="header">
         <div class="logo">
             <span class="logo-moon">🌙</span>
-            <span class="logo-text">Minik Uyku</span>
+            <span class="logo-text">Minik Uyku – LumiBaby</span>
         </div>
         <div class="header-btns">
             <div class="lang-switch compact-lang-switch">
@@ -1461,16 +1461,16 @@
             <div class="analysis-card">
                 <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
                     <div>
-                        <div style="font-weight:700; font-size:15px;">🩺 Bebek neden ağlıyor?</div>
-                        <div style="font-size:12px; color: var(--text-muted); margin-top:4px;">10 saniye dinleyip olasılık dağılımı gösterir.</div>
+                        <div id="cry-title" style="font-weight:700; font-size:15px;">🩺 Bebek neden ağlıyor?</div>
+                        <div id="cry-subtitle" style="font-size:12px; color: var(--text-muted); margin-top:4px;">10 saniye dinleyip olasılık dağılımı gösterir.</div>
                     </div>
-                    <span class="pill-inline">Tahmin · tanı değil</span>
+                    <span class="pill-inline" id="cry-pill">Tahmin · tanı değil</span>
                 </div>
                 <div class="analysis-actions">
                     <button class="btn-secondary" style="flex:1;" onclick="startCryAnalysis()" id="cry-analysis-btn">🎙 10 sn analiz et</button>
                 </div>
                 <div class="analysis-result" id="cry-analysis-result"></div>
-                <div class="soft-note">Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk, alt ıslaklığı veya kaka rahatsızlığı için fikir vermek üzere tasarlanmıştır.</div>
+                <div class="soft-note" id="cry-note">Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk ve diğer nedenler için fikir vermek üzere tasarlanmıştır.</div>
             </div>
             <div class="now-playing" id="np-ninniler">
                 <div class="np-header">
@@ -1559,7 +1559,7 @@
                 </div>
             </div>
             
-            <div class="section-title">Beyaz Gürültü <span class="premium-badge" style="background: var(--mint); color: #0a0e1a;">ÜCRETSİZ</span></div>
+            <div class="section-title">Beyaz Gürültü <span class="premium-badge" id="colic-free-badge" style="background: var(--mint); color: #0a0e1a;">TÜMÜ ÜCRETSİZ</span></div>
             <div id="kolik-beyaz"></div>
             
             <div class="section-title">Doğa Sesleri</div>
@@ -1909,8 +1909,8 @@
         const EN_EXPERT_TIPS = {
             0: [
                 { author: 'Dr. Ayse Yilmaz', title: 'Child Development Specialist', avatar: '👩‍⚕️', tip: 'Newborn babies usually sleep 16-18 hours a day. Watch for early sleepy cues like yawning and rubbing eyes.' },
-                { author: 'Dr. Can Kaya', title: 'Pediatrician', avatar: '👨‍⚕️', tip: 'Colic is common in the first months. White noise and gentle rocking may help, especially in the late afternoon.' },
-                { author: 'Midwife Zeynep Demir', title: 'Lactation Consultant', avatar: '🤱', tip: 'Feeding and sleep are closely connected. A calm feed before sleep can support an easier bedtime routine.' }
+                { author: 'Dr. Daniel Brooks', title: 'Pediatrician', avatar: '👨‍⚕️', tip: 'Colic is common in the first months. White noise and gentle rocking may help, especially in the late afternoon.' },
+                { author: 'Midwife Sarah Bennett', title: 'Lactation Consultant', avatar: '🤱', tip: 'Feeding and sleep are closely connected. A calm feed before sleep can support an easier bedtime routine.' }
             ],
             1: [
                 { author: 'Dr. Selin Aydin', title: 'Sleep Therapist', avatar: '😴', tip: 'After 3 months, babies may begin sleeping for longer stretches at night. Sleep regression periods are common and temporary.' },
@@ -1918,14 +1918,14 @@
                 { author: 'Psychologist Elif Yildiz', title: 'Family Therapist', avatar: '🧠', tip: 'Repeating the same bedtime flow each evening helps babies understand that sleep time is coming.' }
             ],
             2: [
-                { author: 'Dr. Burak Tan', title: 'Child Development Specialist', avatar: '👨‍⚕️', tip: 'Between 6 and 12 months, total sleep often becomes 12-14 hours a day and daytime naps may reduce to two.' },
+                { author: 'Dr. Benjamin Scott', title: 'Child Development Specialist', avatar: '👨‍⚕️', tip: 'Between 6 and 12 months, total sleep often becomes 12-14 hours a day and daytime naps may reduce to two.' },
                 { author: 'Midwife Seda Kilic', title: 'Sleep Consultant', avatar: '🌙', tip: 'Crawling and new skills can affect sleep. Babies may want to practice these skills even when tired.' },
                 { author: 'Dr. Asli Koc', title: 'Nutrition Specialist', avatar: '🍼', tip: 'Changes in solids and feeding can affect bedtime. Keep evenings calm and avoid heavy feeds right before sleep.' }
             ],
             3: [
-                { author: 'Dr. Kerem Arslan', title: 'Child Psychiatrist', avatar: '🧸', tip: 'After age one, many toddlers move toward one daytime nap and need a stable bedtime routine.' },
-                { author: 'Psychologist Derya Uzun', title: 'Play Therapist', avatar: '🎈', tip: 'Separation anxiety can peak in toddlerhood. A short, loving bedtime ritual can reduce bedtime resistance.' },
-                { author: 'Dr. Hakan Yucel', title: 'Pedagogue', avatar: '📚', tip: 'Story time becomes especially powerful after age one. Repeating familiar stories can help create a sense of safety.' }
+                { author: 'Dr. Jacob Foster', title: 'Child Psychiatrist', avatar: '🧸', tip: 'After age one, many toddlers move toward one daytime nap and need a stable bedtime routine.' },
+                { author: 'Psychologist Sophie Collins', title: 'Play Therapist', avatar: '🎈', tip: 'Separation anxiety can peak in toddlerhood. A short, loving bedtime ritual can reduce bedtime resistance.' },
+                { author: 'Dr. Matthew Green', title: 'Pedagogue', avatar: '📚', tip: 'Story time becomes especially powerful after age one. Repeating familiar stories can help create a sense of safety.' }
             ]
         };
 
@@ -1973,22 +1973,22 @@ const KOLIK_SOUNDS = {
 
         const EXPERT_TIPS = {
             0: [ // 0-3 ay
-                { author: 'Dr. Ayşe Yılmaz', title: 'Pedagog', avatar: '👩‍⚕️', tip: 'Yeni doğan bebekler günde 16-18 saat uyur. Uyku aralıkları 2-3 saattir. Bebeğinizin uyku sinyallerini (esneme, göz ovuşturma) kaçırmayın.' },
-                { author: 'Uzm. Dr. Can Kaya', title: 'Çocuk Uzmanı', avatar: '👨‍⚕️', tip: '0-3 aylık bebeklerde kolik yaygındır. Beyaz gürültü ve sallanma hareketleri rahatlatır. Saat 17-20 arası kolik krizleri artabilir.' },
+                { author: 'Dr. Emily Carter', title: 'Pedagog', avatar: '👩‍⚕️', tip: 'Yeni doğan bebekler günde 16-18 saat uyur. Uyku aralıkları 2-3 saattir. Bebeğinizin uyku sinyallerini (esneme, göz ovuşturma) kaçırmayın.' },
+                { author: 'Uzm. Dr. Daniel Brooks', title: 'Çocuk Uzmanı', avatar: '👨‍⚕️', tip: '0-3 aylık bebeklerde kolik yaygındır. Beyaz gürültü ve sallanma hareketleri rahatlatır. Saat 17-20 arası kolik krizleri artabilir.' },
                 { author: 'Ebe Zeynep Demir', title: 'Emzirme Danışmanı', avatar: '🤱', tip: 'Açlık ve uyku ilişkisi yakındır. Bebek doyunca uykuya daha kolay dalacaktır. Uyku öncesi emzirme ritüeli oluşturun.' }
             ],
             1: [ // 3-6 ay
-                { author: 'Dr. Selin Aydın', title: 'Uyku Terapisti', avatar: '😴', tip: '3 aydan sonra bebekler gece daha uzun uyumaya başlar. 4 aylık uyku regresyonuna hazırlıklı olun, geçicidir.' },
-                { author: 'Dr. Mehmet Şahin', title: 'Gelişim Uzmanı', avatar: '👨‍⚕️', tip: 'Bu dönemde bebekler günde 14-15 saat uyur. Gündüz 3-4 kez kısa uyku yapabilirler.' },
+                { author: 'Dr. Olivia Reed', title: 'Uyku Terapisti', avatar: '😴', tip: '3 aydan sonra bebekler gece daha uzun uyumaya başlar. 4 aylık uyku regresyonuna hazırlıklı olun, geçicidir.' },
+                { author: 'Dr. Michael Turner', title: 'Gelişim Uzmanı', avatar: '👨‍⚕️', tip: 'Bu dönemde bebekler günde 14-15 saat uyur. Gündüz 3-4 kez kısa uyku yapabilirler.' },
                 { author: 'Psikolog Elif Yıldız', title: 'Aile Terapisti', avatar: '🧠', tip: 'Ritüeller önemlidir. Aynı saatte banyo, masal ve ninni ile bebek uykuya hazırlanmayı öğrenir.' }
             ],
             2: [ // 6-12 ay
-                { author: 'Dr. Burak Tan', title: 'Pedagog', avatar: '👨‍⚕️', tip: '6-12 aylık bebekler günde 12-14 saat uyur. Gündüz uykuları 2ye düşer. Gece açlıktan uyanma azalır.' },
+                { author: 'Dr. Benjamin Scott', title: 'Pedagog', avatar: '👨‍⚕️', tip: '6-12 aylık bebekler günde 12-14 saat uyur. Gündüz uykuları 2ye düşer. Gece açlıktan uyanma azalır.' },
                 { author: 'Uzm. Ebe Seda Kılıç', title: 'Uyku Danışmanı', avatar: '🌙', tip: 'Emekleme dönemi uyku düzenini bozabilir. Bebek yeni becerisini pratik etmek isteyebilir. Sabırlı olun.' },
-                { author: 'Dr. Aslı Koç', title: 'Beslenme Uzmanı', avatar: '🍼', tip: 'Ek gıdaya geçişte uyku düzeni değişebilir. Ağır yemekler uyku öncesi verilmeyebilir.' }
+                { author: 'Dr. Grace Walker', title: 'Beslenme Uzmanı', avatar: '🍼', tip: 'Ek gıdaya geçişte uyku düzeni değişebilir. Ağır yemekler uyku öncesi verilmeyebilir.' }
             ],
             3: [ // 1+ yaş
-                { author: 'Dr. Kerem Arslan', title: 'Çocuk Psikiyatristi', avatar: '🧸', tip: '1 yaş sonrası gündüz uykusu 1e düşer. Gece 11-12 saat aralıksız uyku hedeflenmelidir.' },
+                { author: 'Dr. Jacob Foster', title: 'Çocuk Psikiyatristi', avatar: '🧸', tip: '1 yaş sonrası gündüz uykusu 1e düşer. Gece 11-12 saat aralıksız uyku hedeflenmelidir.' },
                 { author: 'Uzm. Psikolog Derya Uzun', title: 'Oyun Terapisti', avatar: '🎈', tip: 'Ayrılma kaygısı 12-18 ayda zirve yapar. Uyku öncesi kaliteli zaman (özel oyun) ayrılma kaygısını azaltır.' },
                 { author: 'Dr. Hakan Yücel', title: 'Pedagog', avatar: '📚', tip: 'Masal anlatma alışkanlığı bu dönemde kazanılır. Her gece aynı masal tekrarlanabilir, bu güven verir.' }
             ]
@@ -1997,23 +1997,23 @@ const KOLIK_SOUNDS = {
         
         const EXPERT_TIPS_EN = {
             0: [
-                { author: 'Dr. Ayşe Yılmaz', title: 'Pedagogue', avatar: '👩‍⚕️', tip: 'Newborn babies usually sleep 16 to 18 hours a day. Sleep windows are often 2 to 3 hours. Watch for sleepy cues such as yawning and eye rubbing.' },
-                { author: 'Dr. Can Kaya', title: 'Pediatrician', avatar: '👨‍⚕️', tip: 'Colic is common in the first months. White noise and gentle rocking can be soothing. Crying may increase especially in the late afternoon and early evening.' },
-                { author: 'Midwife Zeynep Demir', title: 'Lactation Consultant', avatar: '🤱', tip: 'Feeding and sleep are closely linked. A full baby often settles more easily. A calm feeding routine before sleep can help.' }
+                { author: 'Dr. Emily Carter', title: 'Pedagogue', avatar: '👩‍⚕️', tip: 'Newborn babies usually sleep 16 to 18 hours a day. Sleep windows are often 2 to 3 hours. Watch for sleepy cues such as yawning and eye rubbing.' },
+                { author: 'Dr. Daniel Brooks', title: 'Pediatrician', avatar: '👨‍⚕️', tip: 'Colic is common in the first months. White noise and gentle rocking can be soothing. Crying may increase especially in the late afternoon and early evening.' },
+                { author: 'Midwife Sarah Bennett', title: 'Lactation Consultant', avatar: '🤱', tip: 'Feeding and sleep are closely linked. A full baby often settles more easily. A calm feeding routine before sleep can help.' }
             ],
             1: [
-                { author: 'Dr. Selin Aydın', title: 'Sleep Therapist', avatar: '😴', tip: 'After 3 months, babies may begin sleeping longer at night. Be prepared for the 4-month sleep regression; it is common and temporary.' },
-                { author: 'Dr. Mehmet Şahin', title: 'Development Specialist', avatar: '👨‍⚕️', tip: 'At this stage, babies often sleep 14 to 15 hours a day and may take 3 to 4 shorter naps.' },
-                { author: 'Psychologist Elif Yıldız', title: 'Family Therapist', avatar: '🧠', tip: 'Routines matter. Repeating the same bedtime order such as bath, story and lullaby helps babies understand that sleep is coming.' }
+                { author: 'Dr. Olivia Reed', title: 'Sleep Therapist', avatar: '😴', tip: 'After 3 months, babies may begin sleeping longer at night. Be prepared for the 4-month sleep regression; it is common and temporary.' },
+                { author: 'Dr. Michael Turner', title: 'Development Specialist', avatar: '👨‍⚕️', tip: 'At this stage, babies often sleep 14 to 15 hours a day and may take 3 to 4 shorter naps.' },
+                { author: 'Psychologist Hannah Miller', title: 'Family Therapist', avatar: '🧠', tip: 'Routines matter. Repeating the same bedtime order such as bath, story and lullaby helps babies understand that sleep is coming.' }
             ],
             2: [
-                { author: 'Dr. Burak Tan', title: 'Pedagogue', avatar: '👨‍⚕️', tip: 'Between 6 and 12 months, babies often sleep 12 to 14 hours a day. Day naps may reduce to two and night wakings from hunger often decrease.' },
-                { author: 'Midwife Seda Kılıç', title: 'Sleep Consultant', avatar: '🌙', tip: 'Crawling and movement milestones can briefly affect sleep. Babies may want to practice new skills. Stay patient and consistent.' },
-                { author: 'Dr. Aslı Koç', title: 'Nutrition Specialist', avatar: '🍼', tip: 'Starting solids may change the sleep routine. Heavy meals right before sleep may not be ideal for some babies.' }
+                { author: 'Dr. Benjamin Scott', title: 'Pedagogue', avatar: '👨‍⚕️', tip: 'Between 6 and 12 months, babies often sleep 12 to 14 hours a day. Day naps may reduce to two and night wakings from hunger often decrease.' },
+                { author: 'Midwife Chloe Adams', title: 'Sleep Consultant', avatar: '🌙', tip: 'Crawling and movement milestones can briefly affect sleep. Babies may want to practice new skills. Stay patient and consistent.' },
+                { author: 'Dr. Grace Walker', title: 'Nutrition Specialist', avatar: '🍼', tip: 'Starting solids may change the sleep routine. Heavy meals right before sleep may not be ideal for some babies.' }
             ],
             3: [
-                { author: 'Dr. Kerem Arslan', title: 'Child Psychiatrist', avatar: '🧸', tip: 'After age one, many babies move toward one daytime nap. A long, consistent night sleep becomes the main goal.' },
-                { author: 'Psychologist Derya Uzun', title: 'Play Therapist', avatar: '🎈', tip: 'Separation anxiety often peaks between 12 and 18 months. Special one-on-one time before bedtime can help your child settle more calmly.' },
+                { author: 'Dr. Jacob Foster', title: 'Child Psychiatrist', avatar: '🧸', tip: 'After age one, many babies move toward one daytime nap. A long, consistent night sleep becomes the main goal.' },
+                { author: 'Psychologist Sophie Collins', title: 'Play Therapist', avatar: '🎈', tip: 'Separation anxiety often peaks between 12 and 18 months. Special one-on-one time before bedtime can help your child settle more calmly.' },
                 { author: 'Dr. Hakan Yücel', title: 'Pedagogue', avatar: '📚', tip: 'Bedtime stories become especially powerful in this stage. Repeating a familiar story often creates comfort and security.' }
             ]
         };
@@ -3392,7 +3392,7 @@ async function playWithElevenLabs(lullaby, id) {
         }
 
         function updateSleepChart() {
-            const days = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
+            const days = state.language === 'tr' ? ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
             const today = new Date();
             const chartData = [];
             
@@ -3787,7 +3787,7 @@ async function playWithElevenLabs(lullaby, id) {
 
             const ageOptions = document.querySelectorAll('.age-option');
             const ageTR = ['0-3 ay', '3-6 ay', '6-12 ay', '1+ yaş'];
-            const ageEN = ['0-3 mo', '3-6 mo', '6-12 mo', '1+ yrs'];
+            const ageEN = ['0-3 months', '3-6 months', '6-12 months', '1+ years'];
             ageOptions.forEach((el, idx) => el.textContent = isTR ? ageTR[idx] : ageEN[idx]);
 
             const sectionTitles = document.querySelectorAll('.section-title');
@@ -4076,7 +4076,7 @@ async function playWithElevenLabs(lullaby, id) {
 (function(){
   const I18N = {
     tr: {
-      appName: 'Minik Uyku',
+      appName: 'Minik Uyku – LumiBaby',
       premium: 'Premium',
       baby: 'Bebek',
       navLullabies: 'Ninniler',
@@ -4136,7 +4136,7 @@ async function playWithElevenLabs(lullaby, id) {
       premiumFeature1: 'Sınırsız ninni dinleme',
       premiumFeature1Sub: 'Deneme sonrası premium ile devam eder',
       premiumFeature2: 'Tüm masallar ve hikayeler',
-      premiumFeature2Sub: 'Türkçe ve English içerikler',
+      premiumFeature2Sub: 'Türkçe ve İngilizce içerikler',
       premiumFeature3: 'Gelişmiş dedektörler',
       premiumFeature3Sub: 'Ağlama ve kolik araçları',
       premiumFeature4: 'Detaylı uyku analizi',
@@ -4161,7 +4161,7 @@ async function playWithElevenLabs(lullaby, id) {
       }
     },
     en: {
-      appName: 'Minik Uyku',
+      appName: 'Minik Uyku – LumiBaby',
       premium: 'Premium',
       baby: 'Baby',
       navLullabies: 'Lullabies',
@@ -4198,7 +4198,7 @@ async function playWithElevenLabs(lullaby, id) {
       playing: 'Playing...',
       storyPlaying: 'Story is playing...',
       browserVoice: 'Playing with browser voice',
-      cloneFromVoiceTab: 'Clone your voice from the "My Voice" tab',
+      cloneFromVoiceTab: 'Clone your voice from the "My Voice" section',
       noRecordings: 'No recordings yet',
       noCloneFirst: 'Please record your voice first',
       recordingInstruction: 'Read with a natural book-reading tone. (1 minute recommended):',
@@ -4364,6 +4364,7 @@ async function playWithElevenLabs(lullaby, id) {
     if (kolikTitles[0]) kolikTitles[0].childNodes[0].textContent = t('sectionWhiteNoise') + ' ';
     if (kolikTitles[1]) kolikTitles[1].childNodes[0].textContent = t('sectionNature') + ' ';
     if (kolikTitles[2]) kolikTitles[2].childNodes[0].textContent = t('sectionRelaxing') + ' ';
+    setText('#colic-free-badge', isTR ? 'TÜMÜ ÜCRETSİZ' : 'ALL FREE');
 
     const takipTitles = document.querySelectorAll('#page-takip .section-title');
     if (takipTitles[0]) takipTitles[0].childNodes[0].textContent = t('sectionTodayStats');
@@ -4389,6 +4390,9 @@ async function playWithElevenLabs(lullaby, id) {
     setText('#stat-count + .stat-label', t('sleepCount'));
     setText('#stat-avg + .stat-label', t('average'));
     setText('#stat-wake + .stat-label', t('wakeCount'));
+
+    const chartDays = isTR ? ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'] : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    document.querySelectorAll('.chart-labels span').forEach((el, idx) => { if (chartDays[idx]) el.textContent = chartDays[idx]; });
 
     const emptySleep = document.querySelector('#sleep-list .empty-text');
     if (emptySleep) emptySleep.textContent = t('noSleepRecords');
@@ -4718,10 +4722,19 @@ async function playWithElevenLabs(lullaby, id) {
   function applyFinalLanguageFixes(){
     const isTR = (window.state && state.language === 'tr');
     const logo = document.querySelector('.logo-text');
-    if (logo) logo.textContent = 'Minik Uyku';
+    if (logo) logo.textContent = 'Minik Uyku – LumiBaby';
 
     const premiumTitle = document.querySelector('#premium-modal .premium-title');
-    if (premiumTitle) premiumTitle.textContent = 'Minik Uyku Premium';
+    if (premiumTitle) premiumTitle.textContent = 'Minik Uyku – LumiBaby Premium';
+
+    const cryTitle = document.getElementById('cry-title');
+    const crySubtitle = document.getElementById('cry-subtitle');
+    const cryPill = document.getElementById('cry-pill');
+    const cryNote = document.getElementById('cry-note');
+    if (cryTitle) cryTitle.textContent = isTR ? '🩺 Bebek neden ağlıyor?' : '🩺 Why is my baby crying?';
+    if (crySubtitle) crySubtitle.textContent = isTR ? '10 saniye dinleyip olasılık dağılımı gösterir.' : 'Listens for 10 seconds and shows a probability breakdown.';
+    if (cryPill) cryPill.textContent = isTR ? 'Tahmin · tanı değil' : 'Estimate · not a diagnosis';
+    if (cryNote) cryNote.textContent = isTR ? 'Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk ve diğer nedenler için fikir vermek üzere tasarlanmıştır.' : 'These results are not a medical diagnosis. They are designed to suggest possibilities such as hunger, gas, sleepiness, or other causes.';
 
     const settingsTitle = document.querySelector('#settings-modal [style*="font-family"]');
     if (settingsTitle) settingsTitle.textContent = isTR ? 'Bebek Ayarları' : 'Baby Settings';
@@ -4737,7 +4750,7 @@ async function playWithElevenLabs(lullaby, id) {
     if (babyInput) babyInput.placeholder = isTR ? 'Ayşe / Mehmet' : 'Emma / Noah';
     const example = document.getElementById('settings-example-text');
     if (example) example.innerHTML = isTR
-      ? 'Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>\'m, tatlı rüyalar gör..."'
+      ? 'Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>'m, tatlı rüyalar gör..."'
       : 'Example: "Sleep softly, <strong style="color: var(--mint);">Emma</strong>... sweet dreams..."';
     const saveBtn = document.querySelector('#settings-modal .btn-primary');
     if (saveBtn) saveBtn.textContent = isTR ? 'Kaydet' : 'Save';
@@ -4757,6 +4770,20 @@ async function playWithElevenLabs(lullaby, id) {
       voiceText.placeholder = isTR ? 'Buraya sakin bir ninni ya da kısa masal metni yazın...' : 'Write a calm lullaby or a short bedtime text here...';
       voiceText.value = isTR ? 'Uyu bebeğim... gece sessiz, yıldızlar parlarken şimdi tatlı rüyalara dalma zamanı...' : 'Sleep softly, little one... the night is quiet and it is time to drift into sweet dreams...';
     }
+
+    const voiceEmpty = document.querySelector('#voice-lullabies-list .empty-text');
+    if (voiceEmpty) voiceEmpty.textContent = isTR ? '"Sesim" bölümünden sesinizi klonlayın' : 'Clone your voice from the "My Voice" section';
+
+    const colicBadge = document.getElementById('colic-free-badge');
+    if (colicBadge) colicBadge.textContent = isTR ? 'TÜMÜ ÜCRETSİZ' : 'ALL FREE';
+
+    const chartDays = isTR ? ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'] : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    document.querySelectorAll('.chart-labels span').forEach((el, idx) => { if (chartDays[idx]) el.textContent = chartDays[idx]; });
+
+    const ageOptions = document.querySelectorAll('.age-option');
+    const ageTR = ['0-3 ay', '3-6 ay', '6-12 ay', '1+ yaş'];
+    const ageEN = ['0-3 months', '3-6 months', '6-12 months', '1+ years'];
+    ageOptions.forEach((el, idx) => el.textContent = isTR ? ageTR[idx] : ageEN[idx]);
 
     const trialTitle = document.getElementById('trial-title');
     const trialSub = document.getElementById('trial-subtitle');
