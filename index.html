@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="tr">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<meta content="#07101e" name="theme-color"/>
-<title>Minik Uyku – LumiBaby</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&amp;family=Quicksand:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#07101e">
+    <title>Minik Uyku – LumiBaby</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
         :root {
             --bg: #0a0e1a;
             --bg-light: #151b2d;
@@ -1417,398 +1416,439 @@
     </style>
 </head>
 <body>
-<div class="bg-stars" id="stars"></div>
-<div class="bg-glow glow-1"></div>
-<div class="bg-glow glow-2"></div>
-<div class="header">
-<div class="logo">
-<span class="logo-moon">🌙</span>
-<div class="logo-stack">
-<span class="logo-text">Minik Uyku</span>
-<span class="logo-subtext">LumiBaby</span>
-</div>
-</div>
-<div class="header-btns">
-<div class="lang-switch compact-lang-switch">
-<button class="lang-chip compact-lang-chip" id="lang-tr" onclick="setLanguage('tr')" type="button">TR</button>
-<button class="lang-chip compact-lang-chip" id="lang-en" onclick="setLanguage('en')" type="button">EN</button>
-</div>
-<button class="header-btn premium" id="premium-btn" onclick="showPremiumModal()">
-<span>👑</span> <span id="premium-text">Premium</span>
-</button>
-<button class="header-btn" onclick="showSettings()">
-<span>👶</span> <span id="baby-name-display">Bebek</span>
-</button>
-</div>
-</div>
-<div class="nav">
-<div class="nav-item active" onclick="goToPage('ninniler', this)">
-<span class="nav-icon">🎵</span>
-<span class="nav-label" id="nav-lullabies">Ninniler</span>
-</div>
-<div class="nav-item" onclick="goToPage('hikayeler', this)">
-<span class="nav-icon">📖</span>
-<span class="nav-label" id="nav-stories">Hikayeler</span>
-</div>
-<div class="nav-item" onclick="goToPage('kolik', this)">
-<span class="nav-icon">🌿</span>
-<span class="nav-label" id="nav-colic">Kolik</span>
-</div>
-<div class="nav-item" onclick="goToPage('takip', this)">
-<span class="nav-icon">📊</span>
-<span class="nav-label" id="nav-tracking">Takip</span>
-</div>
-<div class="nav-item" onclick="goToPage('sesim', this)">
-<span class="nav-icon">🎙️</span>
-<span class="nav-label" id="nav-voice">Sesim</span>
-</div>
-</div>
-<div class="content">
-<!-- Ninniler Sayfası -->
-<div class="page active" id="page-ninniler">
-<div class="trial-banner" id="trial-banner">
-<div>
-<div class="trial-title" id="trial-title">3 gün ücretsiz deneme aktif</div>
-<div class="trial-subtitle" id="trial-subtitle">Tüm premium özellikleri deneyin</div>
-</div>
-<button class="header-btn premium" onclick="showPremiumModal()">Yükselt</button>
-</div>
-<div class="analysis-card">
-<div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-<div>
-<div style="font-weight:700; font-size:15px;">🩺 Bebek neden ağlıyor?</div>
-<div style="font-size:12px; color: var(--text-muted); margin-top:4px;">10 saniye dinleyip olasılık dağılımı gösterir.</div>
-</div>
-<span class="pill-inline" id="prediction-badge">Tahmin · tanı değil</span>
-</div>
-<div class="analysis-actions">
-<button class="btn-secondary" id="cry-analysis-btn" onclick="startCryAnalysis()" style="flex:1;">🎙 10 sn analiz et</button>
-</div>
-<div class="analysis-result" id="cry-analysis-result"></div>
-<div class="soft-note">Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk, alt ıslaklığı veya kaka rahatsızlığı için fikir vermek üzere tasarlanmıştır.</div>
-</div>
-<div class="now-playing" id="np-ninniler">
-<div class="np-header">
-<span class="np-icon" id="np-icon">🎵</span>
-<div class="np-info">
-<div class="np-title" id="np-title">—</div>
-<div class="np-subtitle" id="np-subtitle">Hazır</div>
-</div>
-<div class="np-badges">
-<span class="badge badge-loop">🔁 Döngü</span>
-<span class="badge badge-timer" id="np-timer" style="display: none;">⏱ 1dk</span>
-</div>
-<button class="np-stop" onclick="stopAll()">⏹</button>
-</div>
-<div class="progress-bar">
-<div class="progress-fill" id="progress-fill"></div>
-</div>
-</div>
-<div class="timer-section">
-<button class="timer-btn" onclick="toggleTimer()">⏱ Zamanlayıcı</button>
-<button class="timer-btn" id="cry-detector-btn" onclick="toggleCryDetector()">🎙 Ağlama Dedektörü</button>
-<button class="timer-btn" id="kolik-detector-btn" onclick="toggleKolikDetector()">🌿 Kolik Kriz Dedektörü</button>
-</div>
-<div class="timer-picker" id="timer-picker">
-<div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Ne zaman dursun?</div>
-<div class="timer-grid">
-<div class="timer-option" onclick="setTimer(15, this)">15 dk</div>
-<div class="timer-option" onclick="setTimer(30, this)">30 dk</div>
-<div class="timer-option" onclick="setTimer(60, this)">60 dk</div>
-<div class="timer-option" onclick="setTimer(90, this)">90 dk</div>
-<div class="timer-option" onclick="setTimer(120, this)">120 dk</div>
-</div>
-</div>
-<div class="section-title">Türk Ninnileri <span class="premium-badge" id="ninniler-badge">1dk</span></div>
-<div id="lullabies-list"></div>
-<div class="section-title">Anne Sesli Ninniler</div>
-<div id="voice-lullabies-list">
-<div class="empty-state">
-<div class="empty-icon">🎙️</div>
-<div class="empty-text">"Sesim" sekmesinden sesinizi klonlayın</div>
-</div>
-</div>
-</div>
-<!-- Hikayeler Sayfası -->
-<div class="page" id="page-hikayeler">
-<div class="now-playing" id="np-hikayeler">
-<div class="np-header">
-<span class="np-icon" id="np-hik-icon">📖</span>
-<div class="np-info">
-<div class="np-title" id="np-hik-title">—</div>
-<div class="np-subtitle" id="np-hik-subtitle">Hazır</div>
-</div>
-<div class="np-badges">
-<span class="badge badge-loop">🔁 Döngü</span>
-<span class="badge badge-premium" id="np-hik-badge">1 dk</span>
-</div>
-<button class="np-stop" onclick="stopAll()">⏹</button>
-</div>
-<div class="progress-bar">
-<div class="progress-fill" id="progress-hik-fill"></div>
-</div>
-</div>
-<div class="section-title">Uyku Masalları <span class="premium-badge" id="hikayeler-badge">1 dk</span></div>
-<div id="stories-list"></div>
-</div>
-<!-- Kolik Sayfası -->
-<div class="page" id="page-kolik">
-<div class="now-playing" id="np-kolik">
-<div class="np-header">
-<span class="np-icon">🌿</span>
-<div class="np-info">
-<div class="np-title" id="np-kol-title">—</div>
-<div class="np-subtitle">Sınırsız · Ücretsiz</div>
-</div>
-<button class="np-stop" onclick="stopAll()">⏹</button>
-</div>
-<div class="progress-bar">
-<div class="progress-fill" style="width: 100%; animation: pulse 2s infinite;"></div>
-</div>
-</div>
-<div class="section-title">Beyaz Gürültü <span class="premium-badge" style="background: var(--mint); color: #0a0e1a;">ÜCRETSİZ</span></div>
-<div id="kolik-beyaz"></div>
-<div class="section-title">Doğa Sesleri</div>
-<div id="kolik-doga"></div>
-<div class="section-title">Rahatlatıcı Sesler</div>
-<div id="kolik-rahat"></div>
-</div>
-<!-- Uyku Takibi Sayfası -->
-<div class="page" id="page-takip">
-<div class="prediction-card" id="sleep-prediction" style="display: none;">
-<span class="prediction-icon">🔮</span>
-<div class="prediction-content">
-<h3>Uyku Tahmini</h3>
-<p id="prediction-text">Bebeğiniz uykuya hazır görünüyor</p>
-<div class="prediction-time" id="prediction-time">17 dk</div>
-</div>
-</div>
-<div class="sleep-tracker-card">
-<div class="sleep-status" id="sleep-status">Bebek uyanık</div>
-<div class="sleep-timer-large" id="sleep-timer">00:00</div>
-<button class="sleep-action-btn sleep-start" id="sleep-btn" onclick="toggleSleepTracking()">
-<span>😴</span> Uykuya Geçti
+    <div class="bg-stars" id="stars"></div>
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+    
+    <div class="header">
+        <div class="logo">
+            <span class="logo-moon">🌙</span>
+            <div class="logo-stack">
+                <span class="logo-text">Minik Uyku</span>
+                <span class="logo-subtext">LumiBaby</span>
+            </div>
+        </div>
+        <div class="header-btns">
+            <div class="lang-switch compact-lang-switch">
+                <button type="button" class="lang-chip compact-lang-chip" id="lang-tr" onclick="setLanguage('tr')">TR</button>
+                <button type="button" class="lang-chip compact-lang-chip" id="lang-en" onclick="setLanguage('en')">EN</button>
+            </div>
+            <button class="header-btn premium" onclick="showPremiumModal()" id="premium-btn">
+                <span>👑</span> <span id="premium-text">Premium</span>
+            </button>
+            <button class="header-btn" onclick="showSettings()">
+                <span>👶</span> <span id="baby-name-display">Bebek</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <div class="nav-item active" onclick="goToPage('ninniler', this)">
+            <span class="nav-icon">🎵</span>
+            <span class="nav-label" id="nav-lullabies">Ninniler</span>
+        </div>
+        <div class="nav-item" onclick="goToPage('hikayeler', this)">
+            <span class="nav-icon">📖</span>
+            <span class="nav-label" id="nav-stories">Hikayeler</span>
+        </div>
+        <div class="nav-item" onclick="goToPage('kolik', this)">
+            <span class="nav-icon">🌿</span>
+            <span class="nav-label" id="nav-colic">Kolik</span>
+        </div>
+        <div class="nav-item" onclick="goToPage('takip', this)">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label" id="nav-tracking">Takip</span>
+        </div>
+        <div class="nav-item" onclick="goToPage('sesim', this)">
+            <span class="nav-icon">🎙️</span>
+            <span class="nav-label" id="nav-voice">Sesim</span>
+        </div>
+    </div>
+    
+    <div class="content">
+        <!-- Ninniler Sayfası -->
+        <div class="page active" id="page-ninniler">
+            <div class="trial-banner" id="trial-banner">
+                <div>
+                    <div class="trial-title" id="trial-title">3 gün ücretsiz deneme aktif</div>
+                    <div class="trial-subtitle" id="trial-subtitle">Tüm premium özellikleri deneyin</div>
+                </div>
+                <button class="header-btn premium" onclick="showPremiumModal()">Yükselt</button>
+            </div>
+
+            <div class="analysis-card">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                    <div>
+                        <div style="font-weight:700; font-size:15px;">🩺 Bebek neden ağlıyor?</div>
+                        <div style="font-size:12px; color: var(--text-muted); margin-top:4px;">10 saniye dinleyip olasılık dağılımı gösterir.</div>
+                    </div>
+                    <span class="pill-inline" id="prediction-badge">Tahmin · tanı değil</span>
+                </div>
+                <div class="analysis-actions">
+                    <button class="btn-secondary" style="flex:1;" onclick="startCryAnalysis()" id="cry-analysis-btn">🎙 10 sn analiz et</button>
+                </div>
+                <div class="analysis-result" id="cry-analysis-result"></div>
+                <div class="soft-note">Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk, alt ıslaklığı veya kaka rahatsızlığı için fikir vermek üzere tasarlanmıştır.</div>
+            </div>
+            <div class="now-playing" id="np-ninniler">
+                <div class="np-header">
+                    <span class="np-icon" id="np-icon">🎵</span>
+                    <div class="np-info">
+                        <div class="np-title" id="np-title">—</div>
+                        <div class="np-subtitle" id="np-subtitle">Hazır</div>
+                    </div>
+                    <div class="np-badges">
+                        <span class="badge badge-loop">🔁 Döngü</span>
+                        <span class="badge badge-timer" id="np-timer" style="display: none;">⏱ 1dk</span>
+                    </div>
+                    <button class="np-stop" onclick="stopAll()">⏹</button>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            
+            <div class="timer-section">
+                <button class="timer-btn" onclick="toggleTimer()">⏱ Zamanlayıcı</button>
+                <button class="timer-btn" onclick="toggleCryDetector()" id="cry-detector-btn">🎙 Ağlama Dedektörü</button>
+                <button class="timer-btn" onclick="toggleKolikDetector()" id="kolik-detector-btn">🌿 Kolik Kriz Dedektörü</button>
+            </div>
+            
+            <div class="timer-picker" id="timer-picker">
+                <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Ne zaman dursun?</div>
+                <div class="timer-grid">
+                    <div class="timer-option" onclick="setTimer(15, this)">15 dk</div>
+                    <div class="timer-option" onclick="setTimer(30, this)">30 dk</div>
+                    <div class="timer-option" onclick="setTimer(60, this)">60 dk</div>
+                    <div class="timer-option" onclick="setTimer(90, this)">90 dk</div>
+                    <div class="timer-option" onclick="setTimer(120, this)">120 dk</div>
+                </div>
+            </div>
+            
+            <div class="section-title">Türk Ninnileri <span class="premium-badge" id="ninniler-badge">1dk</span></div>
+            <div id="lullabies-list"></div>
+            
+            <div class="section-title">Anne Sesli Ninniler</div>
+            <div id="voice-lullabies-list">
+                <div class="empty-state">
+                    <div class="empty-icon">🎙️</div>
+                    <div class="empty-text">"Sesim" sekmesinden sesinizi klonlayın</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hikayeler Sayfası -->
+        <div class="page" id="page-hikayeler">
+            <div class="now-playing" id="np-hikayeler">
+                <div class="np-header">
+                    <span class="np-icon" id="np-hik-icon">📖</span>
+                    <div class="np-info">
+                        <div class="np-title" id="np-hik-title">—</div>
+                        <div class="np-subtitle" id="np-hik-subtitle">Hazır</div>
+                    </div>
+                    <div class="np-badges">
+                        <span class="badge badge-loop">🔁 Döngü</span>
+                        <span class="badge badge-premium" id="np-hik-badge">1 dk</span>
+                    </div>
+                    <button class="np-stop" onclick="stopAll()">⏹</button>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-hik-fill"></div>
+                </div>
+            </div>
+            
+            <div class="section-title">Uyku Masalları <span class="premium-badge" id="hikayeler-badge">1 dk</span></div>
+            <div id="stories-list"></div>
+        </div>
+        
+        <!-- Kolik Sayfası -->
+        <div class="page" id="page-kolik">
+            <div class="now-playing" id="np-kolik">
+                <div class="np-header">
+                    <span class="np-icon">🌿</span>
+                    <div class="np-info">
+                        <div class="np-title" id="np-kol-title">—</div>
+                        <div class="np-subtitle">Sınırsız · Ücretsiz</div>
+                    </div>
+                    <button class="np-stop" onclick="stopAll()">⏹</button>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%; animation: pulse 2s infinite;"></div>
+                </div>
+            </div>
+            
+            <div class="section-title">Beyaz Gürültü <span class="premium-badge" style="background: var(--mint); color: #0a0e1a;">ÜCRETSİZ</span></div>
+            <div id="kolik-beyaz"></div>
+            
+            <div class="section-title">Doğa Sesleri</div>
+            <div id="kolik-doga"></div>
+            
+            <div class="section-title">Rahatlatıcı Sesler</div>
+            <div id="kolik-rahat"></div>
+        </div>
+        
+        <!-- Uyku Takibi Sayfası -->
+        <div class="page" id="page-takip">
+            <div class="prediction-card" id="sleep-prediction" style="display: none;">
+                <span class="prediction-icon">🔮</span>
+                <div class="prediction-content">
+                    <h3>Uyku Tahmini</h3>
+                    <p id="prediction-text">Bebeğiniz uykuya hazır görünüyor</p>
+                    <div class="prediction-time" id="prediction-time">17 dk</div>
+                </div>
+            </div>
+            
+            <div class="sleep-tracker-card">
+                <div class="sleep-status" id="sleep-status">Bebek uyanık</div>
+                <div class="sleep-timer-large" id="sleep-timer">00:00</div>
+                <button class="sleep-action-btn sleep-start" id="sleep-btn" onclick="toggleSleepTracking()">
+                    <span>😴</span> Uykuya Geçti
                 </button>
-</div>
-<div class="section-title">Bugünün İstatistikleri</div>
-<div class="stats-grid">
-<div class="stat-card">
-<div class="stat-value" id="stat-total">0s</div>
-<div class="stat-label">Toplam Uyku</div>
-</div>
-<div class="stat-card">
-<div class="stat-value" id="stat-count">0</div>
-<div class="stat-label">Uyku Sayısı</div>
-</div>
-<div class="stat-card">
-<div class="stat-value" id="stat-avg">0dk</div>
-<div class="stat-label">Ortalama</div>
-</div>
-<div class="stat-card">
-<div class="stat-value" id="stat-wake">0</div>
-<div class="stat-label">Uyanma</div>
-</div>
-</div>
-<div class="section-title">Uyku Grafiği (Son 7 Gün)</div>
-<div class="chart-container">
-<div class="chart-placeholder" id="sleep-chart">
-<div class="chart-bar" style="height: 40%"></div>
-<div class="chart-bar" style="height: 60%"></div>
-<div class="chart-bar" style="height: 35%"></div>
-<div class="chart-bar" style="height: 70%"></div>
-<div class="chart-bar" style="height: 55%"></div>
-<div class="chart-bar" style="height: 80%"></div>
-<div class="chart-bar" style="height: 45%"></div>
-</div>
-<div class="chart-labels">
-<span>Pzt</span><span>Sal</span><span>Çar</span><span>Per</span><span>Cum</span><span>Cmt</span><span>Paz</span>
-</div>
-</div>
-<div class="section-title">Son Uykular</div>
-<div class="sleep-list" id="sleep-list">
-<div class="empty-state">
-<div class="empty-icon">🌙</div>
-<div class="empty-text">Henüz uyku kaydı yok</div>
-</div>
-</div>
-<div class="section-title">Uzman Önerileri</div>
-<div class="age-selector">
-<div class="age-option active" onclick="selectAge(this, 0)">0-3 ay</div>
-<div class="age-option" onclick="selectAge(this, 1)">3-6 ay</div>
-<div class="age-option" onclick="selectAge(this, 2)">6-12 ay</div>
-<div class="age-option" onclick="selectAge(this, 3)">1+ yaş</div>
-</div>
-<div id="expert-tips"></div>
-</div>
-<!-- Sesim Sayfası -->
-<div class="page" id="page-sesim">
-<div class="record-section">
-<button class="record-btn" id="record-btn" onclick="toggleRecording()">🎙️</button>
-<div class="record-timer" id="record-timer">0:00</div>
-<div class="record-status" id="record-status">Kayıt başlatmak için dokunun</div>
-<div class="waveform" id="waveform"></div>
-<div class="phrase-box">
-<div class="phrase-title" id="phrase-title">📝 Kitap okur gibi tonlama yaparak okuyunuz. (1 dakika):</div>
-<div class="phrase" id="phrase-1">Dandini dandini dastana, danalar girmiş bostana...</div>
-<div class="phrase" id="phrase-2">Biner atın iyisine, düşer yolun kıyısına...</div>
-<div class="phrase" id="phrase-3">E... e... e... e... (nefes sesleri)</div>
-</div>
-</div>
-<div class="section-title">Kayıtlarım</div>
-<div id="recordings-list">
-<div class="empty-state">
-<div class="empty-icon">🎙️</div>
-<div class="empty-text">Henüz kayıt yok</div>
-</div>
-</div>
-<div class="section-title">Ses Klonlama <span class="premium-badge" style="background: var(--mint); color: #0a0e1a;">ÜCRETSİZ</span></div>
-<div id="clone-section">
-<div class="empty-state">
-<div class="empty-text">Önce ses kaydı yapın</div>
-</div>
-</div>
-<div id="voice-generator" style="display: none;">
-<div class="section-title">Sesimle Oku</div>
-<div class="clone-box">
-<div class="input-group">
-<label class="input-label">Metin</label>
-<textarea class="input-field" id="voice-text" placeholder="Buraya yazın..." rows="3">Dandini dandini danalı bebek, elleri kolları kınalı bebek...</textarea>
-</div>
-<button class="btn-secondary" id="speak-btn" onclick="speakWithClonedVoice()">🎵 Sesimle Oku</button>
-<div class="status-msg" id="speak-status"></div>
-</div>
-</div>
-</div>
-</div>
-<div class="mini-timer" id="mini-timer">
-<span style="font-size: 16px;">⏱</span>
-<span class="mini-time" id="mini-time">--:--</span>
-<span class="mini-label"> sonra kapanacak</span>
-<span class="mini-cancel" onclick="cancelTimer()">İptal</span>
-</div>
-<div class="bottom-nav">
-<button class="bottom-item active" onclick="goToPage('ninniler', null, 0)">
-<span class="bottom-icon">🎵</span>
-<span class="bottom-label" id="bottom-lullabies">Ninniler</span>
-</button>
-<button class="bottom-item" onclick="goToPage('hikayeler', null, 1)">
-<span class="bottom-icon">📖</span>
-<span class="bottom-label" id="bottom-stories">Hikayeler</span>
-</button>
-<button class="bottom-item" onclick="goToPage('kolik', null, 2)">
-<span class="bottom-icon">🌿</span>
-<span class="bottom-label" id="bottom-colic">Kolik</span>
-</button>
-<button class="bottom-item" onclick="goToPage('takip', null, 3)">
-<span class="bottom-icon">📊</span>
-<span class="bottom-label" id="bottom-tracking">Takip</span>
-</button>
-<button class="bottom-item" onclick="goToPage('sesim', null, 4)">
-<span class="bottom-icon">🎙️</span>
-<span class="bottom-label" id="bottom-voice">Sesim</span>
-</button>
-</div>
-<!-- Ayarlar Modal -->
-<div class="modal" id="settings-modal" onclick="closeModalOnBackdrop(event)">
-<div class="modal-sheet">
-<div class="modal-handle"></div>
-<div style="font-family: 'Quicksand', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px;">Bebek Ayarları</div>
-<div style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Kişiselleştirilmiş deneyim için</div>
-<div class="input-group">
-<label class="input-label">Bebeğinizin Adı</label>
-<input class="input-field" id="baby-name-input" maxlength="15" placeholder="Ayşe / Emma" type="text"/>
-</div>
-<div class="input-group">
-<label class="input-label">Doğum Tarihi</label>
-<input class="input-field" id="baby-birthdate" type="date"/>
-</div>
-<div style="font-size: 12px; color: var(--text-muted); margin: 12px 0; line-height: 1.5;">
+            </div>
+            
+            <div class="section-title">Bugünün İstatistikleri</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-total">0s</div>
+                    <div class="stat-label">Toplam Uyku</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-count">0</div>
+                    <div class="stat-label">Uyku Sayısı</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-avg">0dk</div>
+                    <div class="stat-label">Ortalama</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-wake">0</div>
+                    <div class="stat-label">Uyanma</div>
+                </div>
+            </div>
+            
+            <div class="section-title">Uyku Grafiği (Son 7 Gün)</div>
+            <div class="chart-container">
+                <div class="chart-placeholder" id="sleep-chart">
+                    <div class="chart-bar" style="height: 40%"></div>
+                    <div class="chart-bar" style="height: 60%"></div>
+                    <div class="chart-bar" style="height: 35%"></div>
+                    <div class="chart-bar" style="height: 70%"></div>
+                    <div class="chart-bar" style="height: 55%"></div>
+                    <div class="chart-bar" style="height: 80%"></div>
+                    <div class="chart-bar" style="height: 45%"></div>
+                </div>
+                <div class="chart-labels">
+                    <span>Pzt</span><span>Sal</span><span>Çar</span><span>Per</span><span>Cum</span><span>Cmt</span><span>Paz</span>
+                </div>
+            </div>
+            
+            <div class="section-title">Son Uykular</div>
+            <div class="sleep-list" id="sleep-list">
+                <div class="empty-state">
+                    <div class="empty-icon">🌙</div>
+                    <div class="empty-text">Henüz uyku kaydı yok</div>
+                </div>
+            </div>
+            
+            <div class="section-title">Uzman Önerileri</div>
+            <div class="age-selector">
+                <div class="age-option active" onclick="selectAge(this, 0)">0-3 ay</div>
+                <div class="age-option" onclick="selectAge(this, 1)">3-6 ay</div>
+                <div class="age-option" onclick="selectAge(this, 2)">6-12 ay</div>
+                <div class="age-option" onclick="selectAge(this, 3)">1+ yaş</div>
+            </div>
+            <div id="expert-tips"></div>
+        </div>
+        
+        <!-- Sesim Sayfası -->
+        <div class="page" id="page-sesim">
+            <div class="record-section">
+                <button class="record-btn" id="record-btn" onclick="toggleRecording()">🎙️</button>
+                <div class="record-timer" id="record-timer">0:00</div>
+                <div class="record-status" id="record-status">Kayıt başlatmak için dokunun</div>
+                <div class="waveform" id="waveform"></div>
+                
+                <div class="phrase-box">
+                    <div class="phrase-title" id="phrase-title">📝 Kitap okur gibi tonlama yaparak okuyunuz. (1 dakika):</div>
+                    <div class="phrase" id="phrase-1">Dandini dandini dastana, danalar girmiş bostana...</div>
+                    <div class="phrase" id="phrase-2">Biner atın iyisine, düşer yolun kıyısına...</div>
+                    <div class="phrase" id="phrase-3">E... e... e... e... (nefes sesleri)</div>
+                </div>
+            </div>
+            
+            <div class="section-title">Kayıtlarım</div>
+            <div id="recordings-list">
+                <div class="empty-state">
+                    <div class="empty-icon">🎙️</div>
+                    <div class="empty-text">Henüz kayıt yok</div>
+                </div>
+            </div>
+            
+            <div class="section-title">Ses Klonlama <span class="premium-badge" style="background: var(--mint); color: #0a0e1a;">ÜCRETSİZ</span></div>
+            <div id="clone-section">
+                <div class="empty-state">
+                    <div class="empty-text">Önce ses kaydı yapın</div>
+                </div>
+            </div>
+            
+            <div id="voice-generator" style="display: none;">
+                <div class="section-title">Sesimle Oku</div>
+                <div class="clone-box">
+                    <div class="input-group">
+                        <label class="input-label">Metin</label>
+                        <textarea class="input-field" id="voice-text" rows="3" placeholder="Buraya yazın...">Dandini dandini danalı bebek, elleri kolları kınalı bebek...</textarea>
+                    </div>
+                    <button class="btn-secondary" onclick="speakWithClonedVoice()" id="speak-btn">🎵 Sesimle Oku</button>
+                    <div class="status-msg" id="speak-status"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mini-timer" id="mini-timer">
+        <span style="font-size: 16px;">⏱</span>
+        <span class="mini-time" id="mini-time">--:--</span>
+        <span class="mini-label"> sonra kapanacak</span>
+        <span class="mini-cancel" onclick="cancelTimer()">İptal</span>
+    </div>
+    
+    <div class="bottom-nav">
+        <button class="bottom-item active" onclick="goToPage('ninniler', null, 0)">
+            <span class="bottom-icon">🎵</span>
+            <span class="bottom-label" id="bottom-lullabies">Ninniler</span>
+        </button>
+        <button class="bottom-item" onclick="goToPage('hikayeler', null, 1)">
+            <span class="bottom-icon">📖</span>
+            <span class="bottom-label" id="bottom-stories">Hikayeler</span>
+        </button>
+        <button class="bottom-item" onclick="goToPage('kolik', null, 2)">
+            <span class="bottom-icon">🌿</span>
+            <span class="bottom-label" id="bottom-colic">Kolik</span>
+        </button>
+        <button class="bottom-item" onclick="goToPage('takip', null, 3)">
+            <span class="bottom-icon">📊</span>
+            <span class="bottom-label" id="bottom-tracking">Takip</span>
+        </button>
+        <button class="bottom-item" onclick="goToPage('sesim', null, 4)">
+            <span class="bottom-icon">🎙️</span>
+            <span class="bottom-label" id="bottom-voice">Sesim</span>
+        </button>
+    </div>
+    
+    <!-- Ayarlar Modal -->
+    <div class="modal" id="settings-modal" onclick="closeModalOnBackdrop(event)">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
+            <div style="font-family: 'Quicksand', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px;">Bebek Ayarları</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Kişiselleştirilmiş deneyim için</div>
+
+            
+            <div class="input-group">
+                <label class="input-label">Bebeğinizin Adı</label>
+                <input type="text" class="input-field" id="baby-name-input" placeholder="Ayşe / Emma" maxlength="15">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Doğum Tarihi</label>
+                <input type="date" class="input-field" id="baby-birthdate">
+            </div>
+            
+            <div style="font-size: 12px; color: var(--text-muted); margin: 12px 0; line-height: 1.5;">
                 💡 <span id="settings-example-text">Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>'m, tatlı rüyalar gör..."</span>
-</div>
-<button class="btn-primary" onclick="saveBabySettings()">💾 Kaydet</button>
-</div>
-</div>
-<!-- Premium Modal -->
-<div class="modal" id="premium-modal" onclick="closeModalOnBackdrop(event)">
-<div class="modal-sheet">
-<div class="modal-handle"></div>
-<div class="premium-modal-content">
-<div class="premium-icon">👑</div>
-<div class="premium-title">Minik Uyku – LumiBaby Premium</div>
-<p style="color: var(--text-muted); font-size: 14px;">Bebeğiniz için en iyi uyku deneyimi</p>
-<div class="premium-price">49₺ <span>/aylık</span></div>
-<div class="premium-features">
-<div class="premium-feature">
-<span class="premium-check">✓</span>
-<div class="premium-feature-text">
+            </div>
+            
+            <button class="btn-primary" onclick="saveBabySettings()">💾 Kaydet</button>
+        </div>
+    </div>
+    
+    <!-- Premium Modal -->
+    <div class="modal" id="premium-modal" onclick="closeModalOnBackdrop(event)">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
+            <div class="premium-modal-content">
+                <div class="premium-icon">👑</div>
+                <div class="premium-title">Minik Uyku – LumiBaby Premium</div>
+                <p style="color: var(--text-muted); font-size: 14px;">Bebeğiniz için en iyi uyku deneyimi</p>
+                
+                <div class="premium-price">49₺ <span>/aylık</span></div>
+                
+                <div class="premium-features">
+                    <div class="premium-feature">
+                        <span class="premium-check">✓</span>
+                        <div class="premium-feature-text">
                             Sınırsız Ninni Dinleme
-                            <br/><span>1 dakika sınırı kalkıyor</span>
-</div>
-</div>
-<div class="premium-feature">
-<span class="premium-check">✓</span>
-<div class="premium-feature-text">
+                            <br><span>1 dakika sınırı kalkıyor</span>
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <span class="premium-check">✓</span>
+                        <div class="premium-feature-text">
                             Tüm Masallar
-                            <br/><span>1 dakika sınırı kalkıyor</span>
-</div>
-</div>
-<div class="premium-feature">
-<span class="premium-check">✓</span>
-<div class="premium-feature-text">
+                            <br><span>1 dakika sınırı kalkıyor</span>
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <span class="premium-check">✓</span>
+                        <div class="premium-feature-text">
                             Gelişmiş Dedektörler
-                            <br/><span>Sınırsız ağlama ve kolik tespiti</span>
-</div>
-</div>
-<div class="premium-feature">
-<span class="premium-check">✓</span>
-<div class="premium-feature-text">
+                            <br><span>Sınırsız ağlama ve kolik tespiti</span>
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <span class="premium-check">✓</span>
+                        <div class="premium-feature-text">
                             Detaylı Uyku Analizi
-                            <br/><span>AI destekli uyku tahminleri</span>
-</div>
-</div>
-<div class="premium-feature">
-<span class="premium-check">✓</span>
-<div class="premium-feature-text">
+                            <br><span>AI destekli uyku tahminleri</span>
+                        </div>
+                    </div>
+                    <div class="premium-feature">
+                        <span class="premium-check">✓</span>
+                        <div class="premium-feature-text">
                             Ses Klonlama
-                            <br/><span>Demo açık · yayın öncesi backend gerekli</span>
-</div>
-</div>
-</div>
-<button class="btn-primary" onclick="activatePremium()">
-<span>👑</span> Premium'a Yükselt
+                            <br><span>Demo açık · yayın öncesi backend gerekli</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn-primary" onclick="activatePremium()">
+                    <span>👑</span> Premium'a Yükselt
                 </button>
-<button class="header-btn" onclick="closeModal('premium-modal')" style="width: 100%; margin-top: 12px; border: none;">
+                <button class="header-btn" style="width: 100%; margin-top: 12px; border: none;" onclick="closeModal('premium-modal')">
                     Şimdilik İptal
                 </button>
-</div>
-</div>
-</div>
-<div class="modal" id="onboarding-modal">
-<div class="modal-sheet" style="max-height: 92vh;">
-<div class="modal-handle"></div>
-<div class="hero-onboard">
-<div style="font-size:56px; margin-bottom:8px;">🌙</div>
-<h2>Minik Uyku</h2>
-<p>Bebeğinizin ağlamasını daha iyi anlamak, kendi sesinizle ninni söylemek ve uyku düzenini takip etmek için hazırlandı.</p>
-</div>
-<div class="lang-switch">
-<button class="lang-chip" id="onboard-lang-tr" onclick="setLanguage('tr', true)" type="button">Türkçe</button>
-<button class="lang-chip" id="onboard-lang-en" onclick="setLanguage('en', true)" type="button">English</button>
-</div>
-<div class="onboard-points">
-<div class="onboard-point"><strong>🎙 Ses klonlama</strong><span style="font-size:13px; color: var(--text-muted);">Kendi sesinizle ninni ve hikaye deneyimi.</span></div>
-<div class="onboard-point"><strong>🩺 Ağlama tahmini</strong><span style="font-size:13px; color: var(--text-muted);">Açlık, gaz, uykusuzluk, çiş ve kaka için olasılık sonucu.</span></div>
-<div class="onboard-point"><strong>📊 Uyku analizi</strong><span style="font-size:13px; color: var(--text-muted);">Uyku oturumları, tahminler ve rutin takibi.</span></div>
-</div>
-<div class="input-group">
-<label class="input-label">Bebek adı</label>
-<input class="input-field" id="onboard-baby-name" maxlength="15" placeholder="Örn: Ayşe / Emma" type="text"/>
-</div>
-<button class="btn-primary" onclick="finishOnboarding()">Başla</button>
-<div class="soft-note" style="text-align:center; margin-top:12px;">Not: Gerçek ödeme ve gerçek ses klonlama bağlantısı için yayın öncesi backend ve mağaza entegrasyonu gerekir.</div>
-</div>
-</div>
-<script>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" id="onboarding-modal">
+        <div class="modal-sheet" style="max-height: 92vh;">
+            <div class="modal-handle"></div>
+            <div class="hero-onboard">
+                <div style="font-size:56px; margin-bottom:8px;">🌙</div>
+                <h2>Minik Uyku</h2>
+                <p>Bebeğinizin ağlamasını daha iyi anlamak, kendi sesinizle ninni söylemek ve uyku düzenini takip etmek için hazırlandı.</p>
+            </div>
+            <div class="lang-switch">
+                <button type="button" class="lang-chip" id="onboard-lang-tr" onclick="setLanguage('tr', true)">Türkçe</button>
+                <button type="button" class="lang-chip" id="onboard-lang-en" onclick="setLanguage('en', true)">English</button>
+            </div>
+            <div class="onboard-points">
+                <div class="onboard-point"><strong>🎙 Ses klonlama</strong><span style="font-size:13px; color: var(--text-muted);">Kendi sesinizle ninni ve hikaye deneyimi.</span></div>
+                <div class="onboard-point"><strong>🩺 Ağlama tahmini</strong><span style="font-size:13px; color: var(--text-muted);">Açlık, gaz, uykusuzluk, çiş ve kaka için olasılık sonucu.</span></div>
+                <div class="onboard-point"><strong>📊 Uyku analizi</strong><span style="font-size:13px; color: var(--text-muted);">Uyku oturumları, tahminler ve rutin takibi.</span></div>
+            </div>
+            <div class="input-group">
+                <label class="input-label">Bebek adı</label>
+                <input type="text" class="input-field" id="onboard-baby-name" placeholder="Örn: Ayşe / Emma" maxlength="15">
+            </div>
+            <button class="btn-primary" onclick="finishOnboarding()">Başla</button>
+            <div class="soft-note" style="text-align:center; margin-top:12px;">Not: Gerçek ödeme ve gerçek ses klonlama bağlantısı için yayın öncesi backend ve mağaza entegrasyonu gerekir.</div>
+        </div>
+    </div>
+
+
+    <script>
         // ═══════════════════════════════════════════════════════════════
         // KONFİGÜRASYON
         // ═══════════════════════════════════════════════════════════════
@@ -3938,6 +3978,7 @@ async function playWithElevenLabs(lullaby, id) {
             }
         });
     </script>
+
 <style>
 #app-onboarding {
   position: fixed; inset: 0; background: linear-gradient(180deg, rgba(10,14,26,.98), rgba(21,27,45,.98));
@@ -3982,67 +4023,73 @@ async function playWithElevenLabs(lullaby, id) {
 }
 #app-onboarding .lang-row button.active { border-color: var(--accent); background: rgba(157,140,239,.14); color: var(--accent-light); }
 </style>
+
 <div id="app-onboarding">
-<div class="board">
-<div class="top">
-<div class="logo" style="gap:8px;"><span class="logo-moon">🌙</span><span class="logo-text" id="ob-logo">Minik Uyku</span></div>
-<div class="steps">
-<span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+  <div class="board">
+    <div class="top">
+      <div class="logo" style="gap:8px;"><span class="logo-moon">🌙</span><span class="logo-text" id="ob-logo">Minik Uyku</span></div>
+      <div class="steps">
+        <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+    </div>
+
+    <div class="slide active" data-step="0">
+      <div class="hero">🌍</div>
+      <h2 id="ob-title-0">Dilini seç</h2>
+      <p id="ob-desc-0">Uygulamayı Türkçe ya da English olarak başlat. Seçtiğin dil tüm menülere ve içerik etiketlerine uygulanır.</p>
+      <div class="lang-row">
+        <button type="button" id="ob-btn-tr" onclick="setLanguage('tr', true)">Türkçe</button>
+        <button type="button" id="ob-btn-en" onclick="setLanguage('en', true)">English</button>
+      </div>
+      <div class="actions">
+        <button class="btn-primary" type="button" onclick="nextOnboardingStep()">İleri</button>
+      </div>
+    </div>
+
+    <div class="slide" data-step="1">
+      <div class="hero">🩺</div>
+      <h2 id="ob-title-1">Ağlamayı daha iyi anla</h2>
+      <p id="ob-desc-1">10 saniyelik dinleme ile ağlamayı Açlık, Gaz, Uykusuzluk ve Diğer olarak olasılık şeklinde yorumla.</p>
+      <div class="mini-cards">
+        <div class="mini-card"><strong id="ob-card-1a">Açlık mı?</strong><span id="ob-card-1b">Önce en olası nedeni gösterir.</span></div>
+        <div class="mini-card"><strong id="ob-card-1c">Tek dokunuşla çözüm</strong><span id="ob-card-1d">Sonuçtan sonra ninni veya rahatlatıcı ses başlat.</span></div>
+      </div>
+      <div class="actions">
+        <button class="ghost-btn" type="button" onclick="prevOnboardingStep()">Geri</button>
+        <button class="btn-primary" type="button" onclick="nextOnboardingStep()">İleri</button>
+      </div>
+    </div>
+
+    <div class="slide" data-step="2">
+      <div class="hero">🎙️</div>
+      <h2 id="ob-title-2">Kendi sesinle uyut</h2>
+      <p id="ob-desc-2">Ses kaydı al, klonunu hazırla ve bebeğinin ninnileri senin sesinle dinlemesini sağla.</p>
+      <div class="mini-cards">
+        <div class="mini-card"><strong id="ob-card-2a">Ses kaydı</strong><span id="ob-card-2b">Sessiz ortamda yaklaşık 1 dakika kayıt önerilir.</span></div>
+        <div class="mini-card"><strong id="ob-card-2c">Kişisel bağ</strong><span id="ob-card-2d">İsimle hitap edilen ninniler daha sıcak hissettirir.</span></div>
+      </div>
+      <div class="actions">
+        <button class="ghost-btn" type="button" onclick="prevOnboardingStep()">Geri</button>
+        <button class="btn-primary" type="button" onclick="nextOnboardingStep()">İleri</button>
+      </div>
+    </div>
+
+    <div class="slide" data-step="3">
+      <div class="hero">✨</div>
+      <h2 id="ob-title-3">3 gün ücretsiz dene</h2>
+      <p id="ob-desc-3">Uyku takibi, ninniler, masallar ve analiz özelliklerini dene. Sonra istersen premium ile devam et.</p>
+      <div class="mini-cards">
+        <div class="mini-card"><strong id="ob-card-3a">Uyku takibi</strong><span id="ob-card-3b">Oturumları kaydet ve basit analizleri gör.</span></div>
+        <div class="mini-card"><strong id="ob-card-3c">Hazırsan başlayalım</strong><span id="ob-card-3d">Uygulama içindeki dili ve etiketleri daha sonra da değiştirebilirsin.</span></div>
+      </div>
+      <div class="actions">
+        <button class="ghost-btn" type="button" onclick="prevOnboardingStep()">Geri</button>
+        <button class="btn-primary" type="button" onclick="finishOnboardingV2()">Başla</button>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
-<div class="slide active" data-step="0">
-<div class="hero">🌍</div>
-<h2 id="ob-title-0">Dilini seç</h2>
-<p id="ob-desc-0">Uygulamayı Türkçe ya da English olarak başlat. Seçtiğin dil tüm menülere ve içerik etiketlerine uygulanır.</p>
-<div class="lang-row">
-<button id="ob-btn-tr" onclick="setLanguage('tr', true)" type="button">Türkçe</button>
-<button id="ob-btn-en" onclick="setLanguage('en', true)" type="button">English</button>
-</div>
-<div class="actions">
-<button class="btn-primary" onclick="nextOnboardingStep()" type="button">İleri</button>
-</div>
-</div>
-<div class="slide" data-step="1">
-<div class="hero">🩺</div>
-<h2 id="ob-title-1">Ağlamayı daha iyi anla</h2>
-<p id="ob-desc-1">10 saniyelik dinleme ile ağlamayı Açlık, Gaz, Uykusuzluk ve Diğer olarak olasılık şeklinde yorumla.</p>
-<div class="mini-cards">
-<div class="mini-card"><strong id="ob-card-1a">Açlık mı?</strong><span id="ob-card-1b">Önce en olası nedeni gösterir.</span></div>
-<div class="mini-card"><strong id="ob-card-1c">Tek dokunuşla çözüm</strong><span id="ob-card-1d">Sonuçtan sonra ninni veya rahatlatıcı ses başlat.</span></div>
-</div>
-<div class="actions">
-<button class="ghost-btn" onclick="prevOnboardingStep()" type="button">Geri</button>
-<button class="btn-primary" onclick="nextOnboardingStep()" type="button">İleri</button>
-</div>
-</div>
-<div class="slide" data-step="2">
-<div class="hero">🎙️</div>
-<h2 id="ob-title-2">Kendi sesinle uyut</h2>
-<p id="ob-desc-2">Ses kaydı al, klonunu hazırla ve bebeğinin ninnileri senin sesinle dinlemesini sağla.</p>
-<div class="mini-cards">
-<div class="mini-card"><strong id="ob-card-2a">Ses kaydı</strong><span id="ob-card-2b">Sessiz ortamda yaklaşık 1 dakika kayıt önerilir.</span></div>
-<div class="mini-card"><strong id="ob-card-2c">Kişisel bağ</strong><span id="ob-card-2d">İsimle hitap edilen ninniler daha sıcak hissettirir.</span></div>
-</div>
-<div class="actions">
-<button class="ghost-btn" onclick="prevOnboardingStep()" type="button">Geri</button>
-<button class="btn-primary" onclick="nextOnboardingStep()" type="button">İleri</button>
-</div>
-</div>
-<div class="slide" data-step="3">
-<div class="hero">✨</div>
-<h2 id="ob-title-3">3 gün ücretsiz dene</h2>
-<p id="ob-desc-3">Uyku takibi, ninniler, masallar ve analiz özelliklerini dene. Sonra istersen premium ile devam et.</p>
-<div class="mini-cards">
-<div class="mini-card"><strong id="ob-card-3a">Uyku takibi</strong><span id="ob-card-3b">Oturumları kaydet ve basit analizleri gör.</span></div>
-<div class="mini-card"><strong id="ob-card-3c">Hazırsan başlayalım</strong><span id="ob-card-3d">Uygulama içindeki dili ve etiketleri daha sonra da değiştirebilirsin.</span></div>
-</div>
-<div class="actions">
-<button class="ghost-btn" onclick="prevOnboardingStep()" type="button">Geri</button>
-<button class="btn-primary" onclick="finishOnboardingV2()" type="button">Başla</button>
-</div>
-</div>
-</div>
-</div>
+
 <script>
 (function(){
   const I18N = {
@@ -4682,6 +4729,8 @@ async function playWithElevenLabs(lullaby, id) {
   window.addEventListener('load', initFixes);
 })();
 </script>
+
+
 <script>
 (function(){
   function applyFinalLanguageFixes(){
@@ -4760,6 +4809,8 @@ async function playWithElevenLabs(lullaby, id) {
   setTimeout(applyFinalLanguageFixes, 600);
 })();
 </script>
+
+
 <script>
 (function(){
   const APP_NAME = 'Minik Uyku – LumiBaby';
@@ -5011,18 +5062,49 @@ async function playWithElevenLabs(lullaby, id) {
   }, 50);
 })();
 </script>
+
+
 <script>
-function updatePredictionBadge() {
-  const el = document.getElementById("prediction-badge");
-  if (!el) return;
+(function () {
+  function updatePredictionBadge() {
+    var el = document.getElementById('prediction-badge');
+    if (!el) return;
 
-  if (localStorage.getItem("lang") === "en") {
-    el.innerText = "Estimate · not a diagnosis";
-  } else {
-    el.innerText = "Tahmin · tanı değil";
+    var lang = 'tr';
+    if (typeof currentLang !== 'undefined' && currentLang) {
+      lang = currentLang;
+    } else {
+      var saved = localStorage.getItem('lang') || localStorage.getItem('minikuyku_lang');
+      if (saved) lang = saved;
+      var enBtn = document.getElementById('lang-en');
+      if (enBtn && enBtn.classList.contains('active')) lang = 'en';
+    }
+
+    el.textContent = (lang === 'en') ? 'Estimate · not a diagnosis' : 'Tahmin · tanı değil';
   }
-}
 
-document.addEventListener("DOMContentLoaded", updatePredictionBadge);
-</script></body>
+  function updateLogoSubtext() {
+    var sub = document.querySelector('.logo-subtext');
+    if (sub) sub.textContent = 'LumiBaby';
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    updatePredictionBadge();
+    updateLogoSubtext();
+
+    var trBtn = document.getElementById('lang-tr');
+    var enBtn = document.getElementById('lang-en');
+    if (trBtn) trBtn.addEventListener('click', function(){ setTimeout(updatePredictionBadge, 50); setTimeout(updateLogoSubtext, 50); });
+    if (enBtn) enBtn.addEventListener('click', function(){ setTimeout(updatePredictionBadge, 50); setTimeout(updateLogoSubtext, 50); });
+
+    var mo = new MutationObserver(function () {
+      updatePredictionBadge();
+      updateLogoSubtext();
+    });
+    mo.observe(document.body, { childList: true, subtree: true, characterData: true });
+  });
+})();
+</script>
+
+</body>
 </html>
