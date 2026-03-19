@@ -4997,5 +4997,216 @@ async function playWithElevenLabs(lullaby, id) {
 })();
 </script>
 
+
+<script>
+(function(){
+  const APP_NAME = 'Minik Uyku – LumiBaby';
+  const COPY = {
+    tr: {
+      appName: APP_NAME,
+      premiumTitle: APP_NAME + ' Premium',
+      cryTitle: '🩺 Bebek neden ağlıyor?',
+      crySubtitle: '10 saniye dinleyip olasılık dağılımı gösterir.',
+      cryPill: 'Tahmin · tanı değil',
+      cryNote: 'Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk ve diğer nedenler için fikir vermek üzere tasarlanmıştır.',
+      voiceEmpty: '"Sesim" sekmesinden sesinizi klonlayın',
+      allFree: 'TÜMÜ ÜCRETSİZ',
+      colicTitles: ['Beyaz Gürültü ', 'Doğa Sesleri', 'Rahatlatıcı Sesler'],
+      trackingTitles: ['Bugünün İstatistikleri', 'Uyku Grafiği (Son 7 Gün)', 'Son Uykular', 'Uzman Önerileri'],
+      statLabels: ['Toplam Uyku', 'Uyku Sayısı', 'Ortalama', 'Uyanma'],
+      chartDays: ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'],
+      ageOptions: ['0-3 ay','3-6 ay','6-12 ay','1+ yaş'],
+      voiceSectionTitles: ['Kayıtlarım','Ses Klonlama ','Sesimle Oku'],
+      recordStatus: 'Kayıt başlatmak için dokunun',
+      phraseTitle: '📝 Masal okur gibi yavaş, sıcak ve doğal bir tonla okuyun. (Yaklaşık 1 dakika):',
+      phraseLines: [
+        'Uyu bebeğim... şimdi dinlenme zamanı...',
+        'Gece sessiz, yıldızlar gökyüzünde parlıyor... ay ışığı odana yumuşakça vuruyor...',
+        'Mmm... eee... şşş... derin bir nefes al ve bırak...'
+      ],
+      voicePlaceholder: 'Buraya sakin bir ninni ya da kısa masal metni yazın...',
+      voiceValue: 'Uyu bebeğim... gece sessiz, yıldızlar parlarken şimdi tatlı rüyalara dalma zamanı...',
+      settingsTitle: 'Bebek Ayarları',
+      settingsDesc: 'Kişiselleştirilmiş deneyim için',
+      settingsLabels: ['Bebeğinizin Adı','Doğum Tarihi'],
+      settingsPlaceholder: 'Ayşe / Mehmet',
+      settingsExample: 'Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>'m, tatlı rüyalar gör..."',
+      save: 'Kaydet',
+      premiumBadge: '3 Gün Ücretsiz',
+      premiumTag: '👑 3 Gün Deneme',
+      premiumUnlimited: 'Sınırsız',
+      analyze10: '10 sn analiz et',
+      noSleepRecords: 'Henüz uyku kaydı yok',
+      noRecordings: 'Henüz kayıt yok',
+      recordFirst: 'Önce ses kaydı yapın',
+      babyNameDisplay: 'Bebek',
+      expertData: {
+        0: [
+          { author: 'Dr. Ayşe Yılmaz', title: 'Pedagog', avatar: '👩‍⚕️', tip: 'Yeni doğan bebekler günde 16-18 saat uyur. Uyku aralıkları çoğunlukla 2-3 saattir. Esneme ve göz ovuşturma gibi sinyalleri kaçırmayın.' },
+          { author: 'Uzm. Dr. Can Kaya', title: 'Çocuk Uzmanı', avatar: '👨‍⚕️', tip: 'İlk aylarda kolik sık görülebilir. Beyaz gürültü ve hafif sallama rahatlatıcı olabilir. Ağlama genelde akşam saatlerinde artabilir.' },
+          { author: 'Ebe Zeynep Demir', title: 'Emzirme Danışmanı', avatar: '🤱', tip: 'Beslenme ve uyku birbiriyle bağlantılıdır. Doyan bebek daha kolay sakinleşebilir. Uyku öncesi sakin bir beslenme rutini işe yarar.' }
+        ],
+        1: [
+          { author: 'Dr. Selin Aydın', title: 'Uyku Terapisti', avatar: '😴', tip: '3. aydan sonra gece uykuları uzamaya başlayabilir. 4. ay uyku gerilemesi yaygın ve geçicidir.' },
+          { author: 'Dr. Mehmet Şahin', title: 'Gelişim Uzmanı', avatar: '👨‍⚕️', tip: 'Bu dönemde bebekler genelde günde 14-15 saat uyur ve 3-4 kısa gündüz uykusu yapabilir.' },
+          { author: 'Psikolog Elif Yıldız', title: 'Aile Terapisti', avatar: '🧠', tip: 'Aynı uyku rutininin her gün tekrarlanması bebeğe güven verir. Banyo, masal ve ninni sırası etkili olabilir.' }
+        ],
+        2: [
+          { author: 'Dr. Burak Tan', title: 'Pedagog', avatar: '👨‍⚕️', tip: '6-12 ay arasında bebekler çoğunlukla günde 12-14 saat uyur. Gündüz uykuları ikiye düşebilir.' },
+          { author: 'Uzm. Ebe Seda Kılıç', title: 'Uyku Danışmanı', avatar: '🌙', tip: 'Emekleme ve hareket dönemleri uyku düzenini geçici olarak etkileyebilir. Sabırlı ve tutarlı kalın.' },
+          { author: 'Dr. Aslı Koç', title: 'Beslenme Uzmanı', avatar: '🍼', tip: 'Ek gıdaya geçiş uyku düzeninde değişim yaratabilir. Uyku öncesi ağır besinlerden kaçınmak faydalı olabilir.' }
+        ],
+        3: [
+          { author: 'Dr. Kerem Arslan', title: 'Çocuk Psikiyatristi', avatar: '🧸', tip: '1 yaş sonrası birçok bebek tek gündüz uykusuna geçer. Gece boyunca daha uzun ve tutarlı uyku hedeflenir.' },
+          { author: 'Uzm. Psikolog Derya Uzun', title: 'Oyun Terapisti', avatar: '🎈', tip: 'Ayrılma kaygısı bu dönemde artabilir. Uyku öncesi sakin ve birebir zaman geçirmek rahatlatıcı olur.' },
+          { author: 'Dr. Hakan Yücel', title: 'Pedagog', avatar: '📚', tip: 'Her gece aynı masalı okumak güven hissi yaratır ve uykuya geçişi kolaylaştırır.' }
+        ]
+      }
+    },
+    en: {
+      appName: APP_NAME,
+      premiumTitle: APP_NAME + ' Premium',
+      cryTitle: '🩺 Why is my baby crying?',
+      crySubtitle: 'Listens for 10 seconds and shows a probability breakdown.',
+      cryPill: 'Estimate · not a diagnosis',
+      cryNote: 'These results are not a medical diagnosis. They are designed to suggest possibilities such as hunger, gas, sleepiness, or other causes.',
+      voiceEmpty: 'Clone your voice from the "My Voice" tab',
+      allFree: 'ALL FREE',
+      colicTitles: ['White Noise ', 'Nature Sounds', 'Soothing Sounds'],
+      trackingTitles: ["Today's Statistics", 'Sleep Chart (Last 7 Days)', 'Recent Sleeps', 'Expert Tips'],
+      statLabels: ['Total Sleep', 'Sleep Count', 'Average', 'Wake-ups'],
+      chartDays: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      ageOptions: ['0-3 months','3-6 months','6-12 months','1+ years'],
+      voiceSectionTitles: ['My Recordings','Voice Cloning ','Read With My Voice'],
+      recordStatus: 'Tap to start recording',
+      phraseTitle: '📝 Read slowly in a warm, natural storytelling tone. (About 1 minute):',
+      phraseLines: [
+        'Sleep softly, little one... it is time to rest now...',
+        'The night is calm, the stars are shining, and the moonlight is touching your room gently...',
+        'Mmm... shh... take a deep breath... and slowly let it go...'
+      ],
+      voicePlaceholder: 'Write a calm lullaby or a short bedtime text here...',
+      voiceValue: 'Sleep softly, little one... the night is quiet and it is time to drift into sweet dreams...',
+      settingsTitle: 'Baby Settings',
+      settingsDesc: 'For a personalized experience',
+      settingsLabels: ["Baby's Name",'Birth Date'],
+      settingsPlaceholder: 'Emma / Noah',
+      settingsExample: 'Example: "Sleep softly, <strong style="color: var(--mint);">Emma</strong>... sweet dreams..."',
+      save: 'Save',
+      premiumBadge: '3 Day Free Trial',
+      premiumTag: '👑 3 Day Trial',
+      premiumUnlimited: 'Unlimited',
+      analyze10: 'Analyze for 10 sec',
+      noSleepRecords: 'No sleep records yet',
+      noRecordings: 'No recordings yet',
+      recordFirst: 'Please record your voice first',
+      babyNameDisplay: 'Baby',
+      expertData: {
+        0: [
+          { author: 'Dr. Emily Carter', title: 'Sleep Specialist', avatar: '👩‍⚕️', tip: 'Newborn babies often sleep 16 to 18 hours a day. Sleep windows are usually 2 to 3 hours. Watch for sleepy cues such as yawning and eye rubbing.' },
+          { author: 'Dr. Daniel Brooks', title: 'Pediatrician', avatar: '👨‍⚕️', tip: 'Colic can be common in the first months. White noise and gentle rocking may help. Crying often rises in the late afternoon and evening.' },
+          { author: 'Sarah Bennett', title: 'Lactation Consultant', avatar: '🤱', tip: 'Feeding and sleep are closely linked. A full baby often settles more easily. A calm feeding routine before sleep can help.' }
+        ],
+        1: [
+          { author: 'Dr. Olivia Reed', title: 'Sleep Therapist', avatar: '😴', tip: 'After 3 months, many babies begin sleeping longer at night. The 4-month sleep regression is common and temporary.' },
+          { author: 'Dr. Michael Turner', title: 'Development Specialist', avatar: '👨‍⚕️', tip: 'At this stage, babies often sleep 14 to 15 hours a day and may take 3 to 4 shorter naps.' },
+          { author: 'Hannah Miller', title: 'Family Therapist', avatar: '🧠', tip: 'Routines matter. Repeating the same bedtime order such as bath, story and lullaby helps babies understand that sleep is coming.' }
+        ],
+        2: [
+          { author: 'Dr. Benjamin Scott', title: 'Child Development Specialist', avatar: '👨‍⚕️', tip: 'Between 6 and 12 months, babies often sleep 12 to 14 hours a day. Day naps may reduce to two and night wakings from hunger often decrease.' },
+          { author: 'Chloe Adams', title: 'Sleep Consultant', avatar: '🌙', tip: 'Crawling and movement milestones can briefly affect sleep. Babies may want to practice new skills. Stay patient and consistent.' },
+          { author: 'Dr. Grace Walker', title: 'Nutrition Specialist', avatar: '🍼', tip: 'Starting solids may change the sleep routine. Heavier meals right before sleep may not feel comfortable for some babies.' }
+        ],
+        3: [
+          { author: 'Dr. Jacob Foster', title: 'Child Psychiatrist', avatar: '🧸', tip: 'After age one, many babies move toward one daytime nap. A long and consistent night sleep becomes the main goal.' },
+          { author: 'Sophie Collins', title: 'Play Therapist', avatar: '🎈', tip: 'Separation anxiety often peaks between 12 and 18 months. Special one-on-one time before bedtime can help your child settle more calmly.' },
+          { author: 'Dr. Liam Parker', title: 'Bedtime Coach', avatar: '📚', tip: 'Bedtime stories become especially powerful in this stage. Repeating a familiar story often creates comfort and security.' }
+        ]
+      }
+    }
+  };
+
+  function L(){ return (window.state && state.language === 'en') ? COPY.en : COPY.tr; }
+  function setText(sel, val, html){
+    const el = typeof sel === 'string' ? document.querySelector(sel) : sel;
+    if (!el) return;
+    if (html) el.innerHTML = val; else el.textContent = val;
+  }
+  function patchBrand(){
+    document.title = APP_NAME;
+    document.querySelectorAll('.logo-text').forEach(el => el.textContent = APP_NAME);
+    setText('#ob-logo', APP_NAME);
+    document.querySelectorAll('h2').forEach(h => { if (/Minik Uyku|LumiBaby/i.test(h.textContent.trim())) h.textContent = APP_NAME; });
+    setText('#premium-modal .premium-title', APP_NAME + ' Premium');
+  }
+  function patchTopAndCore(){
+    const t = L();
+    setText('#cry-title', t.cryTitle); setText('#cry-subtitle', t.crySubtitle); setText('#cry-pill', t.cryPill); setText('#cry-note', t.cryNote);
+    const btn = document.getElementById('cry-analysis-btn'); if (btn && !btn.disabled) btn.textContent = t.analyze10;
+    const babyNameDisplay = document.getElementById('baby-name-display'); if (babyNameDisplay && !(window.state&&state.babyName)) babyNameDisplay.textContent = t.babyNameDisplay;
+  }
+  function patchLullabyAndStoryBadges(){
+    const t = L();
+    setText('#ninniler-badge', t.premiumBadge); setText('#hikayeler-badge', t.premiumBadge);
+    document.querySelectorAll('#page-ninniler .card-tag.premium, #page-hikayeler .card-tag.premium').forEach(el => { el.textContent = window.state && state.isPremium ? t.premiumUnlimited : t.premiumTag; });
+    const empty = document.querySelector('#voice-lullabies-list .empty-text'); if (empty) empty.textContent = t.voiceEmpty;
+  }
+  function patchColicPage(){
+    const t = L();
+    const titles = document.querySelectorAll('#page-kolik .section-title');
+    if (titles[0] && titles[0].childNodes[0]) titles[0].childNodes[0].textContent = t.colicTitles[0];
+    if (titles[1] && titles[1].childNodes[0]) titles[1].childNodes[0].textContent = t.colicTitles[1];
+    if (titles[2] && titles[2].childNodes[0]) titles[2].childNodes[0].textContent = t.colicTitles[2];
+    setText('#colic-free-badge', t.allFree);
+    document.querySelectorAll('#page-kolik .kolik-tag').forEach(el => el.textContent = (window.state && state.language==='en') ? 'FREE' : 'ÜCRETSİZ');
+  }
+  function patchTrackingPage(){
+    const t = L();
+    const titles = document.querySelectorAll('#page-takip .section-title');
+    if (titles[0] && titles[0].childNodes[0]) titles[0].childNodes[0].textContent = t.trackingTitles[0];
+    if (titles[1] && titles[1].childNodes[0]) titles[1].childNodes[0].textContent = t.trackingTitles[1];
+    if (titles[2] && titles[2].childNodes[0]) titles[2].childNodes[0].textContent = t.trackingTitles[2];
+    if (titles[3] && titles[3].childNodes[0]) titles[3].childNodes[0].textContent = t.trackingTitles[3];
+    document.querySelectorAll('#page-takip .stat-label').forEach((el,i)=>{ if(t.statLabels[i]) el.textContent=t.statLabels[i]; });
+    document.querySelectorAll('#page-takip .chart-labels span').forEach((el,i)=>{ if(t.chartDays[i]) el.textContent=t.chartDays[i]; });
+    document.querySelectorAll('#page-takip .age-option').forEach((el,i)=>{ if(t.ageOptions[i]) el.textContent=t.ageOptions[i]; });
+    const empty = document.querySelector('#sleep-list .empty-text'); if (empty) empty.textContent = t.noSleepRecords;
+  }
+  function patchVoicePage(){
+    const t = L();
+    const titles = document.querySelectorAll('#page-sesim .section-title');
+    if (titles[0] && titles[0].childNodes[0]) titles[0].childNodes[0].textContent = t.voiceSectionTitles[0];
+    if (titles[1] && titles[1].childNodes[0]) titles[1].childNodes[0].textContent = t.voiceSectionTitles[1];
+    if (titles[2] && titles[2].childNodes[0]) titles[2].childNodes[0].textContent = t.voiceSectionTitles[2];
+    setText('#record-status', t.recordStatus); setText('#phrase-title', t.phraseTitle); setText('#phrase-1', t.phraseLines[0]); setText('#phrase-2', t.phraseLines[1]); setText('#phrase-3', t.phraseLines[2]);
+    const textarea = document.getElementById('voice-text'); if (textarea) { textarea.placeholder = t.voicePlaceholder; if (!textarea.dataset.userEdited || textarea.dataset.userEdited !== 'true') textarea.value = t.voiceValue; }
+    const recEmpty = document.querySelector('#recordings-list .empty-text'); if (recEmpty) recEmpty.textContent = t.noRecordings;
+    const cloneEmpty = document.querySelector('#clone-section .empty-text'); if (cloneEmpty) cloneEmpty.textContent = t.recordFirst;
+  }
+  function patchSettings(){
+    const t = L(); const modal = document.getElementById('settings-modal'); if (!modal) return;
+    const title = modal.querySelector('[style*="font-family"]'); if (title) title.textContent = t.settingsTitle;
+    const desc = title ? title.nextElementSibling : null; if (desc) desc.textContent = t.settingsDesc;
+    const labels = modal.querySelectorAll('.input-label'); if (labels[0]) labels[0].textContent = t.settingsLabels[0]; if (labels[1]) labels[1].textContent = t.settingsLabels[1];
+    const input = document.getElementById('baby-name-input'); if (input) input.placeholder = t.settingsPlaceholder;
+    setText('#settings-example-text', t.settingsExample, true);
+    const saveBtn = modal.querySelector('.btn-primary'); if (saveBtn) saveBtn.textContent = t.save;
+  }
+  function patchExpertTips(){
+    const wrap = document.getElementById('expert-tips'); if (!wrap || !window.state) return;
+    const data = L().expertData[state.currentAgeGroup || 0] || [];
+    wrap.innerHTML = data.map(item => `
+<div class="expert-card"><div class="expert-header"><div class="expert-avatar">${item.avatar}</div><div class="expert-info"><h4>${item.author}</h4><p>${item.title}</p></div></div><div class="expert-content">${item.tip}</div></div>`).join('');
+  }
+  function patchEverything(){ patchBrand(); patchTopAndCore(); patchLullabyAndStoryBadges(); patchColicPage(); patchTrackingPage(); patchVoicePage(); patchSettings(); patchExpertTips(); }
+  const origSetLanguage = window.setLanguage; window.setLanguage = function(lang, fromOnboard){ if (origSetLanguage) origSetLanguage(lang, fromOnboard); else if (window.state) state.language = lang; setTimeout(patchEverything, 0); };
+  const wrap = fn => function(){ if (fn) fn.apply(this, arguments); setTimeout(patchEverything,0); };
+  window.renderLullabies = wrap(window.renderLullabies); window.renderStories = wrap(window.renderStories); window.renderKolik = wrap(window.renderKolik); window.renderRecordings = wrap(window.renderRecordings); window.updateCloneSection = wrap(window.updateCloneSection); window.selectAge = wrap(window.selectAge); window.updateLanguageUI = wrap(window.updateLanguageUI);
+  document.addEventListener('input', function(e){ if (e.target && e.target.id === 'voice-text') e.target.dataset.userEdited = 'true'; });
+  document.addEventListener('DOMContentLoaded', function(){ setTimeout(patchEverything, 50); setTimeout(patchEverything, 300); setTimeout(patchEverything, 900); });
+  window.addEventListener('load', function(){ setTimeout(patchEverything, 1200); });
+})();
+</script>
+
 </body>
 </html>
