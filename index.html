@@ -1345,59 +1345,6 @@
             font-size: 11px;
             color: var(--text-muted);
         }
-
-        .trial-banner {
-            background: linear-gradient(135deg, rgba(240,192,96,0.18), rgba(157,140,239,0.12));
-            border: 1px solid rgba(240,192,96,0.35);
-            border-radius: 16px;
-            padding: 14px 16px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-        .trial-title { font-size: 13px; font-weight: 700; color: var(--gold); }
-        .trial-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-        .analysis-card {
-            background: linear-gradient(135deg, rgba(106,184,232,0.16), rgba(93,216,168,0.1));
-            border: 1px solid rgba(106,184,232,0.24);
-            border-radius: 18px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        .analysis-actions { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
-        .analysis-result { margin-top: 14px; display:none; }
-        .analysis-result.show { display:block; }
-        .analysis-row {
-            display:flex; align-items:center; gap:10px; margin:10px 0;
-        }
-        .analysis-label { min-width: 90px; font-size: 13px; color: var(--text); }
-        .analysis-bar { flex:1; height:8px; border-radius:999px; background: rgba(255,255,255,0.08); overflow:hidden; }
-        .analysis-fill { height:100%; border-radius:999px; background: linear-gradient(90deg, var(--accent), var(--mint)); }
-        .analysis-pct { width:42px; text-align:right; font-size:12px; color: var(--text-muted); }
-        .soft-note { font-size: 11px; color: var(--text-muted); line-height: 1.5; margin-top: 10px; }
-        .lang-switch { display:flex; gap:8px; margin-bottom: 14px; }
-        .lang-chip {
-            flex:1; border:1px solid var(--border); background: var(--card); color: var(--text-muted);
-            padding:10px 12px; border-radius: 12px; text-align:center; cursor:pointer; font-size:13px; font-weight:700;
-        }
-        .lang-chip.active { border-color: var(--accent); background: rgba(157,140,239,0.15); color: var(--accent-light); }
-        .compact-lang-switch { margin-bottom: 0; }
-        .compact-lang-chip { min-width: 42px; padding: 8px 10px; font-size: 12px; }
-        .hero-onboard {
-            text-align:center; padding: 12px 0 6px;
-        }
-        .hero-onboard h2 { font-size: 24px; margin-bottom: 8px; }
-        .hero-onboard p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
-        .onboard-points { margin: 18px 0; display:grid; gap:10px; }
-        .onboard-point { background: var(--card); border:1px solid var(--border); border-radius: 14px; padding: 14px; text-align:left; }
-        .onboard-point strong { display:block; margin-bottom:4px; }
-        .pill-inline {
-            display:inline-flex; align-items:center; gap:6px; font-size:11px; color: var(--gold);
-            background: rgba(240,192,96,0.12); border:1px solid rgba(240,192,96,0.25); padding:4px 8px; border-radius:999px;
-        }
-
     </style>
 </head>
 <body>
@@ -1408,13 +1355,9 @@
     <div class="header">
         <div class="logo">
             <span class="logo-moon">🌙</span>
-            <span class="logo-text">Minik Uyku – LumiBaby</span>
+            <span class="logo-text" id="app-logo-text">Minik Uyku – LumiBaby</span>
         </div>
         <div class="header-btns">
-            <div class="lang-switch compact-lang-switch">
-                <button type="button" class="lang-chip compact-lang-chip" id="lang-tr" onclick="setLanguage('tr')">TR</button>
-                <button type="button" class="lang-chip compact-lang-chip" id="lang-en" onclick="setLanguage('en')">EN</button>
-            </div>
             <button class="header-btn premium" onclick="showPremiumModal()" id="premium-btn">
                 <span>👑</span> <span id="premium-text">Premium</span>
             </button>
@@ -1427,51 +1370,29 @@
     <div class="nav">
         <div class="nav-item active" onclick="goToPage('ninniler', this)">
             <span class="nav-icon">🎵</span>
-            <span class="nav-label" id="nav-lullabies">Ninniler</span>
+            <span class="nav-label">Ninniler</span>
         </div>
         <div class="nav-item" onclick="goToPage('hikayeler', this)">
             <span class="nav-icon">📖</span>
-            <span class="nav-label" id="nav-stories">Hikayeler</span>
+            <span class="nav-label">Hikayeler</span>
         </div>
         <div class="nav-item" onclick="goToPage('kolik', this)">
             <span class="nav-icon">🌿</span>
-            <span class="nav-label" id="nav-colic">Kolik</span>
+            <span class="nav-label">Kolik</span>
         </div>
         <div class="nav-item" onclick="goToPage('takip', this)">
             <span class="nav-icon">📊</span>
-            <span class="nav-label" id="nav-tracking">Takip</span>
+            <span class="nav-label">Takip</span>
         </div>
         <div class="nav-item" onclick="goToPage('sesim', this)">
             <span class="nav-icon">🎙️</span>
-            <span class="nav-label" id="nav-voice">Sesim</span>
+            <span class="nav-label">Sesim</span>
         </div>
     </div>
     
     <div class="content">
         <!-- Ninniler Sayfası -->
         <div class="page active" id="page-ninniler">
-            <div class="trial-banner" id="trial-banner">
-                <div>
-                    <div class="trial-title" id="trial-title">3 gün ücretsiz deneme aktif</div>
-                    <div class="trial-subtitle" id="trial-subtitle">Tüm premium özellikleri deneyin</div>
-                </div>
-                <button class="header-btn premium" onclick="showPremiumModal()">Yükselt</button>
-            </div>
-
-            <div class="analysis-card">
-                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-                    <div>
-                        <div id="cry-title" style="font-weight:700; font-size:15px;">🩺 Bebek neden ağlıyor?</div>
-                        <div id="cry-subtitle" style="font-size:12px; color: var(--text-muted); margin-top:4px;">10 saniye dinleyip olasılık dağılımı gösterir.</div>
-                    </div>
-                    <span class="pill-inline" id="cry-pill">Tahmin · tanı değil</span>
-                </div>
-                <div class="analysis-actions">
-                    <button class="btn-secondary" style="flex:1;" onclick="startCryAnalysis()" id="cry-analysis-btn">🎙 10 sn analiz et</button>
-                </div>
-                <div class="analysis-result" id="cry-analysis-result"></div>
-                <div class="soft-note" id="cry-note">Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk ve diğer nedenler için fikir vermek üzere tasarlanmıştır.</div>
-            </div>
             <div class="now-playing" id="np-ninniler">
                 <div class="np-header">
                     <span class="np-icon" id="np-icon">🎵</span>
@@ -1501,9 +1422,10 @@
                 <div class="timer-grid">
                     <div class="timer-option" onclick="setTimer(15, this)">15 dk</div>
                     <div class="timer-option" onclick="setTimer(30, this)">30 dk</div>
-                    <div class="timer-option" onclick="setTimer(60, this)">60 dk</div>
-                    <div class="timer-option" onclick="setTimer(90, this)">90 dk</div>
-                    <div class="timer-option" onclick="setTimer(120, this)">120 dk</div>
+                    <div class="timer-option" onclick="setTimer(45, this)">45 dk</div>
+                    <div class="timer-option" onclick="setTimer(60, this)">1 saat</div>
+                    <div class="timer-option" onclick="setTimer(90, this)">1.5 saat</div>
+                    <div class="timer-option" onclick="setTimer(120, this)">2 saat</div>
                 </div>
             </div>
             
@@ -1514,7 +1436,7 @@
             <div id="voice-lullabies-list">
                 <div class="empty-state">
                     <div class="empty-icon">🎙️</div>
-                    <div class="empty-text">"Sesim" sekmesinden sesinizi klonlayın</div>
+                    <div class="empty-text" id="voice-lullaby-empty">"Sesim" sekmesinden sesinizi klonlayın</div>
                 </div>
             </div>
         </div>
@@ -1550,7 +1472,7 @@
                     <span class="np-icon">🌿</span>
                     <div class="np-info">
                         <div class="np-title" id="np-kol-title">—</div>
-                        <div class="np-subtitle">Sınırsız · Ücretsiz</div>
+                        <div class="np-subtitle" id="colic-subtitle">Sınırsız · Ücretsiz</div>
                     </div>
                     <button class="np-stop" onclick="stopAll()">⏹</button>
                 </div>
@@ -1559,13 +1481,13 @@
                 </div>
             </div>
             
-            <div class="section-title">Beyaz Gürültü <span class="premium-badge" id="colic-free-badge" style="background: var(--mint); color: #0a0e1a;">TÜMÜ ÜCRETSİZ</span></div>
+            <div class="section-title" id="colic-free-title">Beyaz Gürültü <span class="premium-badge" id="colic-free-badge" style="background: var(--mint); color: #0a0e1a;">TÜMÜ ÜCRETSİZ</span></div>
             <div id="kolik-beyaz"></div>
             
-            <div class="section-title">Doğa Sesleri</div>
+            <div class="section-title" id="nature-title">Doğa Sesleri</div>
             <div id="kolik-doga"></div>
             
-            <div class="section-title">Rahatlatıcı Sesler</div>
+            <div class="section-title" id="calm-title">Rahatlatıcı Sesler</div>
             <div id="kolik-rahat"></div>
         </div>
         
@@ -1588,7 +1510,7 @@
                 </button>
             </div>
             
-            <div class="section-title">Bugünün İstatistikleri</div>
+            <div class="section-title" id="stats-title">Bugünün İstatistikleri</div>
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value" id="stat-total">0s</div>
@@ -1608,7 +1530,7 @@
                 </div>
             </div>
             
-            <div class="section-title">Uyku Grafiği (Son 7 Gün)</div>
+            <div class="section-title" id="chart-title">Uyku Grafiği (Son 7 Gün)</div>
             <div class="chart-container">
                 <div class="chart-placeholder" id="sleep-chart">
                     <div class="chart-bar" style="height: 40%"></div>
@@ -1619,25 +1541,25 @@
                     <div class="chart-bar" style="height: 80%"></div>
                     <div class="chart-bar" style="height: 45%"></div>
                 </div>
-                <div class="chart-labels">
+                <div class="chart-labels" id="chart-labels">
                     <span>Pzt</span><span>Sal</span><span>Çar</span><span>Per</span><span>Cum</span><span>Cmt</span><span>Paz</span>
                 </div>
             </div>
             
-            <div class="section-title">Son Uykular</div>
+            <div class="section-title" id="recent-sleeps-title">Son Uykular</div>
             <div class="sleep-list" id="sleep-list">
                 <div class="empty-state">
                     <div class="empty-icon">🌙</div>
-                    <div class="empty-text">Henüz uyku kaydı yok</div>
+                    <div class="empty-text" id="sleep-empty-text">Henüz uyku kaydı yok</div>
                 </div>
             </div>
             
-            <div class="section-title">Uzman Önerileri</div>
+            <div class="section-title" id="expert-title">Uzman Önerileri</div>
             <div class="age-selector">
-                <div class="age-option active" onclick="selectAge(this, 0)">0-3 ay</div>
-                <div class="age-option" onclick="selectAge(this, 1)">3-6 ay</div>
-                <div class="age-option" onclick="selectAge(this, 2)">6-12 ay</div>
-                <div class="age-option" onclick="selectAge(this, 3)">1+ yaş</div>
+                <div class="age-option active" id="age-0" onclick="selectAge(this, 0)">0-3 ay</div>
+                <div class="age-option" id="age-1" onclick="selectAge(this, 1)">3-6 ay</div>
+                <div class="age-option" id="age-2" onclick="selectAge(this, 2)">6-12 ay</div>
+                <div class="age-option" id="age-3" onclick="selectAge(this, 3)">1+ yaş</div>
             </div>
             <div id="expert-tips"></div>
         </div>
@@ -1658,26 +1580,26 @@
                 </div>
             </div>
             
-            <div class="section-title">Kayıtlarım</div>
+            <div class="section-title" id="recordings-title">Kayıtlarım</div>
             <div id="recordings-list">
                 <div class="empty-state">
                     <div class="empty-icon">🎙️</div>
-                    <div class="empty-text">Henüz kayıt yok</div>
+                    <div class="empty-text" id="recordings-empty">Henüz kayıt yok</div>
                 </div>
             </div>
             
-            <div class="section-title">Ses Klonlama <span class="premium-badge" style="background: var(--mint); color: #0a0e1a;">ÜCRETSİZ</span></div>
+            <div class="section-title" id="voice-clone-title">Ses Klonlama <span class="premium-badge" id="voice-clone-badge" style="background: var(--mint); color: #0a0e1a;">ÜCRETSİZ</span></div>
             <div id="clone-section">
                 <div class="empty-state">
-                    <div class="empty-text">Önce ses kaydı yapın</div>
+                    <div class="empty-text" id="clone-empty">Önce ses kaydı yapın</div>
                 </div>
             </div>
             
             <div id="voice-generator" style="display: none;">
-                <div class="section-title">Sesimle Oku</div>
+                <div class="section-title" id="read-my-voice-title">Sesimle Oku</div>
                 <div class="clone-box">
                     <div class="input-group">
-                        <label class="input-label">Metin</label>
+                        <label class="input-label" id="voice-text-label">Metin</label>
                         <textarea class="input-field" id="voice-text" rows="3" placeholder="Buraya yazın...">Dandini dandini danalı bebek, elleri kolları kınalı bebek...</textarea>
                     </div>
                     <button class="btn-secondary" onclick="speakWithClonedVoice()" id="speak-btn">🎵 Sesimle Oku</button>
@@ -1697,23 +1619,23 @@
     <div class="bottom-nav">
         <button class="bottom-item active" onclick="goToPage('ninniler', null, 0)">
             <span class="bottom-icon">🎵</span>
-            <span class="bottom-label" id="bottom-lullabies">Ninniler</span>
+            <span class="bottom-label">Ninniler</span>
         </button>
         <button class="bottom-item" onclick="goToPage('hikayeler', null, 1)">
             <span class="bottom-icon">📖</span>
-            <span class="bottom-label" id="bottom-stories">Hikayeler</span>
+            <span class="bottom-label">Hikayeler</span>
         </button>
         <button class="bottom-item" onclick="goToPage('kolik', null, 2)">
             <span class="bottom-icon">🌿</span>
-            <span class="bottom-label" id="bottom-colic">Kolik</span>
+            <span class="bottom-label">Kolik</span>
         </button>
         <button class="bottom-item" onclick="goToPage('takip', null, 3)">
             <span class="bottom-icon">📊</span>
-            <span class="bottom-label" id="bottom-tracking">Takip</span>
+            <span class="bottom-label">Takip</span>
         </button>
         <button class="bottom-item" onclick="goToPage('sesim', null, 4)">
             <span class="bottom-icon">🎙️</span>
-            <span class="bottom-label" id="bottom-voice">Sesim</span>
+            <span class="bottom-label">Sesim</span>
         </button>
     </div>
     
@@ -1721,25 +1643,24 @@
     <div class="modal" id="settings-modal" onclick="closeModalOnBackdrop(event)">
         <div class="modal-sheet">
             <div class="modal-handle"></div>
-            <div style="font-family: 'Quicksand', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px;">Bebek Ayarları</div>
-            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Kişiselleştirilmiş deneyim için</div>
-
+            <div style="font-family: 'Quicksand', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px;" id="settings-title">Bebek Ayarları</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;" id="settings-subtitle">Kişiselleştirilmiş deneyim için</div>
             
             <div class="input-group">
-                <label class="input-label">Bebeğinizin Adı</label>
-                <input type="text" class="input-field" id="baby-name-input" placeholder="Ayşe / Emma" maxlength="15">
+                <label class="input-label" id="baby-name-label">Bebeğinizin Adı</label>
+                <input type="text" class="input-field" id="baby-name-input" placeholder="Örn: Ayşe, Mehmet..." maxlength="15">
             </div>
             
             <div class="input-group">
-                <label class="input-label">Doğum Tarihi</label>
+                <label class="input-label" id="birthdate-label">Doğum Tarihi</label>
                 <input type="date" class="input-field" id="baby-birthdate">
             </div>
             
             <div style="font-size: 12px; color: var(--text-muted); margin: 12px 0; line-height: 1.5;">
-                💡 <span id="settings-example-text">Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>'m, tatlı rüyalar gör..."</span>
+                💡 Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>'m, tatlı rüyalar gör..."
             </div>
             
-            <button class="btn-primary" onclick="saveBabySettings()">💾 Kaydet</button>
+            <button class="btn-primary" onclick="saveBabySettings()" id="save-settings-btn">💾 Kaydet</button>
         </div>
     </div>
     
@@ -1749,7 +1670,7 @@
             <div class="modal-handle"></div>
             <div class="premium-modal-content">
                 <div class="premium-icon">👑</div>
-                <div class="premium-title">Minik Uyku Premium</div>
+                <div class="premium-title" id="premium-title">Minik Uyku – LumiBaby Premium</div>
                 <p style="color: var(--text-muted); font-size: 14px;">Bebeğiniz için en iyi uyku deneyimi</p>
                 
                 <div class="premium-price">49₺ <span>/aylık</span></div>
@@ -1787,7 +1708,7 @@
                         <span class="premium-check">✓</span>
                         <div class="premium-feature-text">
                             Ses Klonlama
-                            <br><span>Demo açık · yayın öncesi backend gerekli</span>
+                            <br><span>Ücretsiz ve sınırsız</span>
                         </div>
                     </div>
                 </div>
@@ -1802,49 +1723,17 @@
         </div>
     </div>
 
-
-    <div class="modal" id="onboarding-modal">
-        <div class="modal-sheet" style="max-height: 92vh;">
-            <div class="modal-handle"></div>
-            <div class="hero-onboard">
-                <div style="font-size:56px; margin-bottom:8px;">🌙</div>
-                <h2>Minik Uyku</h2>
-                <p>Bebeğinizin ağlamasını daha iyi anlamak, kendi sesinizle ninni söylemek ve uyku düzenini takip etmek için hazırlandı.</p>
-            </div>
-            <div class="lang-switch">
-                <button type="button" class="lang-chip" id="onboard-lang-tr" onclick="setLanguage('tr', true)">Türkçe</button>
-                <button type="button" class="lang-chip" id="onboard-lang-en" onclick="setLanguage('en', true)">English</button>
-            </div>
-            <div class="onboard-points">
-                <div class="onboard-point"><strong>🎙 Ses klonlama</strong><span style="font-size:13px; color: var(--text-muted);">Kendi sesinizle ninni ve hikaye deneyimi.</span></div>
-                <div class="onboard-point"><strong>🩺 Ağlama tahmini</strong><span style="font-size:13px; color: var(--text-muted);">Açlık, gaz, uykusuzluk, çiş ve kaka için olasılık sonucu.</span></div>
-                <div class="onboard-point"><strong>📊 Uyku analizi</strong><span style="font-size:13px; color: var(--text-muted);">Uyku oturumları, tahminler ve rutin takibi.</span></div>
-            </div>
-            <div class="input-group">
-                <label class="input-label">Bebek adı</label>
-                <input type="text" class="input-field" id="onboard-baby-name" placeholder="Örn: Ayşe / Emma" maxlength="15">
-            </div>
-            <button class="btn-primary" onclick="finishOnboarding()">Başla</button>
-            <div class="soft-note" style="text-align:center; margin-top:12px;">Not: Gerçek ödeme ve gerçek ses klonlama bağlantısı için yayın öncesi backend ve mağaza entegrasyonu gerekir.</div>
-        </div>
-    </div>
-
-
     <script>
         // ═══════════════════════════════════════════════════════════════
         // KONFİGÜRASYON
         // ═══════════════════════════════════════════════════════════════
         const CONFIG = {
-            ELEVENLABS_API_KEY: '', // Güvenlik için istemci tarafında tutulmamalı
+            ELEVENLABS_API_KEY: 'sk_3faf684e321a7fdfd6f27fb4ce2aa77ddc68da7637fbbe0a',
             DEFAULT_VOICE_ID: 'JgYekNWmelei0oWTtYie',
-            FREE_PREVIEW_SECONDS: 999999,
-            FREE_STORY_SECONDS: 999999,
+            FREE_PREVIEW_SECONDS: 60,
+            FREE_STORY_SECONDS: 60,
             MAX_RECORDING_SECONDS: 300,
-            PREMIUM_PRICE_TRY: 129,
-            PREMIUM_PRICE_USD: 9.99,
-            PREMIUM_YEARLY_TRY: 899,
-            PREMIUM_YEARLY_USD: 59,
-            TRIAL_DAYS: 3,
+            PREMIUM_PRICE: 49,
             LOCAL_SOUNDS_PATH: ''
         };
 
@@ -1879,80 +1768,8 @@
             { id: 's4', title: 'Ay ile Bebek', emoji: '🌙', age: '0-2 yaş', duration: '4 dk', type: 'Kısa Masal', desc: 'Ay\'ın bebeği izlediği tatlı bir gece', text: 'Her gece ay pencereden içeri bakarmış. Sen en parlak yıldızsın, demiş ay. Gözlerini kapat, seninle rüyanda konuşurum. Bebek gözlerini yummuş ve rüyasında ayın yanında uçmuş. Uyu tatlım, uyu.' }
         ];
 
-
-        const EN_LULLABIES = [
-            { id: 'el1', name: 'Twinkle Twinkle', emoji: '✨', origin: 'English', desc: 'Classic bedtime lullaby', file: 'twinkle.mp3', text: 'Twinkle twinkle little star, how I wonder what you are...' },
-            { id: 'el2', name: 'Rock-a-Bye Baby', emoji: '🌙', origin: 'English', desc: 'Soft classic sleep melody', file: 'rockabye.mp3', text: 'Rock-a-bye baby, on the tree top...' }
-        ];
-        const EN_STORIES = [
-            { id: 'es1', title: 'Little Star', emoji: '⭐', age: '0-3 years', duration: '5 min', type: 'Story', desc: 'A tiny star learns to glow', text: 'Once upon a time there was a tiny star called Light. Every night it watched sleepy babies and whispered sweet dreams.' },
-            { id: 'es2', title: 'Sleepy Forest', emoji: '🌲', age: '1-4 years', duration: '6 min', type: 'Nature', desc: 'Forest friends get ready for bed', text: 'In the deep forest, every little animal prepared for sleep. Leaves whispered softly and the moon smiled above.' },
-            { id: 'es3', title: 'Cloud Baby', emoji: '☁️', age: '0-3 years', duration: '4 min', type: 'Fantasy', desc: 'A soft cloud drifts into dreams', text: 'A baby cloud named Puffy floated gently across the sky and followed the moon into dreamland.' },
-            { id: 'es4', title: 'Moon and Baby', emoji: '🌙', age: '0-2 years', duration: '4 min', type: 'Short Story', desc: 'The moon watches over a sleepy baby', text: 'The moon peeked through the window and promised to stay close until morning.' }
-        ];
-
         // Yerel ses dosyaları (GitHub'dan)
-        
-        const KOLIK_TRANSLATIONS = {
-            b1: { enName: 'Hair Dryer', enDesc: 'Strong airflow - calming for many babies' },
-            b2: { enName: 'Vacuum Cleaner', enDesc: 'Deep motor hum' },
-            b3: { enName: 'White Noise', enDesc: 'Pure white noise' },
-            b4: { enName: 'Air Conditioner', enDesc: 'Steady monotone hum' },
-            d1: { enName: 'Rain Sound', enDesc: 'Soft rainfall ambience' },
-            d2: { enName: 'Ocean Waves', enDesc: 'Rhythmic sea waves' },
-            d3: { enName: 'Forest Sound', enDesc: 'Leaves and distant birds' },
-            d4: { enName: 'Water Stream', enDesc: 'Continuous flowing water' },
-            r1: { enName: 'Heartbeat', enDesc: 'A womb-like steady rhythm' },
-            r2: { enName: 'Shushing Sound', enDesc: 'Helpful during crying episodes' }
-        };
-
-        const EN_EXPERT_TIPS = {
-            0: [
-                { author: 'Dr. Ayse Yilmaz', title: 'Child Development Specialist', avatar: '👩‍⚕️', tip: 'Newborn babies usually sleep 16-18 hours a day. Watch for early sleepy cues like yawning and rubbing eyes.' },
-                { author: 'Dr. Daniel Brooks', title: 'Pediatrician', avatar: '👨‍⚕️', tip: 'Colic is common in the first months. White noise and gentle rocking may help, especially in the late afternoon.' },
-                { author: 'Midwife Sarah Bennett', title: 'Lactation Consultant', avatar: '🤱', tip: 'Feeding and sleep are closely connected. A calm feed before sleep can support an easier bedtime routine.' }
-            ],
-            1: [
-                { author: 'Dr. Selin Aydin', title: 'Sleep Therapist', avatar: '😴', tip: 'After 3 months, babies may begin sleeping for longer stretches at night. Sleep regression periods are common and temporary.' },
-                { author: 'Dr. Mehmet Sahin', title: 'Development Specialist', avatar: '👨‍⚕️', tip: 'At this stage, many babies still take 3-4 naps a day. Consistent routines can help bedtime become smoother.' },
-                { author: 'Psychologist Elif Yildiz', title: 'Family Therapist', avatar: '🧠', tip: 'Repeating the same bedtime flow each evening helps babies understand that sleep time is coming.' }
-            ],
-            2: [
-                { author: 'Dr. Benjamin Scott', title: 'Child Development Specialist', avatar: '👨‍⚕️', tip: 'Between 6 and 12 months, total sleep often becomes 12-14 hours a day and daytime naps may reduce to two.' },
-                { author: 'Midwife Seda Kilic', title: 'Sleep Consultant', avatar: '🌙', tip: 'Crawling and new skills can affect sleep. Babies may want to practice these skills even when tired.' },
-                { author: 'Dr. Asli Koc', title: 'Nutrition Specialist', avatar: '🍼', tip: 'Changes in solids and feeding can affect bedtime. Keep evenings calm and avoid heavy feeds right before sleep.' }
-            ],
-            3: [
-                { author: 'Dr. Jacob Foster', title: 'Child Psychiatrist', avatar: '🧸', tip: 'After age one, many toddlers move toward one daytime nap and need a stable bedtime routine.' },
-                { author: 'Psychologist Sophie Collins', title: 'Play Therapist', avatar: '🎈', tip: 'Separation anxiety can peak in toddlerhood. A short, loving bedtime ritual can reduce bedtime resistance.' },
-                { author: 'Dr. Matthew Green', title: 'Pedagogue', avatar: '📚', tip: 'Story time becomes especially powerful after age one. Repeating familiar stories can help create a sense of safety.' }
-            ]
-        };
-
-        const PHRASE_SETS = {
-            tr: {
-                title: '📝 Masal okur gibi yavaş, sıcak ve doğal bir tonla okuyun. (Yaklaşık 1 dakika):',
-                lines: [
-                    'Uyu bebeğim... şimdi dinlenme zamanı...',
-                    'Gece sessiz, yıldızlar gökyüzünde parlıyor... ay ışığı odana yumuşakça vuruyor...',
-                    'Mmm... eee... şşş... derin bir nefes al ve bırak...'
-                ],
-                voiceTextPlaceholder: 'Buraya sakin bir ninni ya da kısa masal metni yazın...',
-                voiceTextValue: 'Uyu bebeğim... gece sessiz, yıldızlar parlarken şimdi tatlı rüyalara dalma zamanı...'
-            },
-            en: {
-                title: '📝 Read slowly in a warm, natural storytelling tone. (About 1 minute):',
-                lines: [
-                    'Sleep softly, little one... it is time to rest now...',
-                    'The night is calm, the stars are shining, and the moonlight is touching your room gently...',
-                    'Mmm... shh... take a deep breath... and slowly let it go...'
-                ],
-                voiceTextPlaceholder: 'Write a calm lullaby or a short bedtime text here...',
-                voiceTextValue: 'Sleep softly, little one... the night is quiet and it is time to drift into sweet dreams...'
-            }
-        };
-
-const KOLIK_SOUNDS = {
+        const KOLIK_SOUNDS = {
     beyaz: [
         { id: 'b1', name: 'Saç Kurutma Makinesi', emoji: '💨', desc: 'Güçlü hava akışı - anında sakinleştirir', file: 'hairdryer.mp3' },
         { id: 'b2', name: 'Elektrik Süpürgesi', emoji: '🌀', desc: 'Derin motor tınısı', file: 'vacuum.mp3' },
@@ -1973,52 +1790,28 @@ const KOLIK_SOUNDS = {
 
         const EXPERT_TIPS = {
             0: [ // 0-3 ay
-                { author: 'Dr. Emily Carter', title: 'Pedagog', avatar: '👩‍⚕️', tip: 'Yeni doğan bebekler günde 16-18 saat uyur. Uyku aralıkları 2-3 saattir. Bebeğinizin uyku sinyallerini (esneme, göz ovuşturma) kaçırmayın.' },
-                { author: 'Uzm. Dr. Daniel Brooks', title: 'Çocuk Uzmanı', avatar: '👨‍⚕️', tip: '0-3 aylık bebeklerde kolik yaygındır. Beyaz gürültü ve sallanma hareketleri rahatlatır. Saat 17-20 arası kolik krizleri artabilir.' },
+                { author: 'Dr. Ayşe Yılmaz', title: 'Pedagog', avatar: '👩‍⚕️', tip: 'Yeni doğan bebekler günde 16-18 saat uyur. Uyku aralıkları 2-3 saattir. Bebeğinizin uyku sinyallerini (esneme, göz ovuşturma) kaçırmayın.' },
+                { author: 'Uzm. Dr. Can Kaya', title: 'Çocuk Uzmanı', avatar: '👨‍⚕️', tip: '0-3 aylık bebeklerde kolik yaygındır. Beyaz gürültü ve sallanma hareketleri rahatlatır. Saat 17-20 arası kolik krizleri artabilir.' },
                 { author: 'Ebe Zeynep Demir', title: 'Emzirme Danışmanı', avatar: '🤱', tip: 'Açlık ve uyku ilişkisi yakındır. Bebek doyunca uykuya daha kolay dalacaktır. Uyku öncesi emzirme ritüeli oluşturun.' }
             ],
             1: [ // 3-6 ay
-                { author: 'Dr. Olivia Reed', title: 'Uyku Terapisti', avatar: '😴', tip: '3 aydan sonra bebekler gece daha uzun uyumaya başlar. 4 aylık uyku regresyonuna hazırlıklı olun, geçicidir.' },
-                { author: 'Dr. Michael Turner', title: 'Gelişim Uzmanı', avatar: '👨‍⚕️', tip: 'Bu dönemde bebekler günde 14-15 saat uyur. Gündüz 3-4 kez kısa uyku yapabilirler.' },
+                { author: 'Dr. Selin Aydın', title: 'Uyku Terapisti', avatar: '😴', tip: '3 aydan sonra bebekler gece daha uzun uyumaya başlar. 4 aylık uyku regresyonuna hazırlıklı olun, geçicidir.' },
+                { author: 'Dr. Mehmet Şahin', title: 'Gelişim Uzmanı', avatar: '👨‍⚕️', tip: 'Bu dönemde bebekler günde 14-15 saat uyur. Gündüz 3-4 kez kısa uyku yapabilirler.' },
                 { author: 'Psikolog Elif Yıldız', title: 'Aile Terapisti', avatar: '🧠', tip: 'Ritüeller önemlidir. Aynı saatte banyo, masal ve ninni ile bebek uykuya hazırlanmayı öğrenir.' }
             ],
             2: [ // 6-12 ay
-                { author: 'Dr. Benjamin Scott', title: 'Pedagog', avatar: '👨‍⚕️', tip: '6-12 aylık bebekler günde 12-14 saat uyur. Gündüz uykuları 2ye düşer. Gece açlıktan uyanma azalır.' },
+                { author: 'Dr. Burak Tan', title: 'Pedagog', avatar: '👨‍⚕️', tip: '6-12 aylık bebekler günde 12-14 saat uyur. Gündüz uykuları 2ye düşer. Gece açlıktan uyanma azalır.' },
                 { author: 'Uzm. Ebe Seda Kılıç', title: 'Uyku Danışmanı', avatar: '🌙', tip: 'Emekleme dönemi uyku düzenini bozabilir. Bebek yeni becerisini pratik etmek isteyebilir. Sabırlı olun.' },
-                { author: 'Dr. Grace Walker', title: 'Beslenme Uzmanı', avatar: '🍼', tip: 'Ek gıdaya geçişte uyku düzeni değişebilir. Ağır yemekler uyku öncesi verilmeyebilir.' }
+                { author: 'Dr. Aslı Koç', title: 'Beslenme Uzmanı', avatar: '🍼', tip: 'Ek gıdaya geçişte uyku düzeni değişebilir. Ağır yemekler uyku öncesi verilmeyebilir.' }
             ],
             3: [ // 1+ yaş
-                { author: 'Dr. Jacob Foster', title: 'Çocuk Psikiyatristi', avatar: '🧸', tip: '1 yaş sonrası gündüz uykusu 1e düşer. Gece 11-12 saat aralıksız uyku hedeflenmelidir.' },
+                { author: 'Dr. Kerem Arslan', title: 'Çocuk Psikiyatristi', avatar: '🧸', tip: '1 yaş sonrası gündüz uykusu 1e düşer. Gece 11-12 saat aralıksız uyku hedeflenmelidir.' },
                 { author: 'Uzm. Psikolog Derya Uzun', title: 'Oyun Terapisti', avatar: '🎈', tip: 'Ayrılma kaygısı 12-18 ayda zirve yapar. Uyku öncesi kaliteli zaman (özel oyun) ayrılma kaygısını azaltır.' },
                 { author: 'Dr. Hakan Yücel', title: 'Pedagog', avatar: '📚', tip: 'Masal anlatma alışkanlığı bu dönemde kazanılır. Her gece aynı masal tekrarlanabilir, bu güven verir.' }
             ]
         };
 
-        
-        const EXPERT_TIPS_EN = {
-            0: [
-                { author: 'Dr. Emily Carter', title: 'Pedagogue', avatar: '👩‍⚕️', tip: 'Newborn babies usually sleep 16 to 18 hours a day. Sleep windows are often 2 to 3 hours. Watch for sleepy cues such as yawning and eye rubbing.' },
-                { author: 'Dr. Daniel Brooks', title: 'Pediatrician', avatar: '👨‍⚕️', tip: 'Colic is common in the first months. White noise and gentle rocking can be soothing. Crying may increase especially in the late afternoon and early evening.' },
-                { author: 'Midwife Sarah Bennett', title: 'Lactation Consultant', avatar: '🤱', tip: 'Feeding and sleep are closely linked. A full baby often settles more easily. A calm feeding routine before sleep can help.' }
-            ],
-            1: [
-                { author: 'Dr. Olivia Reed', title: 'Sleep Therapist', avatar: '😴', tip: 'After 3 months, babies may begin sleeping longer at night. Be prepared for the 4-month sleep regression; it is common and temporary.' },
-                { author: 'Dr. Michael Turner', title: 'Development Specialist', avatar: '👨‍⚕️', tip: 'At this stage, babies often sleep 14 to 15 hours a day and may take 3 to 4 shorter naps.' },
-                { author: 'Psychologist Hannah Miller', title: 'Family Therapist', avatar: '🧠', tip: 'Routines matter. Repeating the same bedtime order such as bath, story and lullaby helps babies understand that sleep is coming.' }
-            ],
-            2: [
-                { author: 'Dr. Benjamin Scott', title: 'Pedagogue', avatar: '👨‍⚕️', tip: 'Between 6 and 12 months, babies often sleep 12 to 14 hours a day. Day naps may reduce to two and night wakings from hunger often decrease.' },
-                { author: 'Midwife Chloe Adams', title: 'Sleep Consultant', avatar: '🌙', tip: 'Crawling and movement milestones can briefly affect sleep. Babies may want to practice new skills. Stay patient and consistent.' },
-                { author: 'Dr. Grace Walker', title: 'Nutrition Specialist', avatar: '🍼', tip: 'Starting solids may change the sleep routine. Heavy meals right before sleep may not be ideal for some babies.' }
-            ],
-            3: [
-                { author: 'Dr. Jacob Foster', title: 'Child Psychiatrist', avatar: '🧸', tip: 'After age one, many babies move toward one daytime nap. A long, consistent night sleep becomes the main goal.' },
-                { author: 'Psychologist Sophie Collins', title: 'Play Therapist', avatar: '🎈', tip: 'Separation anxiety often peaks between 12 and 18 months. Special one-on-one time before bedtime can help your child settle more calmly.' },
-                { author: 'Dr. Hakan Yücel', title: 'Pedagogue', avatar: '📚', tip: 'Bedtime stories become especially powerful in this stage. Repeating a familiar story often creates comfort and security.' }
-            ]
-        };
-
-// ═══════════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════
         // UYGULAMA DURUMU
         // ═══════════════════════════════════════════════════════════════
         let state = {
@@ -2048,11 +1841,7 @@ const KOLIK_SOUNDS = {
             sleepTracking: { active: false, startTime: null, history: JSON.parse(localStorage.getItem('minikuyku_sleep_history') || '[]') },
             sleepInterval: null,
             currentAgeGroup: 0,
-            language: localStorage.getItem('minikuyku_lang') || 'tr',
-            onboarded: JSON.parse(localStorage.getItem('minikuyku_onboarded') || 'false'),
-            trialStartedAt: localStorage.getItem('minikuyku_trial_start') || null,
-            cryAnalysisHistory: JSON.parse(localStorage.getItem('minikuyku_cry_analysis_history') || '[]'),
-            cloneReady: JSON.parse(localStorage.getItem('minikuyku_clone_ready') || 'false')
+            language: localStorage.getItem('minikuyku_lang') || 'tr'
         };
 
         // ═══════════════════════════════════════════════════════════════
@@ -2067,20 +1856,16 @@ const KOLIK_SOUNDS = {
             updateCloneSection();
             updateBabyNameDisplay();
             initWaveform();
-            ensureTrialStarted();
             updatePremiumUI();
             renderSleepStats();
             renderExpertTips();
-            updateLanguageUI();
             checkSleepPrediction();
-            updateLanguageUI();
-            updateTrialUI();
-            if (!state.onboarded) document.getElementById('onboarding-modal').classList.add('show');
             
             // Doğum tarihi varsa yaşı hesapla
             if (state.babyBirthDate) {
                 calculateAgeGroup();
             }
+            applyLanguage();
         });
 
         function initStars() {
@@ -2142,58 +1927,56 @@ const KOLIK_SOUNDS = {
             const text = document.getElementById('premium-text');
             const ninnilerBadge = document.getElementById('ninniler-badge');
             const hikayelerBadge = document.getElementById('hikayeler-badge');
-            const trialActive = isTrialActive();
-
+            
             if (state.isPremium) {
                 btn.classList.add('premium');
-                text.textContent = state.language === 'tr' ? 'Premium ✓' : 'Premium ✓';
-                ninnilerBadge.textContent = state.language === 'tr' ? 'Sınırsız' : 'Unlimited';
+                text.textContent = 'Premium ✓';
+                ninnilerBadge.textContent = 'Sınırsız';
                 ninnilerBadge.style.background = 'var(--mint)';
                 ninnilerBadge.style.color = '#0a0e1a';
-                hikayelerBadge.textContent = state.language === 'tr' ? 'Sınırsız' : 'Unlimited';
+                hikayelerBadge.textContent = 'Sınırsız';
                 hikayelerBadge.style.background = 'var(--mint)';
                 hikayelerBadge.style.color = '#0a0e1a';
-            } else if (trialActive) {
-                btn.classList.add('premium');
-                text.textContent = state.language === 'tr' ? 'Deneme' : 'Trial';
-                ninnilerBadge.textContent = state.language === 'tr' ? 'Deneme' : 'Trial';
-                hikayelerBadge.textContent = state.language === 'tr' ? 'Deneme' : 'Trial';
             } else {
                 btn.classList.remove('premium');
                 text.textContent = 'Premium';
-                ninnilerBadge.textContent = state.language === 'tr' ? 'Kilitli' : 'Locked';
-                hikayelerBadge.textContent = state.language === 'tr' ? 'Kilitli' : 'Locked';
+                ninnilerBadge.textContent = '1dk';
+                hikayelerBadge.textContent = '1 dk';
             }
         }
 
         function showPremiumModal() {
-            updatePremiumModalContent();
             document.getElementById('premium-modal').classList.add('show');
         }
 
         function activatePremium() {
+            // Gerçek uygulamada burada ödeme entegrasyonu olacak
+            // Şimdilik simülasyon
             state.isPremium = true;
             localStorage.setItem('minikuyku_premium', 'true');
             updatePremiumUI();
-            updateTrialUI();
             closeModal('premium-modal');
-            showToast(state.language === 'tr' ? '🎉 Premium simülasyonu aktif edildi.' : '🎉 Premium simulation activated.');
+            showToast('🎉 Premium aktif! Tüm özellikler açıldı.');
         }
 
         function checkPremiumLimit(feature) {
-            if (state.isPremium || isTrialActive()) return true;
-            return false;
+            if (state.isPremium) return true;
+            
+            const limits = {
+                'ninniler': 60,
+                'hikayeler': 60,
+                'detector': 60
+            };
+            
+            return limits[feature] || 30;
         }
 
         // ═══════════════════════════════════════════════════════════════
         // RENDER FONKSİYONLARI
         // ═══════════════════════════════════════════════════════════════
-        function getActiveLullabies() { return state.language === 'tr' ? LULLABIES : EN_LULLABIES; }
-        function getActiveStories() { return state.language === 'tr' ? STORIES : EN_STORIES; }
-
         function renderLullabies() {
             const container = document.getElementById('lullabies-list');
-            container.innerHTML = getActiveLullabies().map(l => `
+            container.innerHTML = LULLABIES.map(l => `
                 <div class="card" id="card-${l.id}" onclick="playLullaby('${l.id}')">
                     <span class="card-icon">${l.emoji}</span>
                     <div class="card-content">
@@ -2213,10 +1996,10 @@ const KOLIK_SOUNDS = {
         function renderVoiceLullabies() {
             const container = document.getElementById('voice-lullabies-list');
             if (!state.clonedVoiceId) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎙️</div><div class="empty-text">"Sesim" sekmesinden sesinizi klonlayın</div></div>`;
+                container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎙️</div><div class="empty-text" id="voice-lullaby-empty">"Sesim" sekmesinden sesinizi klonlayın</div></div>`;
                 return;
             }
-            container.innerHTML = getActiveLullabies().map(l => `
+            container.innerHTML = LULLABIES.map(l => `
                 <div class="card" id="vcard-${l.id}" onclick="playVoiceLullaby('${l.id}')">
                     <span class="card-icon">🎙️</span>
                     <div class="card-content">
@@ -2230,7 +2013,7 @@ const KOLIK_SOUNDS = {
 
         function renderStories() {
             const container = document.getElementById('stories-list');
-            container.innerHTML = getActiveStories().map(s => `
+            container.innerHTML = STORIES.map(s => `
                 <div class="story-card" id="story-${s.id}" onclick="playStory('${s.id}')">
                     <div class="story-header">
                         <span class="story-emoji">${s.emoji}</span>
@@ -2253,15 +2036,11 @@ const KOLIK_SOUNDS = {
         }
 
         function createKolikHTML(s) {
-            const tr = KOLIK_TRANSLATIONS[s.id] || {};
-            const name = state.language === 'tr' ? s.name : (tr.enName || s.name);
-            const desc = state.language === 'tr' ? s.desc : (tr.enDesc || s.desc);
-            const freeText = state.language === 'tr' ? 'ÜCRETSİZ' : 'FREE';
             return `
                 <div class="kolik-item" id="kitem-${s.id}" onclick="playKolik('${s.id}')">
                     <span class="kolik-icon">${s.emoji}</span>
-                    <div class="kolik-info"><div class="kolik-name">${name}</div><div class="kolik-desc">${desc}</div></div>
-                    <span class="kolik-tag">${freeText}</span>
+                    <div class="kolik-info"><div class="kolik-name">${s.name}</div><div class="kolik-desc">${s.desc}</div></div>
+                    <span class="kolik-tag">ÜCRETSİZ</span>
                     <button class="kolik-play" id="kbtn-${s.id}">▶</button>
                 </div>
             `;
@@ -2269,16 +2048,14 @@ const KOLIK_SOUNDS = {
 
         function renderRecordings() {
             const container = document.getElementById('recordings-list');
-            if (!container) return;
             if (state.recordings.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎙️</div><div class="empty-text">${state.language === 'tr' ? 'Henüz kayıt yok' : 'No recordings yet'}</div></div>`;
+                container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎙️</div><div class="empty-text" id="recordings-empty">Henüz kayıt yok</div></div>`;
                 return;
             }
-            const locale = state.language === 'tr' ? 'tr-TR' : 'en-US';
             container.innerHTML = state.recordings.map(r => `
                 <div class="recording-item">
                     <span class="rec-icon">🎙️</span>
-                    <div class="rec-info"><div class="rec-name">${r.name}</div><div class="rec-meta">${formatTime(r.duration)} · ${new Date(r.createdAt || Date.now()).toLocaleDateString(locale)}</div></div>
+                    <div class="rec-info"><div class="rec-name">${r.name}</div><div class="rec-meta">${formatTime(r.duration)} · ${r.date}</div></div>
                     <div class="rec-actions">
                         <button class="rec-btn play" onclick="playRecording('${r.id}')">▶</button>
                         <button class="rec-btn delete" onclick="deleteRecording('${r.id}')">🗑</button>
@@ -2289,39 +2066,27 @@ const KOLIK_SOUNDS = {
 
         function updateCloneSection() {
             const container = document.getElementById('clone-section');
-            if (!container) return;
             if (state.recordings.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="empty-text">${state.language === 'tr' ? 'Önce ses kaydı yapın' : 'Please record your voice first'}</div></div>`;
+                container.innerHTML = '<div class="empty-state"><div class="empty-text" id="clone-empty">Önce ses kaydı yapın</div></div>';
                 return;
             }
-            const title = state.language === 'tr' ? '✨ ElevenLabs ile Ses Klonla' : '✨ Clone with ElevenLabs';
-            const desc = state.language === 'tr'
-                ? 'Kaydınızı seçin ve yapay zeka ile sesinizin dijital kopyasını oluşturun. <strong style="color: var(--mint);">Ücretsiz!</strong>'
-                : 'Choose a recording and create a digital copy of your voice with AI. <strong style="color: var(--mint);">Free!</strong>';
-            const selectLabel = state.language === 'tr' ? 'Kayıt Seç' : 'Choose Recording';
-            const voiceLabel = state.language === 'tr' ? 'Ses Adı' : 'Voice Name';
-            const placeholder = state.language === 'tr' ? 'Annenin Sesi' : 'Mom Voice';
-            const buttonText = state.language === 'tr' ? '🌟 Sesi Klonla — Ücretsiz' : '🌟 Clone Voice — Free';
-            const defaultName = state.babyName
-                ? (state.language === 'tr' ? `${state.babyName} için Anne Sesi` : `Mom Voice for ${state.babyName}`)
-                : placeholder;
             container.innerHTML = `
                 <div class="clone-box">
-                    <div class="clone-title">${title}</div>
-                    <div class="clone-desc">${desc}</div>
+                    <div class="clone-title">✨ ElevenLabs ile Ses Klonla</div>
+                    <div class="clone-desc">Kaydınızı seçin ve yapay zeka ile sesinizin dijital kopyasını oluşturun. <strong style="color: var(--mint);">Ücretsiz!</strong></div>
                     <div class="input-group">
-                        <label class="input-label">${selectLabel}</label>
+                        <label class="input-label">Kayıt Seç</label>
                         <select class="input-field" id="clone-select">${state.recordings.map(r => `<option value="${r.id}">${r.name} (${formatTime(r.duration)})</option>`).join('')}</select>
                     </div>
                     <div class="input-group">
-                        <label class="input-label">${voiceLabel}</label>
-                        <input type="text" class="input-field" id="clone-name" placeholder="${placeholder}" value="${defaultName}">
+                        <label class="input-label">Ses Adı</label>
+                        <input type="text" class="input-field" id="clone-name" placeholder="Annenin Sesi" value="${state.babyName ? state.babyName + '\'nin Annesi' : 'Annenin Sesi'}">
                     </div>
-                    <button class="btn-primary" onclick="cloneVoice()" id="clone-btn">${buttonText}</button>
+                    <button class="btn-primary" onclick="cloneVoice()" id="clone-btn">🌟 Sesi Klonla — Ücretsiz</button>
                     <div class="status-msg" id="clone-status"></div>
                 </div>
             `;
-            if (state.clonedVoiceId || state.cloneReady) document.getElementById('voice-generator').style.display = 'block';
+            if (state.clonedVoiceId) document.getElementById('voice-generator').style.display = 'block';
         }
 
         // ═══════════════════════════════════════════════════════════════
@@ -2330,7 +2095,7 @@ const KOLIK_SOUNDS = {
         async function playLullaby(id) { 
     await stopAll();
     await new Promise(r => setTimeout(r, 100)); // 100ms bekle
-    const lullaby = getActiveLullabies().find(l => l.id === id);
+    const lullaby = LULLABIES.find(l => l.id === id);
     if (!lullaby) return;
 
     if (state.currentTrack === id && state.isPlaying) {
@@ -2358,6 +2123,7 @@ const KOLIK_SOUNDS = {
                 playWithElevenLabs(lullaby, id);
             };
             state.currentAudio = audio;
+            state.audioElement = audio;
             await audio.play();
         } catch (error) {
             console.error('Yerel ses hatası:', error);
@@ -2387,7 +2153,7 @@ async function playWithElevenLabs(lullaby, id) {
                 return; 
             }
             
-            const lullaby = getActiveLullabies().find(l => l.id === id);
+            const lullaby = LULLABIES.find(l => l.id === id);
             if (!lullaby) return;
             
             if (state.currentTrack === 'v'+id && state.isPlaying) { 
@@ -2409,7 +2175,7 @@ async function playWithElevenLabs(lullaby, id) {
         }
 
         async function playStory(id) {
-            const story = getActiveStories().find(s => s.id === id);
+            const story = STORIES.find(s => s.id === id);
             if (!story) return;
             
             if (state.currentTrack === 's'+id && state.isPlaying) { 
@@ -2499,11 +2265,6 @@ async function playWithElevenLabs(lullaby, id) {
             updateNowPlayingSubtitle(page, 'Ses oluşturuluyor...');
             
             try {
-                if (!CONFIG.ELEVENLABS_API_KEY) {
-                    fallbackTTS(injectBabyName(text));
-                    updateNowPlayingSubtitle(page, state.language === 'tr' ? 'Tarayıcı sesiyle çalıyor' : 'Playing with browser voice');
-                    return;
-                }
                 const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${useVoiceId}`, {
                     method: 'POST',
                     headers: { 
@@ -2965,17 +2726,6 @@ async function playWithElevenLabs(lullaby, id) {
             showStatus('clone-status', 'loading', 'Ses klonlanıyor...');
             
             try {
-                if (!CONFIG.ELEVENLABS_API_KEY) {
-                    state.clonedVoiceId = 'demo-clone';
-                    state.cloneReady = true;
-                    localStorage.setItem('minikuyku_voice_id', state.clonedVoiceId);
-                    localStorage.setItem('minikuyku_clone_ready', 'true');
-                    showStatus('clone-status', 'success', state.language === 'tr' ? 'Demo klon hazır. Yayın öncesi backend ile gerçek klon bağlayın.' : 'Demo clone ready. Connect a backend before release.');
-                    document.getElementById('clone-btn').disabled = false;
-                    document.getElementById('voice-generator').style.display = 'block';
-                    renderVoiceLullabies();
-                    return;
-                }
                 const response = await fetch(recording.data);
                 const blob = await response.blob();
                 
@@ -3009,8 +2759,6 @@ async function playWithElevenLabs(lullaby, id) {
                 document.getElementById('clone-btn').disabled = false;
             }
         }
-
-        document.getElementById('voice-text')?.addEventListener('input', (e) => { e.target.dataset.userEdited = 'true'; });
 
         async function speakWithClonedVoice() {
             const text = document.getElementById('voice-text').value.trim();
@@ -3339,48 +3087,56 @@ async function playWithElevenLabs(lullaby, id) {
 
         function renderSleepStats() {
             const today = new Date().toDateString();
-            const todaySleeps = state.sleepTracking.history.filter(s => new Date(s.date).toDateString() === today);
+            const todaySleeps = state.sleepTracking.history.filter(s => 
+                new Date(s.date).toDateString() === today
+            );
+            
             const totalSeconds = todaySleeps.reduce((sum, s) => sum + s.duration, 0);
             const count = todaySleeps.length;
             const avgSeconds = count > 0 ? Math.floor(totalSeconds / count) : 0;
+            
+            // Gece uyanmaları (23:00-06:00 arası uyanmalar)
             const wakeCount = todaySleeps.filter(s => {
                 const hour = new Date(s.endTime).getHours();
                 return hour >= 23 || hour <= 6;
             }).length;
-
+            
             document.getElementById('stat-total').textContent = formatShortDuration(totalSeconds);
             document.getElementById('stat-count').textContent = count;
-            document.getElementById('stat-avg').textContent = Math.floor(avgSeconds / 60) + (state.language === 'tr' ? 'dk' : 'm');
+            document.getElementById('stat-avg').textContent = Math.floor(avgSeconds / 60) + 'dk';
             document.getElementById('stat-wake').textContent = wakeCount;
-
+            
+            // Son uykular listesi
             const recentSleeps = state.sleepTracking.history.slice(-5).reverse();
             const listContainer = document.getElementById('sleep-list');
-            if (!listContainer) return;
+            
             if (recentSleeps.length === 0) {
                 listContainer.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">🌙</div>
-                        <div class="empty-text">${state.language === 'tr' ? 'Henüz uyku kaydı yok' : 'No sleep records yet'}</div>
+                        <div class="empty-text" id="sleep-empty-text">Henüz uyku kaydı yok</div>
                     </div>
                 `;
                 return;
             }
-
-            const locale = state.language === 'tr' ? 'tr-TR' : 'en-US';
+            
             listContainer.innerHTML = recentSleeps.map(s => {
                 const date = new Date(s.date);
-                const timeStr = date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+                const timeStr = date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
                 const isNight = s.isNight ? '🌙' : '☀️';
+                
                 return `
                     <div class="sleep-item">
                         <div class="sleep-info">
                             <h4>${isNight} ${timeStr}</h4>
-                            <p>${date.toLocaleDateString(locale)}</p>
+                            <p>${date.toLocaleDateString('tr-TR')}</p>
                         </div>
                         <div class="sleep-duration">${formatDuration(s.duration)}</div>
                     </div>
                 `;
             }).join('');
+            
+            // Grafiği güncelle (son 7 gün)
             updateSleepChart();
         }
 
@@ -3392,7 +3148,7 @@ async function playWithElevenLabs(lullaby, id) {
         }
 
         function updateSleepChart() {
-            const days = state.language === 'tr' ? ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const days = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
             const today = new Date();
             const chartData = [];
             
@@ -3493,10 +3249,9 @@ async function playWithElevenLabs(lullaby, id) {
         }
 
         function renderExpertTips() {
-            const data = state.language === 'tr' ? EXPERT_TIPS : EXPERT_TIPS_EN;
-            const tips = data[state.currentAgeGroup] || data[0];
+            const tips = EXPERT_TIPS[state.currentAgeGroup] || EXPERT_TIPS[0];
             const container = document.getElementById('expert-tips');
-            if (!container) return;
+            
             container.innerHTML = tips.map(tip => `
                 <div class="expert-card">
                     <div class="expert-header">
@@ -3543,14 +3298,14 @@ async function playWithElevenLabs(lullaby, id) {
             }
             
             closeModal('settings-modal');
-            showToast(state.language === 'tr' ? (name ? `✓ ${name} için ayarlar kaydedildi` : '✓ Ayarlar kaydedildi') : (name ? `✓ Settings saved for ${name}` : '✓ Settings saved'));
+            showToast(name ? `✓ ${name} için ayarlar kaydedildi` : '✓ Ayarlar kaydedildi');
             
             // Uyku tahminini güncelle
             checkSleepPrediction();
         }
 
         function updateBabyNameDisplay() {
-            document.getElementById('baby-name-display').textContent = state.babyName || (state.language === 'tr' ? 'Bebek' : 'Baby');
+            document.getElementById('baby-name-display').textContent = state.babyName || 'Bebek';
         }
 
         function closeModal(modalId) {
@@ -3578,6 +3333,7 @@ async function playWithElevenLabs(lullaby, id) {
         }
 
         function stopAll() {
+            if (state.currentAudio) { try { state.currentAudio.pause(); state.currentAudio.src=''; } catch(e) {} state.currentAudio = null; }
             if (state.audioElement) { 
                 state.audioElement.pause(); 
                 state.audioElement.src = ''; 
@@ -3686,235 +3442,6 @@ async function playWithElevenLabs(lullaby, id) {
             }
         }
 
-
-        function ensureTrialStarted() {
-            if (!state.trialStartedAt) {
-                state.trialStartedAt = new Date().toISOString();
-                localStorage.setItem('minikuyku_trial_start', state.trialStartedAt);
-            }
-        }
-
-        function isTrialActive() {
-            if (state.isPremium || !state.trialStartedAt) return false;
-            const started = new Date(state.trialStartedAt).getTime();
-            const diffDays = (Date.now() - started) / (1000 * 60 * 60 * 24);
-            return diffDays < CONFIG.TRIAL_DAYS;
-        }
-
-        function getTrialDaysLeft() {
-            if (!state.trialStartedAt) return CONFIG.TRIAL_DAYS;
-            const started = new Date(state.trialStartedAt).getTime();
-            const diffDays = (Date.now() - started) / (1000 * 60 * 60 * 24);
-            return Math.max(0, Math.ceil(CONFIG.TRIAL_DAYS - diffDays));
-        }
-
-        function updateTrialUI() {
-            const banner = document.getElementById('trial-banner');
-            const title = document.getElementById('trial-title');
-            const sub = document.getElementById('trial-subtitle');
-            if (!banner) return;
-            if (state.isPremium) {
-                title.textContent = state.language === 'tr' ? 'Premium aktif' : 'Premium active';
-                sub.textContent = state.language === 'tr' ? 'Sınırsız erişim açık' : 'Unlimited access unlocked';
-                return;
-            }
-            const days = getTrialDaysLeft();
-            if (isTrialActive()) {
-                title.textContent = state.language === 'tr' ? `${days} gün ücretsiz deneme kaldı` : `${days} day free trial left`;
-                sub.textContent = state.language === 'tr' ? 'Ses klonlama, analiz ve tüm içerikleri deneyin' : 'Try voice cloning, analysis and all content';
-            } else {
-                title.textContent = state.language === 'tr' ? 'Deneme sona erdi' : 'Trial ended';
-                sub.textContent = state.language === 'tr' ? 'Premium ile tüm özellikleri tekrar açın' : 'Unlock all features with Premium';
-            }
-        }
-
-        function updatePremiumModalContent() {
-            const modal = document.getElementById('premium-modal');
-            if (!modal) return;
-            const price = state.language === 'tr' ? `${CONFIG.PREMIUM_PRICE_TRY}₺ <span>/ay</span>` : `$${CONFIG.PREMIUM_PRICE_USD} <span>/month</span>`;
-            const yearly = state.language === 'tr' ? `${CONFIG.PREMIUM_YEARLY_TRY}₺/yıl` : `$${CONFIG.PREMIUM_YEARLY_USD}/year`;
-            const title = modal.querySelector('.premium-title');
-            const subtitle = modal.querySelector('.premium-modal-content p');
-            const priceEl = modal.querySelector('.premium-price');
-            if (title) title.textContent = 'Minik Uyku Premium';
-            if (subtitle) subtitle.textContent = state.language === 'tr' ? 'Yayın öncesi gerçek mağaza fiyatlarını bağlayın' : 'Connect real store prices before launch';
-            if (priceEl) priceEl.innerHTML = price + `<div style="font-size:13px; color: var(--text-muted); margin-top:8px;">${yearly}</div>`;
-        }
-
-        function updateLanguageUI() {
-            document.documentElement.lang = state.language;
-            document.getElementById('lang-tr')?.classList.toggle('active', state.language === 'tr');
-            document.getElementById('lang-en')?.classList.toggle('active', state.language === 'en');
-            document.getElementById('onboard-lang-tr')?.classList.toggle('active', state.language === 'tr');
-            document.getElementById('onboard-lang-en')?.classList.toggle('active', state.language === 'en');
-            const isTR = state.language === 'tr';
-            const logo = document.querySelector('.logo-text');
-            if (logo) logo.textContent = 'Minik Uyku';
-            const map = {
-                'nav-lullabies': isTR ? 'Ninniler' : 'Lullabies',
-                'nav-stories': isTR ? 'Hikayeler' : 'Stories',
-                'nav-colic': isTR ? 'Kolik' : 'Colic',
-                'nav-tracking': isTR ? 'Takip' : 'Tracking',
-                'nav-voice': isTR ? 'Sesim' : 'My Voice',
-                'bottom-lullabies': isTR ? 'Ninniler' : 'Lullabies',
-                'bottom-stories': isTR ? 'Hikayeler' : 'Stories',
-                'bottom-colic': isTR ? 'Kolik' : 'Colic',
-                'bottom-tracking': isTR ? 'Takip' : 'Tracking',
-                'bottom-voice': isTR ? 'Sesim' : 'My Voice',
-                'baby-name-display': state.babyName || (isTR ? 'Bebek' : 'Baby')
-            };
-            Object.entries(map).forEach(([id, text]) => { const el = document.getElementById(id); if (el) el.textContent = text; });
-
-            const timerBtn = document.querySelector('.timer-btn');
-            if (timerBtn) timerBtn.innerHTML = isTR ? '⏱ Zamanlayıcı' : '⏱ Timer';
-            const cryBtn = document.getElementById('cry-detector-btn');
-            if (cryBtn && !state.cryDetector.active) cryBtn.innerHTML = isTR ? '🎙 Ağlama Dedektörü' : '🎙 Cry Detector';
-            const kolikBtn = document.getElementById('kolik-detector-btn');
-            if (kolikBtn && !state.kolikDetector.active) kolikBtn.innerHTML = isTR ? '🌿 Kolik Kriz Dedektörü' : '🌿 Colic Detector';
-
-            const phrase = PHRASE_SETS[state.language];
-            const phraseTitle = document.getElementById('phrase-title');
-            if (phraseTitle) phraseTitle.textContent = phrase.title;
-            ['phrase-1','phrase-2','phrase-3'].forEach((id, i) => {
-                const el = document.getElementById(id);
-                if (el) el.textContent = phrase.lines[i];
-            });
-            const voiceText = document.getElementById('voice-text');
-            if (voiceText) {
-                voiceText.placeholder = phrase.voiceTextPlaceholder;
-                if (!voiceText.dataset.userEdited || voiceText.dataset.userEdited !== 'true') voiceText.value = phrase.voiceTextValue;
-            }
-
-            const ageOptions = document.querySelectorAll('.age-option');
-            const ageTR = ['0-3 ay', '3-6 ay', '6-12 ay', '1+ yaş'];
-            const ageEN = ['0-3 months', '3-6 months', '6-12 months', '1+ years'];
-            ageOptions.forEach((el, idx) => el.textContent = isTR ? ageTR[idx] : ageEN[idx]);
-
-            const sectionTitles = document.querySelectorAll('.section-title');
-            if (sectionTitles[4]) sectionTitles[4].childNodes[0].textContent = isTR ? 'Beyaz Gürültü ' : 'White Noise ';
-            if (sectionTitles[5]) sectionTitles[5].childNodes[0].textContent = isTR ? 'Doğa Sesleri' : 'Nature Sounds';
-            if (sectionTitles[6]) sectionTitles[6].childNodes[0].textContent = isTR ? 'Rahatlatıcı Sesler' : 'Soothing Sounds';
-            if (sectionTitles[7]) sectionTitles[7].childNodes[0].textContent = isTR ? 'Bugünün İstatistikleri' : "Today's Stats";
-            if (sectionTitles[8]) sectionTitles[8].childNodes[0].textContent = isTR ? 'Uyku Grafiği (Son 7 Gün)' : 'Sleep Chart (Last 7 Days)';
-            if (sectionTitles[9]) sectionTitles[9].childNodes[0].textContent = isTR ? 'Son Uykular' : 'Recent Sleeps';
-            if (sectionTitles[10]) sectionTitles[0].textContent = sectionTitles[0].textContent;
-            if (sectionTitles[10]) sectionTitles[10].childNodes[0].textContent = isTR ? 'Uzman Önerileri' : 'Expert Tips';
-
-            renderLullabies();
-            renderStories();
-            renderKolik();
-            renderExpertTips();
-            updatePremiumUI();
-            updateTrialUI();
-        }
-
-        function setLanguage(lang, fromOnboard = false) {
-            state.language = lang;
-            localStorage.setItem('minikuyku_lang', lang);
-            updateLanguageUI();
-            if (!fromOnboard) showToast(lang === 'tr' ? 'Dil Türkçe olarak ayarlandı' : 'Language set to English');
-        }
-
-        function finishOnboarding() {
-            const name = document.getElementById('onboard-baby-name')?.value?.trim();
-            if (name) {
-                state.babyName = name;
-                localStorage.setItem('minikuyku_baby_name', name);
-                updateBabyNameDisplay();
-            }
-            state.onboarded = true;
-            localStorage.setItem('minikuyku_onboarded', 'true');
-            closeModal('onboarding-modal');
-            showToast(state.language === 'tr' ? 'Hoş geldiniz! Deneme başladı.' : 'Welcome! Trial started.');
-        }
-
-        async function startCryAnalysis() {
-            const btn = document.getElementById('cry-analysis-btn');
-            const result = document.getElementById('cry-analysis-result');
-            if (!btn || !result) return;
-            btn.disabled = true;
-            btn.textContent = state.language === 'tr' ? 'Dinleniyor... 10 sn' : 'Listening... 10 sec';
-            result.classList.remove('show');
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const source = ctx.createMediaStreamSource(stream);
-                const analyser = ctx.createAnalyser();
-                analyser.fftSize = 2048;
-                source.connect(analyser);
-                const data = new Uint8Array(analyser.frequencyBinCount);
-                const samples = [];
-                const started = Date.now();
-                await new Promise(resolve => {
-                    const iv = setInterval(() => {
-                        analyser.getByteFrequencyData(data);
-                        const low = averageArray(data.slice(2, 18));
-                        const mid = averageArray(data.slice(18, 60));
-                        const high = averageArray(data.slice(60, 120));
-                        const peak = Math.max(...data);
-                        samples.push({ low, mid, high, peak });
-                        const elapsed = Math.max(0, 10 - Math.floor((Date.now() - started)/1000));
-                        btn.textContent = (state.language === 'tr' ? 'Dinleniyor... ' : 'Listening... ') + elapsed + ' sn';
-                        if (Date.now() - started >= 10000) {
-                            clearInterval(iv);
-                            resolve();
-                        }
-                    }, 250);
-                });
-                stream.getTracks().forEach(t => t.stop());
-                ctx.close();
-                const analysis = classifyCrySamples(samples);
-                state.cryAnalysisHistory.unshift({ at: new Date().toISOString(), analysis });
-                localStorage.setItem('minikuyku_cry_analysis_history', JSON.stringify(state.cryAnalysisHistory.slice(0, 20)));
-                renderCryAnalysisResult(analysis);
-            } catch (err) {
-                result.innerHTML = `<div class="soft-note" style="color: var(--rose);">${state.language === 'tr' ? 'Mikrofon izni gerekiyor.' : 'Microphone permission is required.'}</div>`;
-                result.classList.add('show');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = state.language === 'tr' ? '🎙 10 sn analiz et' : '🎙 Analyze for 10 sec';
-            }
-        }
-
-        function averageArray(arr) { return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
-
-        function classifyCrySamples(samples) {
-            const avgLow = averageArray(samples.map(s => s.low));
-            const avgMid = averageArray(samples.map(s => s.mid));
-            const avgHigh = averageArray(samples.map(s => s.high));
-            const avgPeak = averageArray(samples.map(s => s.peak));
-            let hunger = 20 + avgMid * 0.22 + avgPeak * 0.10;
-            let gas = 18 + avgHigh * 0.20 + (avgPeak - avgLow) * 0.08;
-            let sleepy = 18 + avgLow * 0.24 + Math.max(0, avgMid - avgHigh) * 0.06;
-            let pee = 14 + avgMid * 0.10 + avgLow * 0.08;
-            let poop = 12 + avgLow * 0.12 + avgHigh * 0.10;
-            const raw = [
-                { key: 'Açlık', en: 'Hunger', value: hunger },
-                { key: 'Gaz', en: 'Gas', value: gas },
-                { key: 'Uykusuzluk', en: 'Sleepy', value: sleepy },
-                { key: 'Diğer / Islak bez', en: 'Wet diaper', value: pee },
-                { key: 'Diğer / Bez rahatsızlığı', en: 'Dirty diaper', value: poop },
-            ];
-            const total = raw.reduce((a,b)=>a+b.value,0) || 1;
-            let normalized = raw.map(item => ({ label: state.language === 'tr' ? item.key : item.en, value: Math.round(item.value * 100 / total) }));
-            const diff = 100 - normalized.reduce((a,b)=>a+b.value,0);
-            normalized[0].value += diff;
-            normalized = normalized.sort((a,b)=>b.value-a.value);
-            return normalized;
-        }
-
-        function renderCryAnalysisResult(analysis) {
-            const el = document.getElementById('cry-analysis-result');
-            if (!el) return;
-            el.innerHTML = analysis.map(item => `
-                <div class="analysis-row">
-                    <div class="analysis-label">${item.label}</div>
-                    <div class="analysis-bar"><div class="analysis-fill" style="width:${item.value}%"></div></div>
-                    <div class="analysis-pct">%${item.value}</div>
-                </div>`).join('') + `<div class="soft-note">${state.language === 'tr' ? 'İlk sıradaki sonuç en olası tahmindir. Diğer ve kaka eklenebilir; ancak bu iki sonuç ses verisinden en zor ayrıştırılan alanlardır.' : 'The top row is the most likely estimate. Wet and dirty diaper can be included, but they are among the hardest categories to infer from audio alone.'}</div>`;
-            el.classList.add('show');
-        }
-
         function showToast(message) {
             // Basit toast bildirimi
             const toast = document.createElement('div');
@@ -3959,1254 +3486,46 @@ async function playWithElevenLabs(lullaby, id) {
                 stopSleepTracking();
             }
         });
+    
+
+        const EXPERT_TIPS_EN = {
+            0: [
+                { author: 'Dr. Emily Carter', title: 'Pediatric Sleep Specialist', avatar: '👩‍⚕️', tip: 'Newborn babies often sleep 16–18 hours a day. Watch for sleepy cues like yawning and rubbing eyes before they become overtired.' },
+                { author: 'Dr. Noah Bennett', title: 'Pediatrician', avatar: '👨‍⚕️', tip: 'Colic is common during the first months. White noise and gentle rocking may help soothe evening fussiness.' },
+                { author: 'Midwife Olivia Reed', title: 'Feeding Consultant', avatar: '🤱', tip: 'Feeding and sleep are closely connected. A calm feeding routine before sleep can make settling easier.' }
+            ],
+            1: [
+                { author: 'Dr. Sarah Brooks', title: 'Sleep Therapist', avatar: '😴', tip: 'After 3 months, babies may start sleeping for longer stretches. Temporary sleep regressions are normal and usually pass.' },
+                { author: 'Dr. Liam Foster', title: 'Child Development Specialist', avatar: '👨‍⚕️', tip: 'At this stage many babies sleep 14–15 hours per day, often including 3–4 short naps.' },
+                { author: 'Psychologist Grace Miller', title: 'Family Therapist', avatar: '🧠', tip: 'Consistent bedtime rituals help babies learn that sleep is coming: bath, lullaby, cuddles, and dim lights.' }
+            ],
+            2: [
+                { author: 'Dr. Ethan Hall', title: 'Pediatric Sleep Consultant', avatar: '👨‍⚕️', tip: 'Between 6 and 12 months, many babies settle into 12–14 hours of total sleep with 2 daytime naps.' },
+                { author: 'Nurse Ava Collins', title: 'Sleep Coach', avatar: '🌙', tip: 'New motor skills like crawling can briefly disrupt sleep. Offer calm routines and a familiar sleep space.' },
+                { author: 'Dr. Mia Turner', title: 'Nutrition Specialist', avatar: '🍼', tip: 'Changes in feeding routines can affect sleep. Try to keep evenings calm and avoid overly stimulating meals before bedtime.' }
+            ],
+            3: [
+                { author: 'Dr. Henry Scott', title: 'Child Psychiatrist', avatar: '🧸', tip: 'After age 1, many toddlers move toward one daytime nap and about 11–12 hours of night sleep.' },
+                { author: 'Psychologist Chloe Adams', title: 'Play Therapist', avatar: '🎈', tip: 'Separation anxiety can affect bedtime. Gentle reassurance and a predictable routine can help.' },
+                { author: 'Dr. Jack Murphy', title: 'Pediatric Educator', avatar: '📚', tip: 'Repeating the same bedtime story can create a strong sense of comfort and safety.' }
+            ]
+        };
+        const I18N = { tr: { appName:'Minik Uyku – LumiBaby', premiumTitle:'Minik Uyku – LumiBaby Premium', navLullabies:'Ninniler', navStories:'Hikayeler', navColic:'Kolik', navTracking:'Takip', navVoice:'Sesim', cryTitle:'🩺 Bebek neden ağlıyor?', crySubtitle:'10 saniye dinleyip olasılık dağılımı gösterir.', cryBtn:'🎙 10 sn analiz et', cryNote:'Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk veya diğer nedenler için fikir vermek üzere tasarlanmıştır.', timer:'⏱ Zamanlayıcı', cryDetector:'🎙 Ağlama Dedektörü', colicDetector:'🌿 Kolik Kriz Dedektörü', stopWhen:'Ne zaman dursun?', lullabiesSection:'Türk Ninnileri', voiceLullabiesSection:'Anne Sesli Ninniler', cloneFromVoiceTab:'"Sesim" sekmesinden sesinizi klonlayın', storiesSection:'Uyku Masalları', allFree:'TÜMÜ ÜCRETSİZ', whiteNoise:'Beyaz Gürültü', natureSounds:'Doğa Sesleri', calmingSounds:'Rahatlatıcı Sesler', colicSubtitle:'Sınırsız · Ücretsiz', statsTitle:'Bugünün İstatistikleri', totalSleep:'Toplam Uyku', sleepCount:'Uyku Sayısı', average:'Ortalama', wakeCount:'Uyanma', chartTitle:'Uyku Grafiği (Son 7 Gün)', days:['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'], recentSleeps:'Son Uykular', noSleepYet:'Henüz uyku kaydı yok', expertTitle:'Uzman Önerileri', ages:['0-3 ay','3-6 ay','6-12 ay','1+ yaş'], recordTap:'Kayıt başlatmak için dokunun', phraseTitle:'📝 Kitap okur gibi tonlama yaparak okuyunuz. (1 dakika):', phrase1:'Uyu bebeğim… şimdi dinlenme zamanı…', phrase2:'Ay ışığı odana yumuşakça vuruyor… yıldızlar sana gülümsüyor…', phrase3:'Mmm… şşş… derin bir nefes al… ve bırak…', recordingsTitle:'Kayıtlarım', noRecords:'Henüz kayıt yok', voiceCloneTitle:'Ses Klonlama', free:'ÜCRETSİZ', recordFirst:'Önce ses kaydı yapın', readWithMyVoice:'Sesimle Oku', text:'Metin', writeHere:'Buraya yazın...', speakBtn:'🎵 Sesimle Oku', settingsTitle:'Bebek Ayarları', settingsSubtitle:'Kişiselleştirilmiş deneyim için', babyNameLabel:'Bebeğinizin Adı', birthdateLabel:'Doğum Tarihi', settingsExample:'Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>, tatlı rüyalar gör..."', save:'💾 Kaydet', onboardStart:'Başla', voiceTag:'Anne Sesli', yourClonedVoice:'Sizin klonlanmış sesinizle', previewShort:'👑 Deneme', unlimited:'Sınırsız' }, en: { appName:'Minik Uyku – LumiBaby', premiumTitle:'Minik Uyku – LumiBaby Premium', navLullabies:'Lullabies', navStories:'Stories', navColic:'Colic', navTracking:'Tracking', navVoice:'My Voice', cryTitle:'🩺 Why is my baby crying?', crySubtitle:'Listens for 10 seconds and shows a probability breakdown.', cryBtn:'🎙 Analyze for 10 sec', cryNote:'These results are not a medical diagnosis. They are designed to suggest hunger, gas, sleepiness, or other possible reasons.', timer:'⏱ Timer', cryDetector:'🎙 Cry Detector', colicDetector:'🌿 Colic Detector', stopWhen:'When should it stop?', lullabiesSection:'Turkish Lullabies', voiceLullabiesSection:'Lullabies in Your Voice', cloneFromVoiceTab:'Clone your voice from the "My Voice" tab', storiesSection:'Bedtime Stories', allFree:'ALL FREE', whiteNoise:'White Noise', natureSounds:'Nature Sounds', calmingSounds:'Calming Sounds', colicSubtitle:'Unlimited · Free', statsTitle:"Today's Stats", totalSleep:'Total Sleep', sleepCount:'Sleep Sessions', average:'Average', wakeCount:'Wake-ups', chartTitle:'Sleep Chart (Last 7 Days)', days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], recentSleeps:'Recent Sleeps', noSleepYet:'No sleep records yet', expertTitle:'Expert Insights', ages:['0-3 months','3-6 months','6-12 months','1+ years'], recordTap:'Tap to start recording', phraseTitle:'📝 Read softly like a bedtime story. (1 minute):', phrase1:'Sleep softly, little one… it is time to rest…', phrase2:'Moonlight is touching your room gently… the stars are watching over you…', phrase3:'Mmm… shh… take a deep breath… and let it go…', recordingsTitle:'My Recordings', noRecords:'No recordings yet', voiceCloneTitle:'Voice Cloning', free:'FREE', recordFirst:'Please record your voice first', readWithMyVoice:'Read with My Voice', text:'Text', writeHere:'Write here...', speakBtn:'🎵 Read with My Voice', settingsTitle:'Baby Settings', settingsSubtitle:'For a more personalized experience', babyNameLabel:'Baby Name', birthdateLabel:'Birth Date', settingsExample:'Example: "Sleep, <strong style="color: var(--mint);">Emma</strong>, have sweet dreams..."', save:'💾 Save', onboardStart:'Start', voiceTag:'In Your Voice', yourClonedVoice:'With your cloned voice', previewShort:'👑 Trial', unlimited:'Unlimited' } };
+        function t(){ return I18N[state.language] || I18N.tr; }
+        function applyLanguage(){ const tr=t(); localStorage.setItem('minikuyku_lang', state.language); document.documentElement.lang = state.language; const set=(id,val)=>{ const el=document.getElementById(id); if(el && val!=null) el.innerHTML=val; }; set('app-logo-text',tr.appName); set('premium-title',tr.premiumTitle); set('onboarding-app-name',tr.appName); set('nav-lullabies',tr.navLullabies); set('nav-stories',tr.navStories); set('nav-colic',tr.navColic); set('nav-tracking',tr.navTracking); set('nav-voice',tr.navVoice); set('bottom-lullabies',tr.navLullabies); set('bottom-stories',tr.navStories); set('bottom-colic',tr.navColic); set('bottom-tracking',tr.navTracking); set('bottom-voice',tr.navVoice); set('cry-card-title',tr.cryTitle); set('cry-card-subtitle',tr.crySubtitle); set('cry-analysis-btn',tr.cryBtn); set('cry-card-note',tr.cryNote); document.querySelectorAll('.timer-btn')[0] && (document.querySelectorAll('.timer-btn')[0].innerHTML = tr.timer); set('cry-detector-btn',tr.cryDetector); set('kolik-detector-btn',tr.colicDetector); const stopWhen = document.querySelector('#timer-picker > div'); if(stopWhen) stopWhen.textContent=tr.stopWhen; const timerOpts=document.querySelectorAll('.timer-option'); ['15 dk','30 dk','60 dk','90 dk','120 dk'].forEach((v,i)=> timerOpts[i] && (timerOpts[i].textContent=v)); const nSec=document.querySelector('#page-ninniler .section-title'); if(nSec) nSec.childNodes[0].textContent=tr.lullabiesSection+' '; const nBadge=document.getElementById('ninniler-badge'); if(nBadge) nBadge.textContent='3 Gün Ücretsiz'; const voiceSection=document.querySelectorAll('#page-ninniler .section-title')[1]; if(voiceSection) voiceSection.childNodes[0].textContent=tr.voiceLullabiesSection; set('voice-lullaby-empty',tr.cloneFromVoiceTab); const storySec=document.querySelector('#page-hikayeler .section-title'); if(storySec) storySec.childNodes[0].textContent=tr.storiesSection+' '; const hBadge=document.getElementById('hikayeler-badge'); if(hBadge) hBadge.textContent=(state.language==='tr'?'3 Gün Ücretsiz':'3 Day Free Trial'); set('colic-free-badge',tr.allFree); const cTitle=document.getElementById('colic-free-title'); if(cTitle) cTitle.childNodes[0].textContent=tr.whiteNoise+' '; set('nature-title',tr.natureSounds); set('calm-title',tr.calmingSounds); set('colic-subtitle',tr.colicSubtitle); set('stats-title',tr.statsTitle); const stat=document.querySelectorAll('.stat-label'); if(stat.length>=4){ stat[0].textContent=tr.totalSleep; stat[1].textContent=tr.sleepCount; stat[2].textContent=tr.average; stat[3].textContent=tr.wakeCount; } set('chart-title',tr.chartTitle); const chart=document.getElementById('chart-labels'); if(chart) chart.innerHTML=tr.days.map(d=>'<span>'+d+'</span>').join(''); set('recent-sleeps-title',tr.recentSleeps); set('sleep-empty-text',tr.noSleepYet); set('expert-title',tr.expertTitle); tr.ages.forEach((v,i)=>set('age-'+i,v)); set('record-status',tr.recordTap); set('phrase-title',tr.phraseTitle); set('phrase-1',tr.phrase1); set('phrase-2',tr.phrase2); set('phrase-3',tr.phrase3); set('recordings-title',tr.recordingsTitle); set('recordings-empty',tr.noRecords); const vc=document.getElementById('voice-clone-title'); if(vc) vc.childNodes[0].textContent=tr.voiceCloneTitle+' '; set('voice-clone-badge',tr.free); set('clone-empty',tr.recordFirst); set('read-my-voice-title',tr.readWithMyVoice); set('voice-text-label',tr.text); const vtxt=document.getElementById('voice-text'); if(vtxt){ vtxt.placeholder=tr.writeHere; } set('speak-btn',tr.speakBtn); set('settings-title',tr.settingsTitle); set('settings-subtitle',tr.settingsSubtitle); set('baby-name-label',tr.babyNameLabel); set('birthdate-label',tr.birthdateLabel); set('settings-example-text',tr.settingsExample); set('save-settings-btn',tr.save); set('onboarding-start-btn',tr.onboardStart); document.getElementById('lang-tr')?.classList.toggle('active',state.language==='tr'); document.getElementById('lang-en')?.classList.toggle('active',state.language==='en'); document.getElementById('onboard-lang-tr')?.classList.toggle('active',state.language==='tr'); document.getElementById('onboard-lang-en')?.classList.toggle('active',state.language==='en'); renderLullabies(); renderStories(); renderKolik(); renderRecordings(); renderExpertTips(); renderSleepStats(); checkSleepPrediction(); }
+        function setLanguage(lang){ state.language = lang==='en'?'en':'tr'; applyLanguage(); }
+        LULLABIES.forEach((l,i)=>{ if(i===0){ l.originEn='Anatolia'; l.descEn='A beloved classic Turkish lullaby passed down through generations'; } if(i===1){ l.originEn='Folk'; l.descEn='A gentle and playful traditional lullaby'; }});
+        STORIES.forEach(s=>{ const map={s1:{titleEn:'Little Star',descEn:'The story of the tiniest star in the sky',ageEn:'0-3 years',typeEn:'Story'},s2:{titleEn:'Sleep in the Forest',descEn:'Forest animals getting ready for sleep',ageEn:'1-4 years',typeEn:'Nature Tale'},s3:{titleEn:'Cloud Baby',descEn:'A soft little cloud baby tale',ageEn:'0-3 years',typeEn:'Fantasy'},s4:{titleEn:'The Moon and the Baby',descEn:'A sweet night with the moon watching over a baby',ageEn:'0-2 years',typeEn:'Short Story'}}[s.id]; if(map) Object.assign(s,map); });
+        Object.values(KOLIK_SOUNDS).flat().forEach(s=>{ const map={'Saç Kurutma Makinesi':['Hair Dryer','Strong airflow for instant soothing'],'Elektrik Süpürgesi':['Vacuum Cleaner','Deep motor hum'],'Beyaz Gürültü':['White Noise','Pure white noise'],'Klima Sesi':['Air Conditioner','Steady soft hum'],'Yağmur Sesi':['Rain Sound','Gentle rainfall'],'Dalga Sesi':['Ocean Waves','Rhythmic sea waves'],'Orman Sesi':['Forest Sound','Leaves and birds'],'Şelale':['Waterfall','Continuous flowing water'],'Kalp Atışı':['Heartbeat','Womb-like rhythm'],'Piş Piş Sesi':['Shushing Sound','Helpful during crying spells']}[s.name]; if(map){ s.nameEn=map[0]; s.descEn=map[1]; }});
+        renderLullabies = function(){ const tr=t(); const container=document.getElementById('lullabies-list'); container.innerHTML=LULLABIES.map(l=>`<div class="card" id="card-${l.id}" onclick="playLullaby('${l.id}')"><span class="card-icon">${l.emoji}</span><div class="card-content"><div class="card-title">${l.name}</div><div class="card-desc">${state.language==='tr'?l.desc:(l.descEn||l.desc)}</div><div class="card-tags"><span class="card-tag">${state.language==='tr'?l.origin:(l.originEn||l.origin)}</span>${!state.isPremium ? `<span class="card-tag premium">${tr.previewShort}</span>` : `<span class="card-tag premium">${tr.unlimited}</span>`}</div></div><button class="play-btn" id="btn-${l.id}">▶</button></div>`).join(''); renderVoiceLullabies(); };
+        renderVoiceLullabies = function(){ const tr=t(); const container=document.getElementById('voice-lullabies-list'); if(!state.clonedVoiceId){ container.innerHTML=`<div class="empty-state"><div class="empty-icon">🎙️</div><div class="empty-text" id="voice-lullaby-empty">${tr.cloneFromVoiceTab}</div></div>`; return; } container.innerHTML=LULLABIES.map(l=>`<div class="card" id="vcard-${l.id}" onclick="playVoiceLullaby('${l.id}')"><span class="card-icon">🎙️</span><div class="card-content"><div class="card-title">${l.name} <span style="color: var(--gold); font-size: 12px;">${tr.voiceTag}</span></div><div class="card-desc">${tr.yourClonedVoice}</div></div><button class="play-btn" id="vbtn-${l.id}">▶</button></div>`).join(''); };
+        renderStories = function(){ const tr=t(); const container=document.getElementById('stories-list'); container.innerHTML=STORIES.map(s=>`<div class="story-card" id="story-${s.id}" onclick="playStory('${s.id}')"><div class="story-header"><span class="story-emoji">${s.emoji}</span><div class="story-content"><h3>${state.language==='tr'?s.title:(s.titleEn||s.title)}</h3><p>${state.language==='tr'?s.desc:(s.descEn||s.desc)}</p></div></div><div class="story-footer"><span class="card-tag">${state.language==='tr'?s.age:(s.ageEn||s.age)}</span><span class="card-tag">${s.duration}</span><span class="card-tag">${state.language==='tr'?s.type:(s.typeEn||s.type)}</span>${!state.isPremium ? `<span class="card-tag premium">${tr.previewShort}</span>` : `<span class="card-tag premium">${tr.unlimited}</span>`}</div></div>`).join(''); };
+        createKolikHTML = function(s){ const tr=t(); return `<div class="kolik-item" id="kitem-${s.id}" onclick="playKolik('${s.id}')"><span class="kolik-icon">${s.emoji}</span><div class="kolik-info"><div class="kolik-name">${state.language==='tr'?s.name:(s.nameEn||s.name)}</div><div class="kolik-desc">${state.language==='tr'?s.desc:(s.descEn||s.desc)}</div></div><span class="kolik-tag">${tr.free}</span><button class="kolik-play" id="kbtn-${s.id}">▶</button></div>`; };
+        renderRecordings = function(){ const tr=t(); const container=document.getElementById('recordings-list'); if(state.recordings.length===0){ container.innerHTML=`<div class="empty-state"><div class="empty-icon">🎙️</div><div class="empty-text" id="recordings-empty">${tr.noRecords}</div></div>`; return; } container.innerHTML=state.recordings.map(r=>`<div class="recording-item"><span class="rec-icon">🎙️</span><div class="rec-info"><div class="rec-name">${r.name}</div><div class="rec-meta">${formatTime(r.duration)} · ${r.date}</div></div><div class="rec-actions"><button class="rec-btn play" onclick="playRecording('${r.id}')">▶</button><button class="rec-btn delete" onclick="deleteRecording('${r.id}')">🗑</button></div></div>`).join(''); };
+        updateSleepChart = function(){ const labels=t().days; const today=new Date(); const chartData=[]; for(let i=6;i>=0;i--){ const date=new Date(today); date.setDate(date.getDate()-i); const daySleeps=state.sleepTracking.history.filter(s=>new Date(s.date).toDateString()===date.toDateString()); const totalMinutes=daySleeps.reduce((sum,s)=>sum+s.duration,0)/60; chartData.push(Math.min((totalMinutes/960)*100,100)); } document.querySelectorAll('.chart-bar').forEach((bar,i)=>bar.style.height=Math.max(5,chartData[i]||5)+'%'); const chart=document.getElementById('chart-labels'); if(chart) chart.innerHTML=labels.map(d=>'<span>'+d+'</span>').join(''); };
+        const origRenderSleepStats = renderSleepStats; renderSleepStats = function(){ origRenderSleepStats(); const tr=t(); const listContainer=document.getElementById('sleep-list'); if(listContainer && state.sleepTracking.history.length===0){ listContainer.innerHTML=`<div class="empty-state"><div class="empty-icon">🌙</div><div class="empty-text" id="sleep-empty-text">${tr.noSleepYet}</div></div>`; } if(state.language==='en'){ document.getElementById('stat-avg').textContent=document.getElementById('stat-avg').textContent.replace('dk','m'); } };
+        renderExpertTips = function(){ const tips=(state.language==='tr'?EXPERT_TIPS:EXPERT_TIPS_EN)[state.currentAgeGroup] || (state.language==='tr'?EXPERT_TIPS:EXPERT_TIPS_EN)[0]; const container=document.getElementById('expert-tips'); container.innerHTML=tips.map(tip=>`<div class="expert-card"><div class="expert-header"><div class="expert-avatar">${tip.avatar}</div><div class="expert-info"><h4>${tip.author}</h4><p>${tip.title}</p></div></div><div class="expert-content">${tip.tip}</div></div>`).join(''); };
+
     </script>
-
-<style>
-#app-onboarding {
-  position: fixed; inset: 0; background: linear-gradient(180deg, rgba(10,14,26,.98), rgba(21,27,45,.98));
-  z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px;
-}
-#app-onboarding.show { display:flex; }
-#app-onboarding .board {
-  width: 100%; max-width: 430px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 28px; padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,.35);
-}
-#app-onboarding .top {
-  display:flex; align-items:center; justify-content:space-between; margin-bottom: 18px;
-}
-#app-onboarding .steps {
-  display:flex; gap:8px;
-}
-#app-onboarding .dot {
-  width: 8px; height:8px; border-radius: 99px; background: rgba(255,255,255,.15);
-}
-#app-onboarding .dot.active { width: 24px; background: var(--accent); }
-#app-onboarding .slide { display:none; text-align:center; }
-#app-onboarding .slide.active { display:block; animation: fadeIn .25s ease; }
-#app-onboarding .slide .hero { font-size: 58px; margin: 8px 0 14px; }
-#app-onboarding .slide h2 { font-size: 26px; margin-bottom: 10px; font-family: 'Quicksand', sans-serif; }
-#app-onboarding .slide p { color: var(--text-muted); line-height: 1.65; font-size: 14px; }
-#app-onboarding .slide .mini-cards { margin-top: 18px; display:grid; gap: 10px; }
-#app-onboarding .slide .mini-card {
-  text-align:left; background: rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08);
-  border-radius: 16px; padding: 14px;
-}
-#app-onboarding .slide .mini-card strong { display:block; margin-bottom:4px; }
-#app-onboarding .actions { display:flex; gap: 10px; margin-top: 22px; }
-#app-onboarding .actions button { flex:1; }
-#app-onboarding .ghost-btn {
-  border:none; border-radius: 12px; background: rgba(255,255,255,.06); color: var(--text); padding: 14px;
-  font-family: inherit; font-weight: 700;
-}
-#app-onboarding .lang-row { display:flex; gap:10px; margin-top: 14px; }
-#app-onboarding .lang-row button {
-  flex:1; border:1px solid var(--border); background: rgba(255,255,255,.03); color: var(--text); border-radius: 14px; padding: 14px;
-  font-weight:700; font-family: inherit;
-}
-#app-onboarding .lang-row button.active { border-color: var(--accent); background: rgba(157,140,239,.14); color: var(--accent-light); }
-</style>
-
-<div id="app-onboarding">
-  <div class="board">
-    <div class="top">
-      <div class="logo" style="gap:8px;"><span class="logo-moon">🌙</span><span class="logo-text" id="ob-logo">Minik Uyku</span></div>
-      <div class="steps">
-        <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
-      </div>
-    </div>
-
-    <div class="slide active" data-step="0">
-      <div class="hero">🌍</div>
-      <h2 id="ob-title-0">Dilini seç</h2>
-      <p id="ob-desc-0">Uygulamayı Türkçe ya da English olarak başlat. Seçtiğin dil tüm menülere ve içerik etiketlerine uygulanır.</p>
-      <div class="lang-row">
-        <button type="button" id="ob-btn-tr" onclick="setLanguage('tr', true)">Türkçe</button>
-        <button type="button" id="ob-btn-en" onclick="setLanguage('en', true)">English</button>
-      </div>
-      <div class="actions">
-        <button class="btn-primary" type="button" onclick="nextOnboardingStep()">İleri</button>
-      </div>
-    </div>
-
-    <div class="slide" data-step="1">
-      <div class="hero">🩺</div>
-      <h2 id="ob-title-1">Ağlamayı daha iyi anla</h2>
-      <p id="ob-desc-1">10 saniyelik dinleme ile ağlamayı Açlık, Gaz, Uykusuzluk ve Diğer olarak olasılık şeklinde yorumla.</p>
-      <div class="mini-cards">
-        <div class="mini-card"><strong id="ob-card-1a">Açlık mı?</strong><span id="ob-card-1b">Önce en olası nedeni gösterir.</span></div>
-        <div class="mini-card"><strong id="ob-card-1c">Tek dokunuşla çözüm</strong><span id="ob-card-1d">Sonuçtan sonra ninni veya rahatlatıcı ses başlat.</span></div>
-      </div>
-      <div class="actions">
-        <button class="ghost-btn" type="button" onclick="prevOnboardingStep()">Geri</button>
-        <button class="btn-primary" type="button" onclick="nextOnboardingStep()">İleri</button>
-      </div>
-    </div>
-
-    <div class="slide" data-step="2">
-      <div class="hero">🎙️</div>
-      <h2 id="ob-title-2">Kendi sesinle uyut</h2>
-      <p id="ob-desc-2">Ses kaydı al, klonunu hazırla ve bebeğinin ninnileri senin sesinle dinlemesini sağla.</p>
-      <div class="mini-cards">
-        <div class="mini-card"><strong id="ob-card-2a">Ses kaydı</strong><span id="ob-card-2b">Sessiz ortamda yaklaşık 1 dakika kayıt önerilir.</span></div>
-        <div class="mini-card"><strong id="ob-card-2c">Kişisel bağ</strong><span id="ob-card-2d">İsimle hitap edilen ninniler daha sıcak hissettirir.</span></div>
-      </div>
-      <div class="actions">
-        <button class="ghost-btn" type="button" onclick="prevOnboardingStep()">Geri</button>
-        <button class="btn-primary" type="button" onclick="nextOnboardingStep()">İleri</button>
-      </div>
-    </div>
-
-    <div class="slide" data-step="3">
-      <div class="hero">✨</div>
-      <h2 id="ob-title-3">3 gün ücretsiz dene</h2>
-      <p id="ob-desc-3">Uyku takibi, ninniler, masallar ve analiz özelliklerini dene. Sonra istersen premium ile devam et.</p>
-      <div class="mini-cards">
-        <div class="mini-card"><strong id="ob-card-3a">Uyku takibi</strong><span id="ob-card-3b">Oturumları kaydet ve basit analizleri gör.</span></div>
-        <div class="mini-card"><strong id="ob-card-3c">Hazırsan başlayalım</strong><span id="ob-card-3d">Uygulama içindeki dili ve etiketleri daha sonra da değiştirebilirsin.</span></div>
-      </div>
-      <div class="actions">
-        <button class="ghost-btn" type="button" onclick="prevOnboardingStep()">Geri</button>
-        <button class="btn-primary" type="button" onclick="finishOnboardingV2()">Başla</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-(function(){
-  const I18N = {
-    tr: {
-      appName: 'Minik Uyku – LumiBaby',
-      premium: 'Premium',
-      baby: 'Bebek',
-      navLullabies: 'Ninniler',
-      navStories: 'Hikayeler',
-      navColic: 'Kolik',
-      navTracking: 'Takip',
-      navVoice: 'Sesim',
-      timer: 'Zamanlayıcı',
-      cryDetector: 'Ağlama Dedektörü',
-      colicDetector: 'Kolik Kriz Dedektörü',
-      whenStop: 'Ne zaman dursun?',
-      sectionTurkishLullabies: 'Türkçe Ninniler',
-      sectionEnglishLullabies: 'English Lullabies',
-      sectionVoiceLullabies: 'Sesimle Ninniler',
-      sectionVoiceLullabiesEn: 'Lullabies In My Voice',
-      sectionStoriesTr: 'Uyku Masalları',
-      sectionStoriesEn: 'Bedtime Stories',
-      sectionWhiteNoise: 'Beyaz Gürültü',
-      sectionNature: 'Doğa Sesleri',
-      sectionRelaxing: 'Rahatlatıcı Sesler',
-      sectionTodayStats: 'Bugünün İstatistikleri',
-      sectionSleepChart: 'Uyku Grafiği (Son 7 Gün)',
-      sectionRecentSleeps: 'Son Uykular',
-      sectionExpertTips: 'Uzman Önerileri',
-      sectionMyRecordings: 'Kayıtlarım',
-      sectionVoiceCloning: 'Ses Klonlama',
-      sectionReadWithMyVoice: 'Sesimle Oku',
-      trialBadge: '3 Gün Ücretsiz',
-      premiumBadge: 'Sınırsız',
-      lockedBadge: 'Premium',
-      trialHeader: 'Deneme',
-      unlimited: 'Sınırsız kullanım',
-      free: 'Ücretsiz',
-      playing: 'Çalınıyor...',
-      storyPlaying: 'Hikaye anlatılıyor...',
-      browserVoice: 'Tarayıcı sesiyle çalıyor',
-      cloneFromVoiceTab: '"Sesim" sekmesinden sesinizi klonlayın',
-      noRecordings: 'Henüz kayıt yok',
-      noCloneFirst: 'Önce ses kaydı yapın',
-      recordingInstruction: 'Kitap okur gibi tonlama yaparak okuyunuz. (1 dakika önerilir):',
-      trackingAwake: 'Bebek uyanık',
-      trackingAsleep: 'Bebek uyuyor',
-      sleepWent: 'Uykuya Geçti',
-      wakeUp: 'Uyandı',
-      totalSleep: 'Toplam Uyku',
-      sleepCount: 'Uyku Sayısı',
-      average: 'Ortalama',
-      wakeCount: 'Uyanma',
-      noSleepRecords: 'Henüz uyku kaydı yok',
-      settingsTitle: 'Bebek Ayarları',
-      settingsDesc: 'Kişiselleştirilmiş deneyim için',
-      babyNameLabel: 'Bebeğinizin Adı',
-      birthDateLabel: 'Doğum Tarihi',
-      save: 'Kaydet',
-      premiumTitle: 'Minik Uyku Premium',
-      premiumSubtitle: '3 günlük denemeden sonra premium ile devam edin',
-      premiumFeature1: 'Sınırsız ninni dinleme',
-      premiumFeature1Sub: 'Deneme sonrası premium ile devam eder',
-      premiumFeature2: 'Tüm masallar ve hikayeler',
-      premiumFeature2Sub: 'Türkçe ve İngilizce içerikler',
-      premiumFeature3: 'Gelişmiş dedektörler',
-      premiumFeature3Sub: 'Ağlama ve kolik araçları',
-      premiumFeature4: 'Detaylı uyku analizi',
-      premiumFeature4Sub: 'Rutin ve tahmin görünümü',
-      premiumFeature5: 'Ses klonlama desteği',
-      premiumFeature5Sub: 'Yayın öncesi backend ile bağlanmalı',
-      upgrade: "Premium'a Yükselt",
-      cancelNow: 'Şimdilik İptal',
-      listening10: 'Dinleniyor... 10 sn',
-      analyze10: '🎙 10 sn analiz et',
-      cryResultNote: 'İlk sıradaki sonuç en olası tahmindir.',
-      cryLabels: { hunger: 'Açlık', gas: 'Gaz', sleepy: 'Uykusuzluk', other: 'Diğer' },
-      onboarding: {
-        title0:'Dilini seç', desc0:'Uygulamayı Türkçe ya da English olarak başlat. Seçtiğin dil tüm menülere ve içerik etiketlerine uygulanır.',
-        title1:'Ağlamayı daha iyi anla', desc1:'10 saniyelik dinleme ile ağlamayı Açlık, Gaz, Uykusuzluk ve Diğer olarak olasılık şeklinde yorumla.',
-        title2:'Kendi sesinle uyut', desc2:'Ses kaydı al, klonunu hazırla ve bebeğinin ninnileri senin sesinle dinlemesini sağla.',
-        title3:'3 gün ücretsiz dene', desc3:'Uyku takibi, ninniler, masallar ve analiz özelliklerini dene. Sonra istersen premium ile devam et.',
-        card1a:'Açlık mı?', card1b:'Önce en olası nedeni gösterir.', card1c:'Tek dokunuşla çözüm', card1d:'Sonuçtan sonra ninni veya rahatlatıcı ses başlat.',
-        card2a:'Ses kaydı', card2b:'Sessiz ortamda yaklaşık 1 dakika kayıt önerilir.', card2c:'Kişisel bağ', card2d:'İsimle hitap edilen ninniler daha sıcak hissettirir.',
-        card3a:'Uyku takibi', card3b:'Oturumları kaydet ve basit analizleri gör.', card3c:'Hazırsan başlayalım', card3d:'Dili daha sonra da değiştirebilirsin.',
-        next:'İleri', back:'Geri', start:'Başla'
-      }
-    },
-    en: {
-      appName: 'Minik Uyku – LumiBaby',
-      premium: 'Premium',
-      baby: 'Baby',
-      navLullabies: 'Lullabies',
-      navStories: 'Stories',
-      navColic: 'Colic',
-      navTracking: 'Tracking',
-      navVoice: 'My Voice',
-      timer: 'Timer',
-      cryDetector: 'Cry Detector',
-      colicDetector: 'Colic Detector',
-      whenStop: 'When should it stop?',
-      sectionTurkishLullabies: 'English Lullabies',
-      sectionEnglishLullabies: 'English Lullabies',
-      sectionVoiceLullabies: 'Lullabies In My Voice',
-      sectionVoiceLullabiesEn: 'Lullabies In My Voice',
-      sectionStoriesTr: 'Bedtime Stories',
-      sectionStoriesEn: 'Bedtime Stories',
-      sectionWhiteNoise: 'White Noise',
-      sectionNature: 'Nature Sounds',
-      sectionRelaxing: 'Soothing Sounds',
-      sectionTodayStats: "Today's Stats",
-      sectionSleepChart: 'Sleep Chart (Last 7 Days)',
-      sectionRecentSleeps: 'Recent Sleeps',
-      sectionExpertTips: 'Expert Tips',
-      sectionMyRecordings: 'My Recordings',
-      sectionVoiceCloning: 'Voice Cloning',
-      sectionReadWithMyVoice: 'Read In My Voice',
-      trialBadge: '3 Day Free Trial',
-      premiumBadge: 'Unlimited',
-      lockedBadge: 'Premium',
-      trialHeader: 'Trial',
-      unlimited: 'Unlimited access',
-      free: 'Free',
-      playing: 'Playing...',
-      storyPlaying: 'Story is playing...',
-      browserVoice: 'Playing with browser voice',
-      cloneFromVoiceTab: 'Clone your voice from the "My Voice" section',
-      noRecordings: 'No recordings yet',
-      noCloneFirst: 'Please record your voice first',
-      recordingInstruction: 'Read with a natural book-reading tone. (1 minute recommended):',
-      trackingAwake: 'Baby is awake',
-      trackingAsleep: 'Baby is sleeping',
-      sleepWent: 'Fell Asleep',
-      wakeUp: 'Woke Up',
-      totalSleep: 'Total Sleep',
-      sleepCount: 'Sleep Sessions',
-      average: 'Average',
-      wakeCount: 'Wake Ups',
-      noSleepRecords: 'No sleep records yet',
-      settingsTitle: 'Baby Settings',
-      settingsDesc: 'For a personalized experience',
-      babyNameLabel: "Baby's Name",
-      birthDateLabel: 'Birth Date',
-      save: 'Save',
-      premiumTitle: 'Minik Uyku Premium',
-      premiumSubtitle: 'Continue with premium after the 3-day trial',
-      premiumFeature1: 'Unlimited lullabies',
-      premiumFeature1Sub: 'Continue with premium after trial',
-      premiumFeature2: 'All stories',
-      premiumFeature2Sub: 'Turkish and English content',
-      premiumFeature3: 'Advanced detectors',
-      premiumFeature3Sub: 'Cry and colic tools',
-      premiumFeature4: 'Sleep analysis',
-      premiumFeature4Sub: 'Routine and prediction view',
-      premiumFeature5: 'Voice cloning support',
-      premiumFeature5Sub: 'Connect a backend before release',
-      upgrade: 'Upgrade to Premium',
-      cancelNow: 'Not Now',
-      listening10: 'Listening... 10 sec',
-      analyze10: '🎙 Analyze for 10 sec',
-      cryResultNote: 'The first row is the most likely estimate.',
-      cryLabels: { hunger: 'Hunger', gas: 'Gas', sleepy: 'Sleepiness', other: 'Other' },
-      onboarding: {
-        title0:'Choose your language', desc0:'Start the app in Turkish or English. Your choice will apply across menus and labels.',
-        title1:'Understand crying better', desc1:'Listen for 10 seconds and estimate Hunger, Gas, Sleepiness and Other as probabilities.',
-        title2:'Soothe with your own voice', desc2:'Record your voice, prepare a clone, and let your baby hear lullabies in your voice.',
-        title3:'Try free for 3 days', desc3:'Explore sleep tracking, lullabies, stories and analysis features. Continue later with premium if you want.',
-        card1a:'Could it be hunger?', card1b:'Shows the most likely reason first.', card1c:'One-tap action', card1d:'Start a lullaby or a soothing sound right after the result.',
-        card2a:'Voice recording', card2b:'A quiet 1-minute recording is recommended.', card2c:'Personal touch', card2d:'Name-based wording feels warmer and more personal.',
-        card3a:'Sleep tracking', card3b:'Save sessions and view simple analysis.', card3c:'Ready to begin?', card3d:'You can change the language later as well.',
-        next:'Next', back:'Back', start:'Start'
-      }
-    }
-  };
-
-  let onboardingStep = 0;
-
-  function t(key){
-    const lang = (window.state && state.language) || localStorage.getItem('minikuyku_lang') || 'tr';
-    const parts = key.split('.');
-    let val = I18N[lang];
-    parts.forEach(p => val = val && val[p]);
-    return val || key;
-  }
-
-  function hideLegacyOnboarding(){
-    const legacy = document.getElementById('onboarding-modal');
-    if (legacy) legacy.style.display = 'none';
-  }
-
-  function updateDots(){
-    document.querySelectorAll('#app-onboarding .dot').forEach((dot, idx) => dot.classList.toggle('active', idx === onboardingStep));
-    document.querySelectorAll('#app-onboarding .slide').forEach((slide, idx) => slide.classList.toggle('active', idx === onboardingStep));
-  }
-
-  window.nextOnboardingStep = function(){
-    onboardingStep = Math.min(3, onboardingStep + 1);
-    updateDots();
-  }
-
-  window.prevOnboardingStep = function(){
-    onboardingStep = Math.max(0, onboardingStep - 1);
-    updateDots();
-  }
-
-  function updateOnboardingLanguage(){
-    document.getElementById('ob-btn-tr')?.classList.toggle('active', state.language === 'tr');
-    document.getElementById('ob-btn-en')?.classList.toggle('active', state.language === 'en');
-    document.getElementById('ob-logo').textContent = t('appName');
-
-    ['0','1','2','3'].forEach(i => {
-      const title = document.getElementById('ob-title-'+i);
-      const desc = document.getElementById('ob-desc-'+i);
-      if (title) title.textContent = t('onboarding.title'+i);
-      if (desc) desc.textContent = t('onboarding.desc'+i);
-    });
-    ['1a','1b','1c','1d','2a','2b','2c','2d','3a','3b','3c','3d'].forEach(k=>{
-      const el = document.getElementById('ob-card-'+k);
-      if (el) el.textContent = t('onboarding.card'+k);
-    });
-    document.querySelectorAll('#app-onboarding .actions .btn-primary').forEach((btn, idx) => {
-      btn.textContent = idx === 3 ? t('onboarding.start') : t('onboarding.next');
-    });
-    document.querySelectorAll('#app-onboarding .actions .ghost-btn').forEach(btn => btn.textContent = t('onboarding.back'));
-  }
-
-  window.finishOnboardingV2 = function(){
-    const nameInput = document.getElementById('onboard-baby-name');
-    if (nameInput && nameInput.value.trim()) {
-      state.babyName = nameInput.value.trim();
-      localStorage.setItem('minikuyku_baby_name', state.babyName);
-      updateBabyNameDisplay?.();
-    }
-    state.onboarded = true;
-    localStorage.setItem('minikuyku_onboarded', 'true');
-    document.getElementById('app-onboarding').classList.remove('show');
-    hideLegacyOnboarding();
-    ensureTrialStarted?.();
-    updateLanguageUI();
-    showToast?.(state.language === 'tr' ? 'Hoş geldiniz! 3 günlük denemeniz başladı.' : 'Welcome! Your 3-day trial has started.');
-  }
-
-  function showOnboardingIfNeeded(){
-    const root = document.getElementById('app-onboarding');
-    if (!state.onboarded) root.classList.add('show');
-    else root.classList.remove('show');
-  }
-
-  function setText(selector, value){
-    const el = typeof selector === 'string' ? document.querySelector(selector) : selector;
-    if (el && value != null) el.textContent = value;
-  }
-
-  function setHTML(selector, value){
-    const el = typeof selector === 'string' ? document.querySelector(selector) : selector;
-    if (el && value != null) el.innerHTML = value;
-  }
-
-  function translateStaticUI(){
-    document.documentElement.lang = state.language;
-    setText('.logo-text', t('appName'));
-    setText('#premium-text', t('premium'));
-    setText('#baby-name-display', state.babyName || t('baby'));
-
-    const topNavLabels = document.querySelectorAll('.nav .nav-label');
-    const bottomLabels = document.querySelectorAll('.bottom-nav .bottom-label');
-    [topNavLabels, bottomLabels].forEach(group => {
-      if (group[0]) group[0].textContent = t('navLullabies');
-      if (group[1]) group[1].textContent = t('navStories');
-      if (group[2]) group[2].textContent = t('navColic');
-      if (group[3]) group[3].textContent = t('navTracking');
-      if (group[4]) group[4].textContent = t('navVoice');
-    });
-
-    const timerBtns = document.querySelectorAll('#page-ninniler .timer-btn');
-    if (timerBtns[0]) timerBtns[0].innerHTML = '⏱ ' + t('timer');
-    if (timerBtns[1]) timerBtns[1].innerHTML = '🎙 ' + t('cryDetector');
-    if (timerBtns[2]) timerBtns[2].innerHTML = '🌿 ' + t('colicDetector');
-    const stopLabel = document.querySelector('#timer-picker > div');
-    if (stopLabel) stopLabel.textContent = t('whenStop');
-
-    const ninnilerTitles = document.querySelectorAll('#page-ninniler .section-title');
-    if (ninnilerTitles[0]) ninnilerTitles[0].childNodes[0].textContent = (state.language === 'tr' ? t('sectionTurkishLullabies') : t('sectionEnglishLullabies')) + ' ';
-    if (ninnilerTitles[1]) ninnilerTitles[1].childNodes[0].textContent = (state.language === 'tr' ? t('sectionVoiceLullabies') : t('sectionVoiceLullabiesEn')) + ' ';
-
-    const hikTitles = document.querySelectorAll('#page-hikayeler .section-title');
-    if (hikTitles[0]) hikTitles[0].childNodes[0].textContent = (state.language === 'tr' ? t('sectionStoriesTr') : t('sectionStoriesEn')) + ' ';
-
-    const kolikTitles = document.querySelectorAll('#page-kolik .section-title');
-    if (kolikTitles[0]) kolikTitles[0].childNodes[0].textContent = t('sectionWhiteNoise') + ' ';
-    if (kolikTitles[1]) kolikTitles[1].childNodes[0].textContent = t('sectionNature') + ' ';
-    if (kolikTitles[2]) kolikTitles[2].childNodes[0].textContent = t('sectionRelaxing') + ' ';
-    setText('#colic-free-badge', isTR ? 'TÜMÜ ÜCRETSİZ' : 'ALL FREE');
-
-    const takipTitles = document.querySelectorAll('#page-takip .section-title');
-    if (takipTitles[0]) takipTitles[0].childNodes[0].textContent = t('sectionTodayStats');
-    if (takipTitles[1]) takipTitles[1].childNodes[0].textContent = t('sectionSleepChart');
-    if (takipTitles[2]) takipTitles[2].childNodes[0].textContent = t('sectionRecentSleeps');
-    if (takipTitles[3]) takipTitles[3].childNodes[0].textContent = t('sectionExpertTips');
-
-    const sesimTitles = document.querySelectorAll('#page-sesim .section-title');
-    if (sesimTitles[0]) sesimTitles[0].childNodes[0].textContent = t('sectionMyRecordings');
-    if (sesimTitles[1]) sesimTitles[1].childNodes[0].textContent = t('sectionVoiceCloning') + ' ';
-    if (sesimTitles[2]) sesimTitles[2].childNodes[0].textContent = t('sectionReadWithMyVoice');
-
-    setText('#record-status', state.language === 'tr' ? 'Kayıt başlatmak için dokunun' : 'Tap to start recording');
-    const phraseTitle = document.querySelector('.phrase-title');
-    if (phraseTitle) phraseTitle.textContent = '📝 ' + t('recordingInstruction');
-
-    setText('#sleep-status', state.sleepTracking?.active ? t('trackingAsleep') : t('trackingAwake'));
-    const sleepBtn = document.getElementById('sleep-btn');
-    if (sleepBtn) {
-      sleepBtn.innerHTML = state.sleepTracking?.active ? '<span>☀️</span> ' + t('wakeUp') : '<span>😴</span> ' + t('sleepWent');
-    }
-    setText('#stat-total + .stat-label', t('totalSleep'));
-    setText('#stat-count + .stat-label', t('sleepCount'));
-    setText('#stat-avg + .stat-label', t('average'));
-    setText('#stat-wake + .stat-label', t('wakeCount'));
-
-    const chartDays = isTR ? ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'] : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-    document.querySelectorAll('.chart-labels span').forEach((el, idx) => { if (chartDays[idx]) el.textContent = chartDays[idx]; });
-
-    const emptySleep = document.querySelector('#sleep-list .empty-text');
-    if (emptySleep) emptySleep.textContent = t('noSleepRecords');
-
-    const recEmpty = document.querySelector('#recordings-list .empty-text');
-    if (recEmpty) recEmpty.textContent = t('noRecordings');
-    const cloneSectionEmpty = document.querySelector('#clone-section .empty-text');
-    if (cloneSectionEmpty) cloneSectionEmpty.textContent = t('noCloneFirst');
-    const voiceEmpty = document.querySelector('#voice-lullabies-list .empty-text');
-    if (voiceEmpty) voiceEmpty.textContent = t('cloneFromVoiceTab');
-
-    setText('#ninniler-badge', t('trialBadge'));
-    setText('#hikayeler-badge', t('trialBadge'));
-    setText('#np-hik-badge', t('trialBadge'));
-
-    const premiumModal = document.getElementById('premium-modal');
-    if (premiumModal) {
-      premiumModal.querySelector('.premium-title').textContent = t('premiumTitle');
-      premiumModal.querySelector('.premium-modal-content p').textContent = t('premiumSubtitle');
-      const rows = premiumModal.querySelectorAll('.premium-feature');
-      if (rows[0]) rows[0].querySelector('.premium-feature-text').innerHTML = `${t('premiumFeature1')}<br><span>${t('premiumFeature1Sub')}</span>`;
-      if (rows[1]) rows[1].querySelector('.premium-feature-text').innerHTML = `${t('premiumFeature2')}<br><span>${t('premiumFeature2Sub')}</span>`;
-      if (rows[2]) rows[2].querySelector('.premium-feature-text').innerHTML = `${t('premiumFeature3')}<br><span>${t('premiumFeature3Sub')}</span>`;
-      if (rows[3]) rows[3].querySelector('.premium-feature-text').innerHTML = `${t('premiumFeature4')}<br><span>${t('premiumFeature4Sub')}</span>`;
-      if (rows[4]) rows[4].querySelector('.premium-feature-text').innerHTML = `${t('premiumFeature5')}<br><span>${t('premiumFeature5Sub')}</span>`;
-      premiumModal.querySelector('.btn-primary').innerHTML = '<span>👑</span> ' + t('upgrade');
-      premiumModal.querySelector('.header-btn').textContent = t('cancelNow');
-    }
-
-    const settingsModal = document.getElementById('settings-modal');
-    if (settingsModal) {
-      const title = settingsModal.querySelector('div[style*="font-family"]');
-      if (title) title.textContent = t('settingsTitle');
-      const subtitle = settingsModal.querySelector('div[style*="font-size: 13px"]');
-      if (subtitle) subtitle.textContent = t('settingsDesc');
-      const labels = settingsModal.querySelectorAll('.input-label');
-      if (labels[0]) labels[0].textContent = t('babyNameLabel');
-      if (labels[1]) labels[1].textContent = t('birthDateLabel');
-      settingsModal.querySelector('.btn-primary').textContent = t('save');
-    }
-
-    updateOnboardingLanguage();
-  }
-
-  // Override language functions
-  window.updateLanguageUI = function(){
-    document.getElementById('lang-tr')?.classList.toggle('active', state.language === 'tr');
-    document.getElementById('lang-en')?.classList.toggle('active', state.language === 'en');
-    translateStaticUI();
-    renderLullabies();
-    renderStories();
-    renderKolik?.();
-    renderRecordings?.();
-    updatePremiumUI?.();
-    updateTrialUI?.();
-    renderVoiceLullabies?.();
-    renderExpertTips?.();
-  };
-
-  window.setLanguage = function(lang, silent){
-    state.language = lang;
-    localStorage.setItem('minikuyku_lang', lang);
-    updateLanguageUI();
-    if (!silent) showToast?.(lang === 'tr' ? 'Dil Türkçe olarak ayarlandı' : 'Language set to English');
-  };
-
-  // Fix audio overlap
-  window.stopAll = async function(){
-    try {
-      if (state.currentAudio) {
-        state.currentAudio.pause();
-        state.currentAudio.currentTime = 0;
-        state.currentAudio.src = '';
-        state.currentAudio = null;
-      }
-      if (state.audioElement) {
-        state.audioElement.pause();
-        state.audioElement.currentTime = 0;
-        state.audioElement.src = '';
-        state.audioElement = null;
-      }
-    } catch(e) {}
-    if (state.audioNodes?.length) {
-      state.audioNodes.forEach(node => {
-        try { node.stop?.(); node.disconnect?.(); } catch(e) {}
-      });
-      state.audioNodes = [];
-    }
-    if (state.audioContext) {
-      try { await state.audioContext.close(); } catch(e) {}
-      state.audioContext = null;
-    }
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-    if (state.progressInterval) { clearInterval(state.progressInterval); state.progressInterval = null; }
-    state.isPlaying = false;
-    state.currentTrack = null;
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('playing'));
-    document.querySelectorAll('.play-btn').forEach(b => { b.innerHTML = '▶'; b.classList.remove('playing'); });
-    document.querySelectorAll('.kolik-item').forEach(c => c.classList.remove('playing'));
-    document.querySelectorAll('.kolik-play').forEach(b => { b.innerHTML = '▶'; b.classList.remove('playing'); });
-    document.querySelectorAll('.now-playing').forEach(np => np.classList.remove('show'));
-    document.querySelectorAll('.progress-fill').forEach(p => p.style.width = '0%');
-  };
-
-  function afterNativeAudioEnded(prefixId, btnPrefix, id){
-    state.isPlaying = false;
-    state.currentTrack = null;
-    updatePlayUI?.(id, prefixId, btnPrefix, false);
-    document.querySelectorAll('.now-playing').forEach(np => np.classList.remove('show'));
-  }
-
-  window.playLullaby = async function(id){
-    const lullaby = getActiveLullabies().find(l => l.id === id);
-    if (!lullaby) return;
-    await stopAll();
-    state.currentTrack = id;
-    state.isPlaying = true;
-    updatePlayUI?.(id, 'card-', 'btn-', true);
-    showNowPlaying?.('ninniler', lullaby.emoji, lullaby.name, t('playing'));
-    if (lullaby.file) {
-      const audio = new Audio((CONFIG.LOCAL_SOUNDS_PATH || '') + lullaby.file);
-      state.currentAudio = audio;
-      audio.onended = () => afterNativeAudioEnded('card-', 'btn-', id);
-      audio.onerror = () => { fallbackTTS?.(injectBabyName?.(lullaby.text) || lullaby.text); };
-      try { await audio.play(); } catch(e){ fallbackTTS?.(injectBabyName?.(lullaby.text) || lullaby.text); }
-      return;
-    }
-    try {
-      await generateSpeech?.(injectBabyName?.(lullaby.text) || lullaby.text, id, 'ninniler', false, null, Infinity);
-    } catch(e) {
-      fallbackTTS?.(injectBabyName?.(lullaby.text) || lullaby.text);
-    }
-  };
-
-  window.playStory = async function(id){
-    const story = getActiveStories().find(s => s.id === id);
-    if (!story) return;
-    await stopAll();
-    state.currentTrack = 's'+id;
-    state.isPlaying = true;
-    showNowPlaying?.('hikayeler', story.emoji, story.title, t('storyPlaying'));
-    let text = story.text;
-    text = state.babyName
-      ? `${state.babyName}, ` + (state.language === 'tr' ? 'sana bir masal anlatacağım. ' : 'I will tell you a bedtime story. ') + text
-      : (state.language === 'tr' ? 'Tatlım, sana bir masal anlatacağım. ' : 'Sweetheart, I will tell you a bedtime story. ') + text;
-
-    if (story.file) {
-      const audio = new Audio((CONFIG.LOCAL_SOUNDS_PATH || '') + story.file);
-      state.currentAudio = audio;
-      audio.onended = () => afterNativeAudioEnded('story-', 'storybtn-', id);
-      try { await audio.play(); } catch(e){ fallbackTTS?.(text); }
-      return;
-    }
-    try {
-      await generateSpeech?.(text, 's'+id, 'hikayeler', false, null, Infinity);
-    } catch(e) {
-      fallbackTTS?.(text);
-    }
-  };
-
-  // Override rendering so labels change with language and no 1-minute warnings remain
-  window.renderLullabies = function(){
-    const list = document.getElementById('lullabies-list');
-    if (!list) return;
-    const active = getActiveLullabies();
-    list.innerHTML = active.map(l => `
-      <div class="card" id="card-${l.id}" onclick="playLullaby('${l.id}')">
-        <span class="card-icon">${l.emoji}</span>
-        <div class="card-content">
-          <div class="card-title">${l.name}</div>
-          <div class="card-desc">${l.desc}</div>
-          <div class="card-tags">
-            <span class="card-tag">${l.origin || ''}</span>
-            <span class="card-tag premium">✨ ${isTrialActive?.() || state.isPremium ? t('trialBadge') : t('lockedBadge')}</span>
-          </div>
-        </div>
-        <button class="play-btn" id="btn-${l.id}" type="button" onclick="event.stopPropagation(); playLullaby('${l.id}')">▶</button>
-      </div>
-    `).join('');
-    renderVoiceLullabies?.();
-    translateStaticUI();
-  };
-
-  window.renderStories = function(){
-    const list = document.getElementById('stories-list');
-    if (!list) return;
-    const active = getActiveStories();
-    list.innerHTML = active.map(s => `
-      <div class="story-card" id="story-${s.id}" onclick="playStory('${s.id}')">
-        <div class="story-header">
-          <span class="story-emoji">${s.emoji}</span>
-          <div class="story-content">
-            <h3>${s.title}</h3>
-            <p>${s.desc}</p>
-          </div>
-          <button class="play-btn" id="storybtn-${s.id}" type="button" onclick="event.stopPropagation(); playStory('${s.id}')">▶</button>
-        </div>
-        <div class="story-footer">
-          <span class="card-tag">${s.age || ''}</span>
-          <span class="card-tag">${s.duration || ''}</span>
-          <span class="card-tag premium">✨ ${isTrialActive?.() || state.isPremium ? t('trialBadge') : t('lockedBadge')}</span>
-        </div>
-      </div>
-    `).join('');
-    translateStaticUI();
-  };
-
-  // Simplify trial UI wording
-  window.updateTrialUI = function(){
-    const ninnilerBadge = document.getElementById('ninniler-badge');
-    const hikayelerBadge = document.getElementById('hikayeler-badge');
-    const hikNow = document.getElementById('np-hik-badge');
-    const premiumText = document.getElementById('premium-text');
-    if (state.isPremium) {
-      if (premiumText) premiumText.textContent = t('premium');
-      if (ninnilerBadge) ninnilerBadge.textContent = t('premiumBadge');
-      if (hikayelerBadge) hikayelerBadge.textContent = t('premiumBadge');
-      if (hikNow) hikNow.textContent = t('premiumBadge');
-    } else if (isTrialActive?.()) {
-      if (premiumText) premiumText.textContent = t('trialHeader');
-      if (ninnilerBadge) ninnilerBadge.textContent = t('trialBadge');
-      if (hikayelerBadge) hikayelerBadge.textContent = t('trialBadge');
-      if (hikNow) hikNow.textContent = t('trialBadge');
-    } else {
-      if (premiumText) premiumText.textContent = t('premium');
-      if (ninnilerBadge) ninnilerBadge.textContent = t('lockedBadge');
-      if (hikayelerBadge) hikayelerBadge.textContent = t('lockedBadge');
-      if (hikNow) hikNow.textContent = t('lockedBadge');
-    }
-  };
-
-  // Override analysis labels: hunger gas sleepy other
-  const originalBuildCryPrediction = window.buildCryPredictionUI;
-  window.renderCryAnalysis = function(resultEl, normalized){
-    resultEl.innerHTML = normalized.map(item => `
-      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-        <div style="width:90px; font-weight:700;">${item.label}</div>
-        <div style="flex:1; height:10px; background:rgba(255,255,255,.08); border-radius:999px; overflow:hidden;">
-          <div style="height:100%; width:${item.value}%; background:linear-gradient(90deg, var(--accent), var(--mint)); border-radius:999px;"></div>
-        </div>
-        <div style="width:42px; text-align:right;">%${item.value}</div>
-      </div>
-    `).join('') + `<div class="soft-note">${t('cryResultNote')}</div>`;
-  };
-
-  // Patch startCryAnalysis to use Other instead of diaper split
-  window.startCryAnalysis = async function(){
-    const btn = document.getElementById('cry-analysis-btn');
-    const result = document.getElementById('cry-analysis-result');
-    if (!btn || !result) return;
-    btn.disabled = true;
-    btn.textContent = t('listening10');
-    result.classList.remove('show');
-    let elapsed = 0;
-    let interval;
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const source = ctx.createMediaStreamSource(stream);
-      const analyser = ctx.createAnalyser();
-      analyser.fftSize = 2048;
-      source.connect(analyser);
-      const data = new Uint8Array(analyser.frequencyBinCount);
-      const samples = [];
-      interval = setInterval(() => {
-        elapsed++;
-        btn.textContent = (state.language === 'tr' ? 'Dinleniyor... ' : 'Listening... ') + elapsed + (state.language === 'tr' ? ' sn' : ' sec');
-        analyser.getByteFrequencyData(data);
-        const avg = data.reduce((a,b)=>a+b,0)/data.length;
-        const peak = Math.max(...data);
-        samples.push({ avg, peak });
-      }, 1000);
-
-      await new Promise(r => setTimeout(r, 10000));
-      clearInterval(interval);
-      stream.getTracks().forEach(t => t.stop());
-      try { await ctx.close(); } catch(e){}
-
-      const avgAvg = samples.reduce((a,b)=>a+b.avg,0)/samples.length || 30;
-      const avgPeak = samples.reduce((a,b)=>a+b.peak,0)/samples.length || 120;
-      const variance = samples.reduce((a,b)=>a+Math.abs(b.peak-avgPeak),0)/samples.length || 20;
-
-      let raw = [
-        { key:'hunger', value: avgAvg * 1.05 + variance * 0.8, en:'Hunger' },
-        { key:'gas', value: avgPeak * 0.55 + variance * 1.2, en:'Gas' },
-        { key:'sleepy', value: 180 - avgAvg + (80 - variance), en:'Sleepiness' },
-        { key:'other', value: 70 + Math.max(0, 140 - avgPeak), en:'Other' }
-      ];
-      raw = raw.map(item => ({...item, value: Math.max(8, item.value)}));
-      const total = raw.reduce((a,b)=>a+b.value,0);
-      const normalized = raw
-        .map(item => ({
-          label: t('cryLabels.' + item.key),
-          value: Math.round(item.value * 100 / total)
-        }))
-        .sort((a,b)=>b.value-a.value);
-      const delta = 100 - normalized.reduce((a,b)=>a+b.value,0);
-      if (delta !== 0) normalized[0].value += delta;
-
-      renderCryAnalysis(result, normalized);
-      result.classList.add('show');
-    } catch (e) {
-      result.innerHTML = `<div class="soft-note" style="color: var(--rose);">${state.language === 'tr' ? 'Mikrofon izni gerekiyor.' : 'Microphone permission is required.'}</div>`;
-      result.classList.add('show');
-    } finally {
-      clearInterval(interval);
-      btn.disabled = false;
-      btn.textContent = t('analyze10');
-    }
-  };
-
-  function initFixes(){
-    hideLegacyOnboarding();
-    translateStaticUI();
-    updateOnboardingLanguage();
-    showOnboardingIfNeeded();
-    updateDots();
-    setLanguage(state.language, true);
-  }
-  window.addEventListener('load', initFixes);
-})();
-</script>
-
-
-<script>
-(function(){
-  function applyFinalLanguageFixes(){
-    const isTR = (window.state && state.language === 'tr');
-    const logo = document.querySelector('.logo-text');
-    if (logo) logo.textContent = 'Minik Uyku – LumiBaby';
-
-    const premiumTitle = document.querySelector('#premium-modal .premium-title');
-    if (premiumTitle) premiumTitle.textContent = 'Minik Uyku – LumiBaby Premium';
-
-    const cryTitle = document.getElementById('cry-title');
-    const crySubtitle = document.getElementById('cry-subtitle');
-    const cryPill = document.getElementById('cry-pill');
-    const cryNote = document.getElementById('cry-note');
-    if (cryTitle) cryTitle.textContent = isTR ? '🩺 Bebek neden ağlıyor?' : '🩺 Why is my baby crying?';
-    if (crySubtitle) crySubtitle.textContent = isTR ? '10 saniye dinleyip olasılık dağılımı gösterir.' : 'Listens for 10 seconds and shows a probability breakdown.';
-    if (cryPill) cryPill.textContent = isTR ? 'Tahmin · tanı değil' : 'Estimate · not a diagnosis';
-    if (cryNote) cryNote.textContent = isTR ? 'Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk ve diğer nedenler için fikir vermek üzere tasarlanmıştır.' : 'These results are not a medical diagnosis. They are designed to suggest possibilities such as hunger, gas, sleepiness, or other causes.';
-
-    const settingsTitle = document.querySelector('#settings-modal [style*="font-family"]');
-    if (settingsTitle) settingsTitle.textContent = isTR ? 'Bebek Ayarları' : 'Baby Settings';
-    const settingsDesc = settingsTitle?.nextElementSibling;
-    if (settingsDesc) settingsDesc.textContent = isTR ? 'Kişiselleştirilmiş deneyim için' : 'For a personalized experience';
-
-    const babyNameLabel = document.querySelector('label[for="baby-name-input"], #baby-name-input')?.previousElementSibling;
-    const birthLabel = document.querySelector('label[for="baby-birthdate"], #baby-birthdate')?.previousElementSibling;
-    if (babyNameLabel && babyNameLabel.classList.contains('input-label')) babyNameLabel.textContent = isTR ? 'Bebeğinizin Adı' : "Baby's Name";
-    if (birthLabel && birthLabel.classList.contains('input-label')) birthLabel.textContent = isTR ? 'Doğum Tarihi' : 'Birth Date';
-
-    const babyInput = document.getElementById('baby-name-input');
-    if (babyInput) babyInput.placeholder = isTR ? 'Ayşe / Mehmet' : 'Emma / Noah';
-    const example = document.getElementById('settings-example-text');
-    if (example) example.innerHTML = isTR
-      ? 'Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>'m, tatlı rüyalar gör..."'
-      : 'Example: "Sleep softly, <strong style="color: var(--mint);">Emma</strong>... sweet dreams..."';
-    const saveBtn = document.querySelector('#settings-modal .btn-primary');
-    if (saveBtn) saveBtn.textContent = isTR ? 'Kaydet' : 'Save';
-
-    const phraseTitle = document.getElementById('phrase-title');
-    if (phraseTitle) phraseTitle.textContent = isTR
-      ? '📝 Masal okur gibi yavaş, sıcak ve doğal bir tonla okuyun. (Yaklaşık 1 dakika):'
-      : '📝 Read slowly in a warm, natural storytelling tone. (About 1 minute):';
-    const p1 = document.getElementById('phrase-1');
-    const p2 = document.getElementById('phrase-2');
-    const p3 = document.getElementById('phrase-3');
-    if (p1) p1.textContent = isTR ? 'Uyu bebeğim... şimdi dinlenme zamanı...' : 'Sleep softly, little one... it is time to rest now...';
-    if (p2) p2.textContent = isTR ? 'Gece sessiz, yıldızlar gökyüzünde parlıyor... ay ışığı odana yumuşakça vuruyor...' : 'The night is calm, the stars are shining, and the moonlight is touching your room gently...';
-    if (p3) p3.textContent = isTR ? 'Mmm... eee... şşş... derin bir nefes al ve bırak...' : 'Mmm... shh... take a deep breath... and slowly let it go...';
-    const voiceText = document.getElementById('voice-text');
-    if (voiceText && !voiceText.dataset.userEdited) {
-      voiceText.placeholder = isTR ? 'Buraya sakin bir ninni ya da kısa masal metni yazın...' : 'Write a calm lullaby or a short bedtime text here...';
-      voiceText.value = isTR ? 'Uyu bebeğim... gece sessiz, yıldızlar parlarken şimdi tatlı rüyalara dalma zamanı...' : 'Sleep softly, little one... the night is quiet and it is time to drift into sweet dreams...';
-    }
-
-    const voiceEmpty = document.querySelector('#voice-lullabies-list .empty-text');
-    if (voiceEmpty) voiceEmpty.textContent = isTR ? '"Sesim" bölümünden sesinizi klonlayın' : 'Clone your voice from the "My Voice" section';
-
-    const colicBadge = document.getElementById('colic-free-badge');
-    if (colicBadge) colicBadge.textContent = isTR ? 'TÜMÜ ÜCRETSİZ' : 'ALL FREE';
-
-    const chartDays = isTR ? ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'] : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-    document.querySelectorAll('.chart-labels span').forEach((el, idx) => { if (chartDays[idx]) el.textContent = chartDays[idx]; });
-
-    const ageOptions = document.querySelectorAll('.age-option');
-    const ageTR = ['0-3 ay', '3-6 ay', '6-12 ay', '1+ yaş'];
-    const ageEN = ['0-3 months', '3-6 months', '6-12 months', '1+ years'];
-    ageOptions.forEach((el, idx) => el.textContent = isTR ? ageTR[idx] : ageEN[idx]);
-
-    const trialTitle = document.getElementById('trial-title');
-    const trialSub = document.getElementById('trial-subtitle');
-    if (trialTitle && trialSub && !state.isPremium) {
-      const days = (window.getTrialDaysLeft ? getTrialDaysLeft() : 3);
-      if (window.isTrialActive && isTrialActive()) {
-        trialTitle.textContent = isTR ? `${days} gün ücretsiz deneme kaldı` : `${days} day free trial left`;
-        trialSub.textContent = isTR ? 'Ses klonlama, analiz ve tüm içerikleri deneyin' : 'Try voice cloning, analysis and all content';
-      }
-    }
-
-    if (typeof renderRecordings === 'function') renderRecordings();
-    if (typeof updateCloneSection === 'function') updateCloneSection();
-    if (typeof renderSleepStats === 'function') renderSleepStats();
-    if (typeof renderExpertTips === 'function') renderExpertTips();
-  }
-
-  const originalUpdateLanguageUI = window.updateLanguageUI;
-  window.updateLanguageUI = function(){
-    if (originalUpdateLanguageUI) originalUpdateLanguageUI();
-    applyFinalLanguageFixes();
-  };
-
-  const originalRenderExpertTips = window.renderExpertTips;
-  window.renderExpertTips = function(){
-    if (originalRenderExpertTips) originalRenderExpertTips();
-    const heading = document.querySelectorAll('.section-title')[10];
-    if (heading) heading.childNodes[0].textContent = state.language === 'tr' ? 'Uzman Önerileri' : 'Expert Tips';
-  };
-
-  document.addEventListener('DOMContentLoaded', () => setTimeout(applyFinalLanguageFixes, 200));
-  setTimeout(applyFinalLanguageFixes, 600);
-})();
-</script>
-
-
-<script>
-(function(){
-  const APP_NAME = 'Minik Uyku – LumiBaby';
-
-  function isTR(){ return window.state ? state.language === 'tr' : true; }
-
-  function patchAppName(){
-    document.title = APP_NAME;
-    document.querySelectorAll('.logo-text').forEach(el => el.textContent = APP_NAME);
-    const ob = document.getElementById('ob-logo');
-    if (ob) ob.textContent = APP_NAME;
-    const mainTitle = document.querySelector('#premium-modal .premium-title');
-    if (mainTitle) mainTitle.textContent = APP_NAME + ' Premium';
-    document.querySelectorAll('h2').forEach(h => {
-      if (h.textContent && h.textContent.trim() === 'Minik Uyku') h.textContent = APP_NAME;
-    });
-  }
-
-  function patchVoiceTexts(){
-    const trLines = [
-      'Uyu bebeğim... şimdi dinlenme zamanı...',
-      'Gece sessiz, yıldızlar gökyüzünde parlıyor... ay ışığı odana yumuşakça vuruyor...',
-      'Mmm... eee... şşş... derin bir nefes al ve bırak...'
-    ];
-    const enLines = [
-      'Sleep softly, little one... it is time to rest now...',
-      'The night is calm, the stars are shining, and the moonlight is touching your room gently...',
-      'Mmm... shh... take a deep breath... and slowly let it go...'
-    ];
-    const trTitle = '📝 Masal okur gibi yavaş, sıcak ve doğal bir tonla okuyun. (Yaklaşık 1 dakika):';
-    const enTitle = '📝 Read slowly in a warm, natural storytelling tone. (About 1 minute):';
-    const trVal = 'Uyu bebeğim... gece sessiz, yıldızlar parlarken şimdi tatlı rüyalara dalma zamanı...';
-    const enVal = 'Sleep softly, little one... the night is quiet and it is time to drift into sweet dreams...';
-    const trPh = 'Buraya sakin bir ninni ya da kısa masal metni yazın...';
-    const enPh = 'Write a calm lullaby or a short bedtime text here...';
-
-    const title = document.getElementById('phrase-title');
-    const p1 = document.getElementById('phrase-1');
-    const p2 = document.getElementById('phrase-2');
-    const p3 = document.getElementById('phrase-3');
-    const textarea = document.getElementById('voice-text');
-
-    if (title) title.textContent = isTR() ? trTitle : enTitle;
-    if (p1) p1.textContent = isTR() ? trLines[0] : enLines[0];
-    if (p2) p2.textContent = isTR() ? trLines[1] : enLines[1];
-    if (p3) p3.textContent = isTR() ? trLines[2] : enLines[2];
-    if (textarea) {
-      if (!textarea.dataset.userEdited) {
-        textarea.value = isTR() ? trVal : enVal;
-      }
-      textarea.placeholder = isTR() ? trPh : enPh;
-    }
-  }
-
-  function patchFixedLabels(){
-    const cryTitle = document.getElementById('cry-title');
-    const crySub = document.getElementById('cry-subtitle');
-    const cryPill = document.getElementById('cry-pill');
-    const cryNote = document.getElementById('cry-note');
-    if (cryTitle) cryTitle.textContent = isTR() ? '🩺 Bebek neden ağlıyor?' : '🩺 Why is my baby crying?';
-    if (crySub) crySub.textContent = isTR() ? '10 saniye dinleyip olasılık dağılımı gösterir.' : 'Listens for 10 seconds and shows a probability breakdown.';
-    if (cryPill) cryPill.textContent = isTR() ? 'Tahmin · tanı değil' : 'Estimate · not a diagnosis';
-    if (cryNote) cryNote.textContent = isTR()
-      ? 'Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk ve diğer nedenler için fikir vermek üzere tasarlanmıştır.'
-      : 'These results are not a medical diagnosis. They are designed to suggest possibilities such as hunger, gas, sleepiness, or other causes.';
-
-    const voiceEmpty = document.querySelector('#voice-lullabies-list .empty-text');
-    if (voiceEmpty) voiceEmpty.textContent = isTR() ? '"Sesim" sekmesinden sesinizi klonlayın' : 'Clone your voice from the "My Voice" tab';
-
-    const colicBadge = document.getElementById('colic-free-badge');
-    if (colicBadge) colicBadge.textContent = isTR() ? 'TÜMÜ ÜCRETSİZ' : 'ALL FREE';
-
-    const chartDays = isTR() ? ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'] : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-    document.querySelectorAll('.chart-labels span').forEach((el, i) => { if (chartDays[i]) el.textContent = chartDays[i]; });
-
-    const ages = isTR()
-      ? ['0-3 ay', '3-6 ay', '6-12 ay', '1+ yaş']
-      : ['0-3 months', '3-6 months', '6-12 months', '1+ years'];
-    document.querySelectorAll('.age-option').forEach((el, i) => { if (ages[i]) el.textContent = ages[i]; });
-
-    const expertHeading = Array.from(document.querySelectorAll('.section-title')).find(el => /Uzman|Expert/.test(el.textContent));
-    if (expertHeading) expertHeading.childNodes[0].textContent = isTR() ? 'Uzman Önerileri' : 'Expert Tips';
-  }
-
-  function patchSettings(){
-    const title = document.querySelector('#settings-modal [style*="font-family"]');
-    if (title) title.textContent = isTR() ? 'Bebek Ayarları' : 'Baby Settings';
-    const desc = title ? title.nextElementSibling : null;
-    if (desc) desc.textContent = isTR() ? 'Kişiselleştirilmiş deneyim için' : 'For a personalized experience';
-    const labels = document.querySelectorAll('#settings-modal .input-label');
-    if (labels[0]) labels[0].textContent = isTR() ? 'Bebeğinizin Adı' : "Baby's Name";
-    if (labels[1]) labels[1].textContent = isTR() ? 'Doğum Tarihi' : 'Birth Date';
-    const input = document.getElementById('baby-name-input');
-    if (input) input.placeholder = isTR() ? 'Ayşe / Mehmet' : 'Emma / Noah';
-    const ex = document.getElementById('settings-example-text');
-    if (ex) ex.innerHTML = isTR()
-      ? 'Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>\'m, tatlı rüyalar gör..."'
-      : 'Example: "Sleep softly, <strong style="color: var(--mint);">Emma</strong>... sweet dreams..."';
-    const save = document.querySelector('#settings-modal .btn-primary');
-    if (save) save.textContent = isTR() ? 'Kaydet' : 'Save';
-  }
-
-  function patchExpertTips(){
-    if (typeof EXPERT_TIPS === 'undefined' || typeof EXPERT_TIPS_EN === 'undefined' || !window.state) return;
-    const wrap = document.getElementById('expert-tips');
-    if (!wrap) return;
-    const data = isTR() ? EXPERT_TIPS : EXPERT_TIPS_EN;
-    const items = data[state.currentAgeGroup || 0] || [];
-    wrap.innerHTML = items.map(item => `
-      <div class="expert-card">
-        <div class="expert-header">
-          <div class="expert-avatar">${item.avatar}</div>
-          <div class="expert-info">
-            <h4>${item.author}</h4>
-            <p>${item.title}</p>
-          </div>
-        </div>
-        <div class="expert-content">${item.tip}</div>
-      </div>
-    `).join('');
-  }
-
-  function patchNavEtc(){
-    // ensure language chips in top menu reflect state
-    const trBtn = document.getElementById('lang-tr');
-    const enBtn = document.getElementById('lang-en');
-    if (trBtn) trBtn.classList.toggle('active', isTR());
-    if (enBtn) enBtn.classList.toggle('active', !isTR());
-  }
-
-  function applyAllPatches(){
-    patchAppName();
-    patchVoiceTexts();
-    patchFixedLabels();
-    patchSettings();
-    patchExpertTips();
-    patchNavEtc();
-  }
-
-  document.addEventListener('input', function(e){
-    if (e.target && e.target.id === 'voice-text') {
-      e.target.dataset.userEdited = 'true';
-    }
-  });
-
-  const oldSetLanguage = window.setLanguage;
-  window.setLanguage = function(lang, silent){
-    if (oldSetLanguage) oldSetLanguage(lang, silent);
-    setTimeout(applyAllPatches, 0);
-  };
-
-  const oldSelectAge = window.selectAge;
-  window.selectAge = function(el, index){
-    if (oldSelectAge) oldSelectAge(el, index);
-    setTimeout(applyAllPatches, 0);
-  };
-
-  const oldUpdateLanguageUI = window.updateLanguageUI;
-  window.updateLanguageUI = function(){
-    if (oldUpdateLanguageUI) oldUpdateLanguageUI();
-    setTimeout(applyAllPatches, 0);
-  };
-
-  const oldRenderExpertTips = window.renderExpertTips;
-  window.renderExpertTips = function(){
-    if (oldRenderExpertTips) oldRenderExpertTips();
-    setTimeout(patchExpertTips, 0);
-  };
-
-  document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(applyAllPatches, 50);
-    setTimeout(applyAllPatches, 400);
-  });
-  window.addEventListener('load', () => setTimeout(applyAllPatches, 500));
-})();
-</script>
-
-
-<script>
-(function(){
-  const APP_NAME = 'Minik Uyku – LumiBaby';
-  const COPY = {
-    tr: {
-      appName: APP_NAME,
-      premiumTitle: APP_NAME + ' Premium',
-      cryTitle: '🩺 Bebek neden ağlıyor?',
-      crySubtitle: '10 saniye dinleyip olasılık dağılımı gösterir.',
-      cryPill: 'Tahmin · tanı değil',
-      cryNote: 'Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk ve diğer nedenler için fikir vermek üzere tasarlanmıştır.',
-      voiceEmpty: '"Sesim" sekmesinden sesinizi klonlayın',
-      allFree: 'TÜMÜ ÜCRETSİZ',
-      colicTitles: ['Beyaz Gürültü ', 'Doğa Sesleri', 'Rahatlatıcı Sesler'],
-      trackingTitles: ['Bugünün İstatistikleri', 'Uyku Grafiği (Son 7 Gün)', 'Son Uykular', 'Uzman Önerileri'],
-      statLabels: ['Toplam Uyku', 'Uyku Sayısı', 'Ortalama', 'Uyanma'],
-      chartDays: ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'],
-      ageOptions: ['0-3 ay','3-6 ay','6-12 ay','1+ yaş'],
-      voiceSectionTitles: ['Kayıtlarım','Ses Klonlama ','Sesimle Oku'],
-      recordStatus: 'Kayıt başlatmak için dokunun',
-      phraseTitle: '📝 Masal okur gibi yavaş, sıcak ve doğal bir tonla okuyun. (Yaklaşık 1 dakika):',
-      phraseLines: [
-        'Uyu bebeğim... şimdi dinlenme zamanı...',
-        'Gece sessiz, yıldızlar gökyüzünde parlıyor... ay ışığı odana yumuşakça vuruyor...',
-        'Mmm... eee... şşş... derin bir nefes al ve bırak...'
-      ],
-      voicePlaceholder: 'Buraya sakin bir ninni ya da kısa masal metni yazın...',
-      voiceValue: 'Uyu bebeğim... gece sessiz, yıldızlar parlarken şimdi tatlı rüyalara dalma zamanı...',
-      settingsTitle: 'Bebek Ayarları',
-      settingsDesc: 'Kişiselleştirilmiş deneyim için',
-      settingsLabels: ['Bebeğinizin Adı','Doğum Tarihi'],
-      settingsPlaceholder: 'Ayşe / Mehmet',
-      settingsExample: 'Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>'m, tatlı rüyalar gör..."',
-      save: 'Kaydet',
-      premiumBadge: '3 Gün Ücretsiz',
-      premiumTag: '👑 3 Gün Deneme',
-      premiumUnlimited: 'Sınırsız',
-      analyze10: '10 sn analiz et',
-      noSleepRecords: 'Henüz uyku kaydı yok',
-      noRecordings: 'Henüz kayıt yok',
-      recordFirst: 'Önce ses kaydı yapın',
-      babyNameDisplay: 'Bebek',
-      expertData: {
-        0: [
-          { author: 'Dr. Ayşe Yılmaz', title: 'Pedagog', avatar: '👩‍⚕️', tip: 'Yeni doğan bebekler günde 16-18 saat uyur. Uyku aralıkları çoğunlukla 2-3 saattir. Esneme ve göz ovuşturma gibi sinyalleri kaçırmayın.' },
-          { author: 'Uzm. Dr. Can Kaya', title: 'Çocuk Uzmanı', avatar: '👨‍⚕️', tip: 'İlk aylarda kolik sık görülebilir. Beyaz gürültü ve hafif sallama rahatlatıcı olabilir. Ağlama genelde akşam saatlerinde artabilir.' },
-          { author: 'Ebe Zeynep Demir', title: 'Emzirme Danışmanı', avatar: '🤱', tip: 'Beslenme ve uyku birbiriyle bağlantılıdır. Doyan bebek daha kolay sakinleşebilir. Uyku öncesi sakin bir beslenme rutini işe yarar.' }
-        ],
-        1: [
-          { author: 'Dr. Selin Aydın', title: 'Uyku Terapisti', avatar: '😴', tip: '3. aydan sonra gece uykuları uzamaya başlayabilir. 4. ay uyku gerilemesi yaygın ve geçicidir.' },
-          { author: 'Dr. Mehmet Şahin', title: 'Gelişim Uzmanı', avatar: '👨‍⚕️', tip: 'Bu dönemde bebekler genelde günde 14-15 saat uyur ve 3-4 kısa gündüz uykusu yapabilir.' },
-          { author: 'Psikolog Elif Yıldız', title: 'Aile Terapisti', avatar: '🧠', tip: 'Aynı uyku rutininin her gün tekrarlanması bebeğe güven verir. Banyo, masal ve ninni sırası etkili olabilir.' }
-        ],
-        2: [
-          { author: 'Dr. Burak Tan', title: 'Pedagog', avatar: '👨‍⚕️', tip: '6-12 ay arasında bebekler çoğunlukla günde 12-14 saat uyur. Gündüz uykuları ikiye düşebilir.' },
-          { author: 'Uzm. Ebe Seda Kılıç', title: 'Uyku Danışmanı', avatar: '🌙', tip: 'Emekleme ve hareket dönemleri uyku düzenini geçici olarak etkileyebilir. Sabırlı ve tutarlı kalın.' },
-          { author: 'Dr. Aslı Koç', title: 'Beslenme Uzmanı', avatar: '🍼', tip: 'Ek gıdaya geçiş uyku düzeninde değişim yaratabilir. Uyku öncesi ağır besinlerden kaçınmak faydalı olabilir.' }
-        ],
-        3: [
-          { author: 'Dr. Kerem Arslan', title: 'Çocuk Psikiyatristi', avatar: '🧸', tip: '1 yaş sonrası birçok bebek tek gündüz uykusuna geçer. Gece boyunca daha uzun ve tutarlı uyku hedeflenir.' },
-          { author: 'Uzm. Psikolog Derya Uzun', title: 'Oyun Terapisti', avatar: '🎈', tip: 'Ayrılma kaygısı bu dönemde artabilir. Uyku öncesi sakin ve birebir zaman geçirmek rahatlatıcı olur.' },
-          { author: 'Dr. Hakan Yücel', title: 'Pedagog', avatar: '📚', tip: 'Her gece aynı masalı okumak güven hissi yaratır ve uykuya geçişi kolaylaştırır.' }
-        ]
-      }
-    },
-    en: {
-      appName: APP_NAME,
-      premiumTitle: APP_NAME + ' Premium',
-      cryTitle: '🩺 Why is my baby crying?',
-      crySubtitle: 'Listens for 10 seconds and shows a probability breakdown.',
-      cryPill: 'Estimate · not a diagnosis',
-      cryNote: 'These results are not a medical diagnosis. They are designed to suggest possibilities such as hunger, gas, sleepiness, or other causes.',
-      voiceEmpty: 'Clone your voice from the "My Voice" tab',
-      allFree: 'ALL FREE',
-      colicTitles: ['White Noise ', 'Nature Sounds', 'Soothing Sounds'],
-      trackingTitles: ["Today's Statistics", 'Sleep Chart (Last 7 Days)', 'Recent Sleeps', 'Expert Tips'],
-      statLabels: ['Total Sleep', 'Sleep Count', 'Average', 'Wake-ups'],
-      chartDays: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-      ageOptions: ['0-3 months','3-6 months','6-12 months','1+ years'],
-      voiceSectionTitles: ['My Recordings','Voice Cloning ','Read With My Voice'],
-      recordStatus: 'Tap to start recording',
-      phraseTitle: '📝 Read slowly in a warm, natural storytelling tone. (About 1 minute):',
-      phraseLines: [
-        'Sleep softly, little one... it is time to rest now...',
-        'The night is calm, the stars are shining, and the moonlight is touching your room gently...',
-        'Mmm... shh... take a deep breath... and slowly let it go...'
-      ],
-      voicePlaceholder: 'Write a calm lullaby or a short bedtime text here...',
-      voiceValue: 'Sleep softly, little one... the night is quiet and it is time to drift into sweet dreams...',
-      settingsTitle: 'Baby Settings',
-      settingsDesc: 'For a personalized experience',
-      settingsLabels: ["Baby's Name",'Birth Date'],
-      settingsPlaceholder: 'Emma / Noah',
-      settingsExample: 'Example: "Sleep softly, <strong style="color: var(--mint);">Emma</strong>... sweet dreams..."',
-      save: 'Save',
-      premiumBadge: '3 Day Free Trial',
-      premiumTag: '👑 3 Day Trial',
-      premiumUnlimited: 'Unlimited',
-      analyze10: 'Analyze for 10 sec',
-      noSleepRecords: 'No sleep records yet',
-      noRecordings: 'No recordings yet',
-      recordFirst: 'Please record your voice first',
-      babyNameDisplay: 'Baby',
-      expertData: {
-        0: [
-          { author: 'Dr. Emily Carter', title: 'Sleep Specialist', avatar: '👩‍⚕️', tip: 'Newborn babies often sleep 16 to 18 hours a day. Sleep windows are usually 2 to 3 hours. Watch for sleepy cues such as yawning and eye rubbing.' },
-          { author: 'Dr. Daniel Brooks', title: 'Pediatrician', avatar: '👨‍⚕️', tip: 'Colic can be common in the first months. White noise and gentle rocking may help. Crying often rises in the late afternoon and evening.' },
-          { author: 'Sarah Bennett', title: 'Lactation Consultant', avatar: '🤱', tip: 'Feeding and sleep are closely linked. A full baby often settles more easily. A calm feeding routine before sleep can help.' }
-        ],
-        1: [
-          { author: 'Dr. Olivia Reed', title: 'Sleep Therapist', avatar: '😴', tip: 'After 3 months, many babies begin sleeping longer at night. The 4-month sleep regression is common and temporary.' },
-          { author: 'Dr. Michael Turner', title: 'Development Specialist', avatar: '👨‍⚕️', tip: 'At this stage, babies often sleep 14 to 15 hours a day and may take 3 to 4 shorter naps.' },
-          { author: 'Hannah Miller', title: 'Family Therapist', avatar: '🧠', tip: 'Routines matter. Repeating the same bedtime order such as bath, story and lullaby helps babies understand that sleep is coming.' }
-        ],
-        2: [
-          { author: 'Dr. Benjamin Scott', title: 'Child Development Specialist', avatar: '👨‍⚕️', tip: 'Between 6 and 12 months, babies often sleep 12 to 14 hours a day. Day naps may reduce to two and night wakings from hunger often decrease.' },
-          { author: 'Chloe Adams', title: 'Sleep Consultant', avatar: '🌙', tip: 'Crawling and movement milestones can briefly affect sleep. Babies may want to practice new skills. Stay patient and consistent.' },
-          { author: 'Dr. Grace Walker', title: 'Nutrition Specialist', avatar: '🍼', tip: 'Starting solids may change the sleep routine. Heavier meals right before sleep may not feel comfortable for some babies.' }
-        ],
-        3: [
-          { author: 'Dr. Jacob Foster', title: 'Child Psychiatrist', avatar: '🧸', tip: 'After age one, many babies move toward one daytime nap. A long and consistent night sleep becomes the main goal.' },
-          { author: 'Sophie Collins', title: 'Play Therapist', avatar: '🎈', tip: 'Separation anxiety often peaks between 12 and 18 months. Special one-on-one time before bedtime can help your child settle more calmly.' },
-          { author: 'Dr. Liam Parker', title: 'Bedtime Coach', avatar: '📚', tip: 'Bedtime stories become especially powerful in this stage. Repeating a familiar story often creates comfort and security.' }
-        ]
-      }
-    }
-  };
-
-  function L(){ return (window.state && state.language === 'en') ? COPY.en : COPY.tr; }
-  function setText(sel, val, html){
-    const el = typeof sel === 'string' ? document.querySelector(sel) : sel;
-    if (!el) return;
-    if (html) el.innerHTML = val; else el.textContent = val;
-  }
-  function patchBrand(){
-    document.title = APP_NAME;
-    document.querySelectorAll('.logo-text').forEach(el => el.textContent = APP_NAME);
-    setText('#ob-logo', APP_NAME);
-    document.querySelectorAll('h2').forEach(h => { if (/Minik Uyku|LumiBaby/i.test(h.textContent.trim())) h.textContent = APP_NAME; });
-    setText('#premium-modal .premium-title', APP_NAME + ' Premium');
-  }
-  function patchTopAndCore(){
-    const t = L();
-    setText('#cry-title', t.cryTitle); setText('#cry-subtitle', t.crySubtitle); setText('#cry-pill', t.cryPill); setText('#cry-note', t.cryNote);
-    const btn = document.getElementById('cry-analysis-btn'); if (btn && !btn.disabled) btn.textContent = t.analyze10;
-    const babyNameDisplay = document.getElementById('baby-name-display'); if (babyNameDisplay && !(window.state&&state.babyName)) babyNameDisplay.textContent = t.babyNameDisplay;
-  }
-  function patchLullabyAndStoryBadges(){
-    const t = L();
-    setText('#ninniler-badge', t.premiumBadge); setText('#hikayeler-badge', t.premiumBadge);
-    document.querySelectorAll('#page-ninniler .card-tag.premium, #page-hikayeler .card-tag.premium').forEach(el => { el.textContent = window.state && state.isPremium ? t.premiumUnlimited : t.premiumTag; });
-    const empty = document.querySelector('#voice-lullabies-list .empty-text'); if (empty) empty.textContent = t.voiceEmpty;
-  }
-  function patchColicPage(){
-    const t = L();
-    const titles = document.querySelectorAll('#page-kolik .section-title');
-    if (titles[0] && titles[0].childNodes[0]) titles[0].childNodes[0].textContent = t.colicTitles[0];
-    if (titles[1] && titles[1].childNodes[0]) titles[1].childNodes[0].textContent = t.colicTitles[1];
-    if (titles[2] && titles[2].childNodes[0]) titles[2].childNodes[0].textContent = t.colicTitles[2];
-    setText('#colic-free-badge', t.allFree);
-    document.querySelectorAll('#page-kolik .kolik-tag').forEach(el => el.textContent = (window.state && state.language==='en') ? 'FREE' : 'ÜCRETSİZ');
-  }
-  function patchTrackingPage(){
-    const t = L();
-    const titles = document.querySelectorAll('#page-takip .section-title');
-    if (titles[0] && titles[0].childNodes[0]) titles[0].childNodes[0].textContent = t.trackingTitles[0];
-    if (titles[1] && titles[1].childNodes[0]) titles[1].childNodes[0].textContent = t.trackingTitles[1];
-    if (titles[2] && titles[2].childNodes[0]) titles[2].childNodes[0].textContent = t.trackingTitles[2];
-    if (titles[3] && titles[3].childNodes[0]) titles[3].childNodes[0].textContent = t.trackingTitles[3];
-    document.querySelectorAll('#page-takip .stat-label').forEach((el,i)=>{ if(t.statLabels[i]) el.textContent=t.statLabels[i]; });
-    document.querySelectorAll('#page-takip .chart-labels span').forEach((el,i)=>{ if(t.chartDays[i]) el.textContent=t.chartDays[i]; });
-    document.querySelectorAll('#page-takip .age-option').forEach((el,i)=>{ if(t.ageOptions[i]) el.textContent=t.ageOptions[i]; });
-    const empty = document.querySelector('#sleep-list .empty-text'); if (empty) empty.textContent = t.noSleepRecords;
-  }
-  function patchVoicePage(){
-    const t = L();
-    const titles = document.querySelectorAll('#page-sesim .section-title');
-    if (titles[0] && titles[0].childNodes[0]) titles[0].childNodes[0].textContent = t.voiceSectionTitles[0];
-    if (titles[1] && titles[1].childNodes[0]) titles[1].childNodes[0].textContent = t.voiceSectionTitles[1];
-    if (titles[2] && titles[2].childNodes[0]) titles[2].childNodes[0].textContent = t.voiceSectionTitles[2];
-    setText('#record-status', t.recordStatus); setText('#phrase-title', t.phraseTitle); setText('#phrase-1', t.phraseLines[0]); setText('#phrase-2', t.phraseLines[1]); setText('#phrase-3', t.phraseLines[2]);
-    const textarea = document.getElementById('voice-text'); if (textarea) { textarea.placeholder = t.voicePlaceholder; if (!textarea.dataset.userEdited || textarea.dataset.userEdited !== 'true') textarea.value = t.voiceValue; }
-    const recEmpty = document.querySelector('#recordings-list .empty-text'); if (recEmpty) recEmpty.textContent = t.noRecordings;
-    const cloneEmpty = document.querySelector('#clone-section .empty-text'); if (cloneEmpty) cloneEmpty.textContent = t.recordFirst;
-  }
-  function patchSettings(){
-    const t = L(); const modal = document.getElementById('settings-modal'); if (!modal) return;
-    const title = modal.querySelector('[style*="font-family"]'); if (title) title.textContent = t.settingsTitle;
-    const desc = title ? title.nextElementSibling : null; if (desc) desc.textContent = t.settingsDesc;
-    const labels = modal.querySelectorAll('.input-label'); if (labels[0]) labels[0].textContent = t.settingsLabels[0]; if (labels[1]) labels[1].textContent = t.settingsLabels[1];
-    const input = document.getElementById('baby-name-input'); if (input) input.placeholder = t.settingsPlaceholder;
-    setText('#settings-example-text', t.settingsExample, true);
-    const saveBtn = modal.querySelector('.btn-primary'); if (saveBtn) saveBtn.textContent = t.save;
-  }
-  function patchExpertTips(){
-    const wrap = document.getElementById('expert-tips'); if (!wrap || !window.state) return;
-    const data = L().expertData[state.currentAgeGroup || 0] || [];
-    wrap.innerHTML = data.map(item => `
-<div class="expert-card"><div class="expert-header"><div class="expert-avatar">${item.avatar}</div><div class="expert-info"><h4>${item.author}</h4><p>${item.title}</p></div></div><div class="expert-content">${item.tip}</div></div>`).join('');
-  }
-  function patchEverything(){ patchBrand(); patchTopAndCore(); patchLullabyAndStoryBadges(); patchColicPage(); patchTrackingPage(); patchVoicePage(); patchSettings(); patchExpertTips(); }
-  const origSetLanguage = window.setLanguage; window.setLanguage = function(lang, fromOnboard){ if (origSetLanguage) origSetLanguage(lang, fromOnboard); else if (window.state) state.language = lang; setTimeout(patchEverything, 0); };
-  const wrap = fn => function(){ if (fn) fn.apply(this, arguments); setTimeout(patchEverything,0); };
-  window.renderLullabies = wrap(window.renderLullabies); window.renderStories = wrap(window.renderStories); window.renderKolik = wrap(window.renderKolik); window.renderRecordings = wrap(window.renderRecordings); window.updateCloneSection = wrap(window.updateCloneSection); window.selectAge = wrap(window.selectAge); window.updateLanguageUI = wrap(window.updateLanguageUI);
-  document.addEventListener('input', function(e){ if (e.target && e.target.id === 'voice-text') e.target.dataset.userEdited = 'true'; });
-  document.addEventListener('DOMContentLoaded', function(){ setTimeout(patchEverything, 50); setTimeout(patchEverything, 300); setTimeout(patchEverything, 900); });
-  window.addEventListener('load', function(){ setTimeout(patchEverything, 1200); });
-})();
-</script>
-
 </body>
 </html>
