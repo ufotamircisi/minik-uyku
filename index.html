@@ -4819,5 +4819,183 @@ async function playWithElevenLabs(lullaby, id) {
 })();
 </script>
 
+
+<script>
+(function(){
+  const APP_NAME = 'Minik Uyku – LumiBaby';
+
+  function isTR(){ return window.state ? state.language === 'tr' : true; }
+
+  function patchAppName(){
+    document.title = APP_NAME;
+    document.querySelectorAll('.logo-text').forEach(el => el.textContent = APP_NAME);
+    const ob = document.getElementById('ob-logo');
+    if (ob) ob.textContent = APP_NAME;
+    const mainTitle = document.querySelector('#premium-modal .premium-title');
+    if (mainTitle) mainTitle.textContent = APP_NAME + ' Premium';
+    document.querySelectorAll('h2').forEach(h => {
+      if (h.textContent && h.textContent.trim() === 'Minik Uyku') h.textContent = APP_NAME;
+    });
+  }
+
+  function patchVoiceTexts(){
+    const trLines = [
+      'Uyu bebeğim... şimdi dinlenme zamanı...',
+      'Gece sessiz, yıldızlar gökyüzünde parlıyor... ay ışığı odana yumuşakça vuruyor...',
+      'Mmm... eee... şşş... derin bir nefes al ve bırak...'
+    ];
+    const enLines = [
+      'Sleep softly, little one... it is time to rest now...',
+      'The night is calm, the stars are shining, and the moonlight is touching your room gently...',
+      'Mmm... shh... take a deep breath... and slowly let it go...'
+    ];
+    const trTitle = '📝 Masal okur gibi yavaş, sıcak ve doğal bir tonla okuyun. (Yaklaşık 1 dakika):';
+    const enTitle = '📝 Read slowly in a warm, natural storytelling tone. (About 1 minute):';
+    const trVal = 'Uyu bebeğim... gece sessiz, yıldızlar parlarken şimdi tatlı rüyalara dalma zamanı...';
+    const enVal = 'Sleep softly, little one... the night is quiet and it is time to drift into sweet dreams...';
+    const trPh = 'Buraya sakin bir ninni ya da kısa masal metni yazın...';
+    const enPh = 'Write a calm lullaby or a short bedtime text here...';
+
+    const title = document.getElementById('phrase-title');
+    const p1 = document.getElementById('phrase-1');
+    const p2 = document.getElementById('phrase-2');
+    const p3 = document.getElementById('phrase-3');
+    const textarea = document.getElementById('voice-text');
+
+    if (title) title.textContent = isTR() ? trTitle : enTitle;
+    if (p1) p1.textContent = isTR() ? trLines[0] : enLines[0];
+    if (p2) p2.textContent = isTR() ? trLines[1] : enLines[1];
+    if (p3) p3.textContent = isTR() ? trLines[2] : enLines[2];
+    if (textarea) {
+      if (!textarea.dataset.userEdited) {
+        textarea.value = isTR() ? trVal : enVal;
+      }
+      textarea.placeholder = isTR() ? trPh : enPh;
+    }
+  }
+
+  function patchFixedLabels(){
+    const cryTitle = document.getElementById('cry-title');
+    const crySub = document.getElementById('cry-subtitle');
+    const cryPill = document.getElementById('cry-pill');
+    const cryNote = document.getElementById('cry-note');
+    if (cryTitle) cryTitle.textContent = isTR() ? '🩺 Bebek neden ağlıyor?' : '🩺 Why is my baby crying?';
+    if (crySub) crySub.textContent = isTR() ? '10 saniye dinleyip olasılık dağılımı gösterir.' : 'Listens for 10 seconds and shows a probability breakdown.';
+    if (cryPill) cryPill.textContent = isTR() ? 'Tahmin · tanı değil' : 'Estimate · not a diagnosis';
+    if (cryNote) cryNote.textContent = isTR()
+      ? 'Bu sonuçlar tıbbi teşhis değildir. Açlık, gaz, uykusuzluk ve diğer nedenler için fikir vermek üzere tasarlanmıştır.'
+      : 'These results are not a medical diagnosis. They are designed to suggest possibilities such as hunger, gas, sleepiness, or other causes.';
+
+    const voiceEmpty = document.querySelector('#voice-lullabies-list .empty-text');
+    if (voiceEmpty) voiceEmpty.textContent = isTR() ? '"Sesim" sekmesinden sesinizi klonlayın' : 'Clone your voice from the "My Voice" tab';
+
+    const colicBadge = document.getElementById('colic-free-badge');
+    if (colicBadge) colicBadge.textContent = isTR() ? 'TÜMÜ ÜCRETSİZ' : 'ALL FREE';
+
+    const chartDays = isTR() ? ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'] : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    document.querySelectorAll('.chart-labels span').forEach((el, i) => { if (chartDays[i]) el.textContent = chartDays[i]; });
+
+    const ages = isTR()
+      ? ['0-3 ay', '3-6 ay', '6-12 ay', '1+ yaş']
+      : ['0-3 months', '3-6 months', '6-12 months', '1+ years'];
+    document.querySelectorAll('.age-option').forEach((el, i) => { if (ages[i]) el.textContent = ages[i]; });
+
+    const expertHeading = Array.from(document.querySelectorAll('.section-title')).find(el => /Uzman|Expert/.test(el.textContent));
+    if (expertHeading) expertHeading.childNodes[0].textContent = isTR() ? 'Uzman Önerileri' : 'Expert Tips';
+  }
+
+  function patchSettings(){
+    const title = document.querySelector('#settings-modal [style*="font-family"]');
+    if (title) title.textContent = isTR() ? 'Bebek Ayarları' : 'Baby Settings';
+    const desc = title ? title.nextElementSibling : null;
+    if (desc) desc.textContent = isTR() ? 'Kişiselleştirilmiş deneyim için' : 'For a personalized experience';
+    const labels = document.querySelectorAll('#settings-modal .input-label');
+    if (labels[0]) labels[0].textContent = isTR() ? 'Bebeğinizin Adı' : "Baby's Name";
+    if (labels[1]) labels[1].textContent = isTR() ? 'Doğum Tarihi' : 'Birth Date';
+    const input = document.getElementById('baby-name-input');
+    if (input) input.placeholder = isTR() ? 'Ayşe / Mehmet' : 'Emma / Noah';
+    const ex = document.getElementById('settings-example-text');
+    if (ex) ex.innerHTML = isTR()
+      ? 'Örnek: "Uyu <strong style="color: var(--mint);">Ayşe</strong>\'m, tatlı rüyalar gör..."'
+      : 'Example: "Sleep softly, <strong style="color: var(--mint);">Emma</strong>... sweet dreams..."';
+    const save = document.querySelector('#settings-modal .btn-primary');
+    if (save) save.textContent = isTR() ? 'Kaydet' : 'Save';
+  }
+
+  function patchExpertTips(){
+    if (typeof EXPERT_TIPS === 'undefined' || typeof EXPERT_TIPS_EN === 'undefined' || !window.state) return;
+    const wrap = document.getElementById('expert-tips');
+    if (!wrap) return;
+    const data = isTR() ? EXPERT_TIPS : EXPERT_TIPS_EN;
+    const items = data[state.currentAgeGroup || 0] || [];
+    wrap.innerHTML = items.map(item => `
+      <div class="expert-card">
+        <div class="expert-header">
+          <div class="expert-avatar">${item.avatar}</div>
+          <div class="expert-info">
+            <h4>${item.author}</h4>
+            <p>${item.title}</p>
+          </div>
+        </div>
+        <div class="expert-content">${item.tip}</div>
+      </div>
+    `).join('');
+  }
+
+  function patchNavEtc(){
+    // ensure language chips in top menu reflect state
+    const trBtn = document.getElementById('lang-tr');
+    const enBtn = document.getElementById('lang-en');
+    if (trBtn) trBtn.classList.toggle('active', isTR());
+    if (enBtn) enBtn.classList.toggle('active', !isTR());
+  }
+
+  function applyAllPatches(){
+    patchAppName();
+    patchVoiceTexts();
+    patchFixedLabels();
+    patchSettings();
+    patchExpertTips();
+    patchNavEtc();
+  }
+
+  document.addEventListener('input', function(e){
+    if (e.target && e.target.id === 'voice-text') {
+      e.target.dataset.userEdited = 'true';
+    }
+  });
+
+  const oldSetLanguage = window.setLanguage;
+  window.setLanguage = function(lang, silent){
+    if (oldSetLanguage) oldSetLanguage(lang, silent);
+    setTimeout(applyAllPatches, 0);
+  };
+
+  const oldSelectAge = window.selectAge;
+  window.selectAge = function(el, index){
+    if (oldSelectAge) oldSelectAge(el, index);
+    setTimeout(applyAllPatches, 0);
+  };
+
+  const oldUpdateLanguageUI = window.updateLanguageUI;
+  window.updateLanguageUI = function(){
+    if (oldUpdateLanguageUI) oldUpdateLanguageUI();
+    setTimeout(applyAllPatches, 0);
+  };
+
+  const oldRenderExpertTips = window.renderExpertTips;
+  window.renderExpertTips = function(){
+    if (oldRenderExpertTips) oldRenderExpertTips();
+    setTimeout(patchExpertTips, 0);
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(applyAllPatches, 50);
+    setTimeout(applyAllPatches, 400);
+  });
+  window.addEventListener('load', () => setTimeout(applyAllPatches, 500));
+})();
+</script>
+
 </body>
 </html>
