@@ -5097,11 +5097,7 @@ async function playWithElevenLabs(lullaby, id) {
     if (trBtn) trBtn.addEventListener('click', function(){ setTimeout(updatePredictionBadge, 50); setTimeout(updateLogoSubtext, 50); });
     if (enBtn) enBtn.addEventListener('click', function(){ setTimeout(updatePredictionBadge, 50); setTimeout(updateLogoSubtext, 50); });
 
-    var mo = new MutationObserver(function () {
-      updatePredictionBadge();
-      updateLogoSubtext();
-    });
-    mo.observe(document.body, { childList: true, subtree: true, characterData: true });
+    
   });
 })();
 </script>
