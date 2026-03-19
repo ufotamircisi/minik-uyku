@@ -1383,6 +1383,8 @@
             padding:10px 12px; border-radius: 12px; text-align:center; cursor:pointer; font-size:13px; font-weight:700;
         }
         .lang-chip.active { border-color: var(--accent); background: rgba(157,140,239,0.15); color: var(--accent-light); }
+        .compact-lang-switch { margin-bottom: 0; }
+        .compact-lang-chip { min-width: 42px; padding: 8px 10px; font-size: 12px; }
         .hero-onboard {
             text-align:center; padding: 12px 0 6px;
         }
@@ -1409,6 +1411,10 @@
             <span class="logo-text">Minik Uyku</span>
         </div>
         <div class="header-btns">
+            <div class="lang-switch compact-lang-switch">
+                <button type="button" class="lang-chip compact-lang-chip" id="lang-tr" onclick="setLanguage('tr')">TR</button>
+                <button type="button" class="lang-chip compact-lang-chip" id="lang-en" onclick="setLanguage('en')">EN</button>
+            </div>
             <button class="header-btn premium" onclick="showPremiumModal()" id="premium-btn">
                 <span>👑</span> <span id="premium-text">Premium</span>
             </button>
@@ -1421,23 +1427,23 @@
     <div class="nav">
         <div class="nav-item active" onclick="goToPage('ninniler', this)">
             <span class="nav-icon">🎵</span>
-            <span class="nav-label">Ninniler</span>
+            <span class="nav-label" id="nav-lullabies">Ninniler</span>
         </div>
         <div class="nav-item" onclick="goToPage('hikayeler', this)">
             <span class="nav-icon">📖</span>
-            <span class="nav-label">Hikayeler</span>
+            <span class="nav-label" id="nav-stories">Hikayeler</span>
         </div>
         <div class="nav-item" onclick="goToPage('kolik', this)">
             <span class="nav-icon">🌿</span>
-            <span class="nav-label">Kolik</span>
+            <span class="nav-label" id="nav-colic">Kolik</span>
         </div>
         <div class="nav-item" onclick="goToPage('takip', this)">
             <span class="nav-icon">📊</span>
-            <span class="nav-label">Takip</span>
+            <span class="nav-label" id="nav-tracking">Takip</span>
         </div>
         <div class="nav-item" onclick="goToPage('sesim', this)">
             <span class="nav-icon">🎙️</span>
-            <span class="nav-label">Sesim</span>
+            <span class="nav-label" id="nav-voice">Sesim</span>
         </div>
     </div>
     
@@ -1645,10 +1651,10 @@
                 <div class="waveform" id="waveform"></div>
                 
                 <div class="phrase-box">
-                    <div class="phrase-title">📝 Kitap okur gibi tonlama yaparak okuyunuz. (1 dakika):</div>
-                    <div class="phrase">Dandini dandini dastana, danalar girmiş bostana...</div>
-                    <div class="phrase">Biner atın iyisine, düşer yolun kıyısına...</div>
-                    <div class="phrase">E... e... e... e... (nefes sesleri)</div>
+                    <div class="phrase-title" id="phrase-title">📝 Kitap okur gibi tonlama yaparak okuyunuz. (1 dakika):</div>
+                    <div class="phrase" id="phrase-1">Dandini dandini dastana, danalar girmiş bostana...</div>
+                    <div class="phrase" id="phrase-2">Biner atın iyisine, düşer yolun kıyısına...</div>
+                    <div class="phrase" id="phrase-3">E... e... e... e... (nefes sesleri)</div>
                 </div>
             </div>
             
@@ -1691,23 +1697,23 @@
     <div class="bottom-nav">
         <button class="bottom-item active" onclick="goToPage('ninniler', null, 0)">
             <span class="bottom-icon">🎵</span>
-            <span class="bottom-label">Ninniler</span>
+            <span class="bottom-label" id="bottom-lullabies">Ninniler</span>
         </button>
         <button class="bottom-item" onclick="goToPage('hikayeler', null, 1)">
             <span class="bottom-icon">📖</span>
-            <span class="bottom-label">Hikayeler</span>
+            <span class="bottom-label" id="bottom-stories">Hikayeler</span>
         </button>
         <button class="bottom-item" onclick="goToPage('kolik', null, 2)">
             <span class="bottom-icon">🌿</span>
-            <span class="bottom-label">Kolik</span>
+            <span class="bottom-label" id="bottom-colic">Kolik</span>
         </button>
         <button class="bottom-item" onclick="goToPage('takip', null, 3)">
             <span class="bottom-icon">📊</span>
-            <span class="bottom-label">Takip</span>
+            <span class="bottom-label" id="bottom-tracking">Takip</span>
         </button>
         <button class="bottom-item" onclick="goToPage('sesim', null, 4)">
             <span class="bottom-icon">🎙️</span>
-            <span class="bottom-label">Sesim</span>
+            <span class="bottom-label" id="bottom-voice">Sesim</span>
         </button>
     </div>
     
@@ -1717,13 +1723,7 @@
             <div class="modal-handle"></div>
             <div style="font-family: 'Quicksand', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px;">Bebek Ayarları</div>
             <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Kişiselleştirilmiş deneyim için</div>
-            <div class="input-group">
-                <label class="input-label">Dil</label>
-                <div class="lang-switch">
-                    <button type="button" class="lang-chip" id="lang-tr" onclick="setLanguage('tr')">Türkçe</button>
-                    <button type="button" class="lang-chip" id="lang-en" onclick="setLanguage('en')">English</button>
-                </div>
-            </div>
+
             
             <div class="input-group">
                 <label class="input-label">Bebeğinizin Adı</label>
@@ -1892,7 +1892,67 @@
         ];
 
         // Yerel ses dosyaları (GitHub'dan)
-        const KOLIK_SOUNDS = {
+        
+        const KOLIK_TRANSLATIONS = {
+            b1: { enName: 'Hair Dryer', enDesc: 'Strong airflow - calming for many babies' },
+            b2: { enName: 'Vacuum Cleaner', enDesc: 'Deep motor hum' },
+            b3: { enName: 'White Noise', enDesc: 'Pure white noise' },
+            b4: { enName: 'Air Conditioner', enDesc: 'Steady monotone hum' },
+            d1: { enName: 'Rain Sound', enDesc: 'Soft rainfall ambience' },
+            d2: { enName: 'Ocean Waves', enDesc: 'Rhythmic sea waves' },
+            d3: { enName: 'Forest Sound', enDesc: 'Leaves and distant birds' },
+            d4: { enName: 'Water Stream', enDesc: 'Continuous flowing water' },
+            r1: { enName: 'Heartbeat', enDesc: 'A womb-like steady rhythm' },
+            r2: { enName: 'Shushing Sound', enDesc: 'Helpful during crying episodes' }
+        };
+
+        const EN_EXPERT_TIPS = {
+            0: [
+                { author: 'Dr. Ayse Yilmaz', title: 'Child Development Specialist', avatar: '👩‍⚕️', tip: 'Newborn babies usually sleep 16-18 hours a day. Watch for early sleepy cues like yawning and rubbing eyes.' },
+                { author: 'Dr. Can Kaya', title: 'Pediatrician', avatar: '👨‍⚕️', tip: 'Colic is common in the first months. White noise and gentle rocking may help, especially in the late afternoon.' },
+                { author: 'Midwife Zeynep Demir', title: 'Lactation Consultant', avatar: '🤱', tip: 'Feeding and sleep are closely connected. A calm feed before sleep can support an easier bedtime routine.' }
+            ],
+            1: [
+                { author: 'Dr. Selin Aydin', title: 'Sleep Therapist', avatar: '😴', tip: 'After 3 months, babies may begin sleeping for longer stretches at night. Sleep regression periods are common and temporary.' },
+                { author: 'Dr. Mehmet Sahin', title: 'Development Specialist', avatar: '👨‍⚕️', tip: 'At this stage, many babies still take 3-4 naps a day. Consistent routines can help bedtime become smoother.' },
+                { author: 'Psychologist Elif Yildiz', title: 'Family Therapist', avatar: '🧠', tip: 'Repeating the same bedtime flow each evening helps babies understand that sleep time is coming.' }
+            ],
+            2: [
+                { author: 'Dr. Burak Tan', title: 'Child Development Specialist', avatar: '👨‍⚕️', tip: 'Between 6 and 12 months, total sleep often becomes 12-14 hours a day and daytime naps may reduce to two.' },
+                { author: 'Midwife Seda Kilic', title: 'Sleep Consultant', avatar: '🌙', tip: 'Crawling and new skills can affect sleep. Babies may want to practice these skills even when tired.' },
+                { author: 'Dr. Asli Koc', title: 'Nutrition Specialist', avatar: '🍼', tip: 'Changes in solids and feeding can affect bedtime. Keep evenings calm and avoid heavy feeds right before sleep.' }
+            ],
+            3: [
+                { author: 'Dr. Kerem Arslan', title: 'Child Psychiatrist', avatar: '🧸', tip: 'After age one, many toddlers move toward one daytime nap and need a stable bedtime routine.' },
+                { author: 'Psychologist Derya Uzun', title: 'Play Therapist', avatar: '🎈', tip: 'Separation anxiety can peak in toddlerhood. A short, loving bedtime ritual can reduce bedtime resistance.' },
+                { author: 'Dr. Hakan Yucel', title: 'Pedagogue', avatar: '📚', tip: 'Story time becomes especially powerful after age one. Repeating familiar stories can help create a sense of safety.' }
+            ]
+        };
+
+        const PHRASE_SETS = {
+            tr: {
+                title: '📝 Kitap okur gibi doğal ve sakin tonla okuyun. (Yaklaşık 1 dakika):',
+                lines: [
+                    'Dandini dandini dastana, danalar girmiş bostana...',
+                    'Biner atın iyisine, düşer yolun kıyısına...',
+                    'E... e... e... e... (nefes sesleri)'
+                ],
+                voiceTextPlaceholder: 'Buraya yazın...',
+                voiceTextValue: 'Dandini dandini danalı bebek, elleri kolları kınalı bebek...'
+            },
+            en: {
+                title: '📝 Read in a calm, natural storytelling tone. (About 1 minute):',
+                lines: [
+                    'Twinkle, twinkle, little star, how I wonder what you are...',
+                    'Up above the world so high, like a diamond in the sky...',
+                    'Mmm... shh... mmm... (soft breathing sounds)'
+                ],
+                voiceTextPlaceholder: 'Write here...',
+                voiceTextValue: 'Twinkle, twinkle, little star, how I wonder what you are...'
+            }
+        };
+
+const KOLIK_SOUNDS = {
     beyaz: [
         { id: 'b1', name: 'Saç Kurutma Makinesi', emoji: '💨', desc: 'Güçlü hava akışı - anında sakinleştirir', file: 'hairdryer.mp3' },
         { id: 'b2', name: 'Elektrik Süpürgesi', emoji: '🌀', desc: 'Derin motor tınısı', file: 'vacuum.mp3' },
@@ -1987,6 +2047,7 @@
             updatePremiumUI();
             renderSleepStats();
             renderExpertTips();
+            updateLanguageUI();
             checkSleepPrediction();
             updateLanguageUI();
             updateTrialUI();
@@ -2168,11 +2229,15 @@
         }
 
         function createKolikHTML(s) {
+            const tr = KOLIK_TRANSLATIONS[s.id] || {};
+            const name = state.language === 'tr' ? s.name : (tr.enName || s.name);
+            const desc = state.language === 'tr' ? s.desc : (tr.enDesc || s.desc);
+            const freeText = state.language === 'tr' ? 'ÜCRETSİZ' : 'FREE';
             return `
                 <div class="kolik-item" id="kitem-${s.id}" onclick="playKolik('${s.id}')">
                     <span class="kolik-icon">${s.emoji}</span>
-                    <div class="kolik-info"><div class="kolik-name">${s.name}</div><div class="kolik-desc">${s.desc}</div></div>
-                    <span class="kolik-tag">ÜCRETSİZ</span>
+                    <div class="kolik-info"><div class="kolik-name">${name}</div><div class="kolik-desc">${desc}</div></div>
+                    <span class="kolik-tag">${freeText}</span>
                     <button class="kolik-play" id="kbtn-${s.id}">▶</button>
                 </div>
             `;
@@ -2907,6 +2972,8 @@ async function playWithElevenLabs(lullaby, id) {
             }
         }
 
+        document.getElementById('voice-text')?.addEventListener('input', (e) => { e.target.dataset.userEdited = 'true'; });
+
         async function speakWithClonedVoice() {
             const text = document.getElementById('voice-text').value.trim();
             if (!text) { 
@@ -3452,7 +3519,7 @@ async function playWithElevenLabs(lullaby, id) {
         }
 
         function updateBabyNameDisplay() {
-            document.getElementById('baby-name-display').textContent = state.babyName || 'Bebek';
+            document.getElementById('baby-name-display').textContent = state.babyName || (state.language === 'tr' ? 'Bebek' : 'Baby');
         }
 
         function closeModal(modalId) {
@@ -3649,10 +3716,59 @@ async function playWithElevenLabs(lullaby, id) {
             document.getElementById('lang-en')?.classList.toggle('active', state.language === 'en');
             document.getElementById('onboard-lang-tr')?.classList.toggle('active', state.language === 'tr');
             document.getElementById('onboard-lang-en')?.classList.toggle('active', state.language === 'en');
+            const isTR = state.language === 'tr';
             const logo = document.querySelector('.logo-text');
-            if (logo) logo.textContent = state.language === 'tr' ? 'Minik Uyku' : 'Minik Sleep';
+            if (logo) logo.textContent = isTR ? 'Minik Uyku' : 'Minik Sleep';
+            const map = {
+                'nav-lullabies': isTR ? 'Ninniler' : 'Lullabies',
+                'nav-stories': isTR ? 'Hikayeler' : 'Stories',
+                'nav-colic': isTR ? 'Kolik' : 'Colic',
+                'nav-tracking': isTR ? 'Takip' : 'Tracking',
+                'nav-voice': isTR ? 'Sesim' : 'My Voice',
+                'bottom-lullabies': isTR ? 'Ninniler' : 'Lullabies',
+                'bottom-stories': isTR ? 'Hikayeler' : 'Stories',
+                'bottom-colic': isTR ? 'Kolik' : 'Colic',
+                'bottom-tracking': isTR ? 'Takip' : 'Tracking',
+                'bottom-voice': isTR ? 'Sesim' : 'My Voice',
+                'baby-name-display': state.babyName || (isTR ? 'Bebek' : 'Baby')
+            };
+            Object.entries(map).forEach(([id, text]) => { const el = document.getElementById(id); if (el) el.textContent = text; });
+
+            const timerBtn = document.querySelector('.timer-btn');
+            if (timerBtn) timerBtn.innerHTML = isTR ? '⏱ Zamanlayıcı' : '⏱ Timer';
+            const cryBtn = document.getElementById('cry-detector-btn');
+            if (cryBtn && !state.cryDetector.active) cryBtn.innerHTML = isTR ? '🎙 Ağlama Dedektörü' : '🎙 Cry Detector';
+            const kolikBtn = document.getElementById('kolik-detector-btn');
+            if (kolikBtn && !state.kolikDetector.active) kolikBtn.innerHTML = isTR ? '🌿 Kolik Kriz Dedektörü' : '🌿 Colic Detector';
+
+            const phrase = PHRASE_SETS[state.language];
+            const phraseTitle = document.getElementById('phrase-title');
+            if (phraseTitle) phraseTitle.textContent = phrase.title;
+            ['phrase-1','phrase-2','phrase-3'].forEach((id, i) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = phrase.lines[i];
+            });
+            const voiceText = document.getElementById('voice-text');
+            if (voiceText) {
+                voiceText.placeholder = phrase.voiceTextPlaceholder;
+                if (!voiceText.dataset.userEdited || voiceText.dataset.userEdited !== 'true') voiceText.value = phrase.voiceTextValue;
+            }
+
+            const ageOptions = document.querySelectorAll('.age-option');
+            const ageTR = ['0-3 ay', '3-6 ay', '6-12 ay', '1+ yaş'];
+            const ageEN = ['0-3 mo', '3-6 mo', '6-12 mo', '1+ yrs'];
+            ageOptions.forEach((el, idx) => el.textContent = isTR ? ageTR[idx] : ageEN[idx]);
+
+            const sectionTitles = document.querySelectorAll('.section-title');
+            if (sectionTitles[4]) sectionTitles[4].childNodes[0].textContent = isTR ? 'Beyaz Gürültü ' : 'White Noise ';
+            if (sectionTitles[5]) sectionTitles[5].childNodes[0].textContent = isTR ? 'Doğa Sesleri' : 'Nature Sounds';
+            if (sectionTitles[6]) sectionTitles[6].childNodes[0].textContent = isTR ? 'Rahatlatıcı Sesler' : 'Soothing Sounds';
+            if (sectionTitles[9]) sectionTitles[9].childNodes[0].textContent = isTR ? 'Uzman Önerileri' : 'Expert Tips';
+
             renderLullabies();
             renderStories();
+            renderKolik();
+            renderExpertTips();
             updatePremiumUI();
             updateTrialUI();
         }
